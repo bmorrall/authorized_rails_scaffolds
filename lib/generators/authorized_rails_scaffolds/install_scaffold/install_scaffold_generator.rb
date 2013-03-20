@@ -10,7 +10,7 @@ class AuthorizedRailsScaffolds::InstallScaffoldGenerator < Rails::Generators::Ba
   end
 
   def copy_rails_templates
-    copy_rspec_template 'controller.rb'
+    copy_rails_template 'controller.rb'
   end
 
   protected
