@@ -1,0 +1,18 @@
+<%- singular_var_name = file_name -%>
+<%- a = singular_table_name.split(file_name, -1)[0..-2].join(file_name) %>
+<%- form_object_vars = a.blank? ? "@#{singular_var_name}" : "[:#{a.split('_').join(', :')}, @#{singular_var_name}]" -%>
+<%%= simple_form_for(<%= form_object_vars %>, :html => { class: 'form-horizontal' }) do |f| %>
+  <%%= f.error_notification %>
+
+  <div class="form-inputs">
+  <%- attributes.each do |attribute| -%>
+    <%%= f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %> %>
+  <%- end -%>
+  </div>
+
+  <div class="form-actions">
+    <%%= f.button :submit, :class => 'btn-primary' %>
+    <%%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                <%= index_helper %>_path, :class => 'btn' %>
+  </div>
+<%% end %>

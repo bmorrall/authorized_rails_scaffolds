@@ -1,0 +1,34 @@
+<%- singular_var_name = file_name -%>
+<%%- model_class = <%= file_name.classify %> -%>
+<div class="page-header">
+  <h1><%%=t '.title', :default => model_class.model_name.human %></h1>
+</div>
+
+<dl class="dl-horizontal item-summary">
+<%- attributes.each do |attribute| -%>
+  <dt><strong><%%= model_class.human_attribute_name(:<%= attribute.name %>) %>:</strong></dt>
+  <%- if [:datetime, :timestamp, :time, :date].include? attribute.type -%>
+  <%% unless @<%= singular_var_name %>.nil? %>
+  <dd><%%=l @<%= singular_var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %></dd>
+  <%% end %>
+  <%- else -%>
+  <dd><%%= @<%= singular_var_name %>.<%= attribute.name %> %></dd>
+  <%- end -%>
+<%- end -%>
+</dl>
+
+<div class="form-actions">
+  <%%= link_to t('.back', :default => t("helpers.links.back")),
+              <%= index_helper %>_path, :class => 'btn'  %>
+  <%% if can? :update, @<%= singular_var_name %> %>
+    <%%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_<%= singular_table_name %>_path(@<%= singular_var_name %>), :class => 'btn' %>
+  <%% end %>
+  <%% if can? :destroy, @<%= singular_var_name %> %>
+    <%%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              <%= singular_table_name %>_path(@<%= singular_var_name %>),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'act act-danger pull-right' %>
+  <%% end %>
+</div>

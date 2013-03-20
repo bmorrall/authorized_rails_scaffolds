@@ -1,0 +1,9 @@
+Description:
+    Installs scaffold templates that take advantage of Devise, CanCan and RSpec.
+
+Example:
+    rails generate authorized_rails_scaffolds:install_templates
+
+    This will create:
+        ERB view templates in lib/erb/scaffold
+        Scaffold controller templates in lib/rails/scaffold_controller
