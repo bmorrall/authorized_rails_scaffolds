@@ -9,7 +9,7 @@ class AuthorizedRailsScaffolds::InstallScaffoldGenerator < Rails::Generators::Ba
     copy_erb_template 'show.html.erb'
   end
 
-  def create_rails_templates
+  def copy_rails_template
     copy_rspec_template 'controller.rb'
   end
 
