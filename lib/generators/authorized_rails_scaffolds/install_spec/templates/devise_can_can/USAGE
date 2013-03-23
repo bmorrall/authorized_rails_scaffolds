@@ -1,0 +1,7 @@
+#
+# Add the following to spec/spec_helper.rb
+#
+RSpec.configure do |config|
+  config.include Devise::TestHelpers, :type => :controller
+  config.extend DeviseCanCanControllerMacros, :type => :controller
+end
