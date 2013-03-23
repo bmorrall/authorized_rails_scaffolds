@@ -103,11 +103,24 @@ describe "<%= ns_table_name %>/index" do
 <% end -%>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
 <% if webrat? -%>
-      rendered.should have_selector("tr>td<% if attribute_index == 0 %>>a<% end %>", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2)
+      rendered.should have_selector("tr>td", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2)
 <% else -%>
-      assert_select "tr>td<% if attribute_index == 0 %>>a<% end %>", :text => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2
+      assert_select "tr>td", :text => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2
 <% end -%>
 <% end -%>
+    end
+
+    describe 'show <%= var_name %> link' do
+      it "renders a link to <%= ns_file_name %>_path" do
+        render
+<% [1,2].each do |model_index| -%>
+<% if webrat? -%>
+        rendered.should have_selector("td>a[href]:not([data-method])", :href => <%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1)
+<% else -%>
+        assert_select "td>a[href=?]:not([data-method])", <%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1
+<% end -%>
+<% end -%>
+      end
     end
 
     describe 'edit <%= var_name %> link' do
