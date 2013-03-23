@@ -41,14 +41,22 @@ describe "<%= ns_table_name %>/edit" do
 <% if webrat? -%>
     rendered.should have_selector("form", :action => <%= ns_file_name %>_path(@<%= var_name %>), :method => "post") do |form|
 <% for attribute in standard_attributes -%>
+  <%- if attribute.type == :references -%>
+    form.should have_selector("select#<%= var_name %>_<%= attribute.name %>_id", :name => "<%= var_name %>[<%= attribute.name %>_id]")
+  <%- else -%>
     form.should have_selector("<%= attribute.input_type -%>#<%= var_name %>_<%= attribute.name %>", :name => "<%= var_name %>[<%= attribute.name %>]")
+  <%- end -%>
 <% end -%>
     end
 <% else -%>
     # Run the generator again with the --webrat flag if you want to use webrat matchers
     assert_select "form[action=?][method=?]", <%= ns_file_name %>_path(@<%= var_name %>), "post" do
 <% for attribute in standard_attributes -%>
+  <%- if attribute.type == :references -%>
+      assert_select "select#<%= var_name %>_<%= attribute.name %>_id[name=?]", "<%= var_name %>[<%= attribute.name %>_id]"
+  <%- else -%>
       assert_select "<%= attribute.input_type -%>#<%= var_name %>_<%= attribute.name %>[name=?]", "<%= var_name %>[<%= attribute.name %>]"
+  <%- end -%>
 <% end -%>
     end
 <% end -%>
