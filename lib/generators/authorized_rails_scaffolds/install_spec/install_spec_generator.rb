@@ -3,14 +3,13 @@ class AuthorizedRailsScaffolds::InstallSpecGenerator < Rails::Generators::Base
 
   class_option :authentication, :type => 'string', :default => 'devise', :desc => "Authentication Provider (Devise)"
   class_option :authorization, :type => 'string', :default => 'can_can', :desc => "Authorization Provider (CanCan)"
-  
 
-  def create_rspec_templates
-    copy_rspec_template 'controller_spec.rb'
-    copy_rspec_template 'edit_spec.rb'
-    copy_rspec_template 'index_spec.rb'
-    copy_rspec_template 'new_spec.rb'
-    copy_rspec_template 'show_spec.rb'
+  def create_scaffold_templates
+    copy_scaffold_template 'controller_spec.rb'
+    copy_scaffold_template 'edit_spec.rb'
+    copy_scaffold_template 'index_spec.rb'
+    copy_scaffold_template 'new_spec.rb'
+    copy_scaffold_template 'show_spec.rb'
   end
 
   def create_controller_macros
@@ -25,7 +24,7 @@ class AuthorizedRailsScaffolds::InstallSpecGenerator < Rails::Generators::Base
 
   protected
 
-  def copy_rspec_template(template_name)
+  def copy_scaffold_template(template_name)
     copy_file template_name, "lib/templates/rspec/scaffold/#{template_name}"
   end
 
