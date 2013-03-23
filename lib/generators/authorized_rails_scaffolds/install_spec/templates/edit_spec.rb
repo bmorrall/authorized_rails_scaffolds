@@ -4,28 +4,30 @@ require 'spec_helper'
 <% output_attributes = attributes.reject{|attribute| [:timestamp].index(attribute.type) } -%>
 <% standard_attributes = output_attributes.reject{|attribute| [:time, :date, :datetime].index(attribute.type) } -%>
 <% date_attributes = output_attributes.reject{|attribute| ![:time, :date, :datetime].index(attribute.type) } -%>
+<%-
+
+# Returns code that will generate attribute_value as an attribute_type
+def factory_attribute_value(attribute_type, attribute_value)
+  case attribute_type
+  when :datetime
+    "DateTime.parse(#{attribute_value})"
+  when :time
+    value_as_time = attribute_value.to_time.strftime('%T')
+    "Time.parse(#{value_as_time.dump})"
+  when :date
+    value_as_date = attribute_value.to_time.strftime('%Y-%m-%d')
+    "Date.parse(#{value_as_date})"
+  else
+    attribute_value
+  end
+end
+
+-%>
 describe "<%= ns_table_name %>/edit" do
   before(:each) do
     @<%= file_name %> = assign(:<%= file_name %>, FactoryGirl.build_stubbed(:<%= file_name %><%= output_attributes.empty? ? '))' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
-<%-
-attribute_prefix = ''
-attribute_suffix = ')'
-if attribute.type == :datetime
-  attribute_value = value_for(attribute)
-  attribute_prefix = 'DateTime.parse('
-elsif attribute.type == :time
-  attribute_value = value_for(attribute).to_time.strftime('%T').dump
-  attribute_prefix = 'Time.parse('
-elsif attribute.type == :date
-  attribute_value = value_for(attribute)
-  attribute_prefix = 'Date.parse('
-else
-  attribute_value = value_for(attribute)
-  attribute_suffix = ''
-end
--%>
-      :<%= attribute.name %> => <%= attribute_prefix %><%= attribute_value %><%= attribute_suffix %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
+      :<%= attribute.name %> => <%= factory_attribute_value attribute.type, value_for(attribute) %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
 <%= output_attributes.empty? ? "" : "    ))\n" -%>
   end

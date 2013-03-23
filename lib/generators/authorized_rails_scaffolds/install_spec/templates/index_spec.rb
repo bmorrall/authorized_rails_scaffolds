@@ -2,29 +2,48 @@ require 'spec_helper'
 
 <%- local_class_name = class_name.split('::')[-1] -%>
 <%- output_attributes = attributes.reject{|attribute| [:timestamp].index(attribute.type) } -%>
+<%-
+
+# Returns code that will generate attribute_value as an attribute_type
+def factory_attribute_value(attribute_type, attribute_value)
+  case attribute_type
+  when :datetime
+    "DateTime.parse(#{attribute_value})"
+  when :time
+    value_as_time = attribute_value.to_time.strftime('%T')
+    "Time.parse(#{value_as_time.dump})"
+  when :date
+    value_as_date = attribute_value.to_time.strftime('%Y-%m-%d')
+    "Date.parse(#{value_as_date})"
+  else
+    attribute_value
+  end
+end
+
+# Returns the expected output string of attribute_value if it is an attribute_type
+def factory_attribute_string(attribute_type, attribute_value)
+  case attribute_type
+  when :datetime
+    attribute_value_as_date = DateTime.parse(attribute_value)
+    I18n.l(attribute_value_as_date, :format => :long).dump
+  when :time
+    attribute_value_as_time = Time.parse(attribute_value)
+    I18n.l(attribute_value_as_time, :format => :short).dump
+  when :date
+    attribute_value_as_date = Date.parse(attribute_value)
+    I18n.l(attribute_value_as_date).dump
+  else
+    attribute_value
+  end
+end
+
+-%>
 describe "<%= ns_table_name %>/index" do
   before(:each) do
 <% [1,2].each_with_index do |id, model_index| -%>
     @<%= file_name %>_<%= model_index + 1 %> = FactoryGirl.build_stubbed(:<%= file_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
-<%-
-attribute_prefix = ''
-attribute_suffix = ')'
-if attribute.type == :datetime
-  attribute_value = value_for(attribute)
-  attribute_prefix = 'DateTime.parse('
-elsif attribute.type == :time
-  attribute_value = value_for(attribute).to_time.strftime('%T').dump
-  attribute_prefix = 'Time.parse('
-elsif attribute.type == :date
-  attribute_value = value_for(attribute)
-  attribute_prefix = 'Date.parse('
-else
-  attribute_value = value_for(attribute)
-  attribute_suffix = ''
-end
--%>
-      :<%= attribute.name %> => <%= attribute_prefix %><%= attribute_value %><%= attribute_suffix %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
+      :<%= attribute.name %> => <%= factory_attribute_value attribute.type, value_for(attribute) %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
 <% if !output_attributes.empty? -%>
     )
@@ -79,24 +98,10 @@ end
 <% end -%>
 <% end -%>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
-<%-
-if attribute.type == :datetime
-  date_time_value = DateTime.parse(value_for(attribute))
-  attribute_value = I18n.l(date_time_value, :format => :long).dump
-elsif attribute.type == :time
-  time_value = Time.parse(value_for(attribute))
-  attribute_value = I18n.l(time_value, :format => :short).dump
-elsif attribute.type == :date
-  date_value = Date.parse(value_for(attribute))
-  attribute_value = I18n.l(date_value).dump
-else
-  attribute_value = value_for(attribute)
-end
--%>
 <% if webrat? -%>
-      rendered.should have_selector("tr>td<% if attribute_index == 0 %>>a<% end %>", :content => <%= attribute_value %>.to_s, :count => 2)
+      rendered.should have_selector("tr>td<% if attribute_index == 0 %>>a<% end %>", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2)
 <% else -%>
-      assert_select "tr>td<% if attribute_index == 0 %>>a<% end %>", :text => <%= attribute_value %>.to_s, :count => 2
+      assert_select "tr>td<% if attribute_index == 0 %>>a<% end %>", :text => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2
 <% end -%>
 <% end -%>
     end
