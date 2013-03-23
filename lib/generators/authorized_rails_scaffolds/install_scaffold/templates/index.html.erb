@@ -1,6 +1,11 @@
-<%- singular_var_name = file_name -%>
-<%- plural_var_name = file_name.pluralize-%>
-<%%- model_class = <%= file_name.classify %> -%>
+<%-
+
+local_class_name = file_name.classify # Non-Namespaced class name
+var_name = file_name # Non-namespaced variable name
+plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
+
+-%>
+<%%- model_class = <%= local_class_name %> -%>
 <div class="page-header">
   <h1><%%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
 </div>
@@ -16,36 +21,36 @@
     </tr>
   </thead>
   <tbody>
-    <%% @<%= plural_var_name %>.each do |<%= singular_var_name %>| %>
-      <tr class="<%= singular_var_name %>_<%%= <%= singular_var_name%>.id %>">
-        <td class="id-column"><%%= <%= singular_var_name %>.id %></td>
+    <%% @<%= plural_var_name %>.each do |<%= var_name %>| %>
+      <tr class="<%= var_name %>_<%%= <%= var_name %>.id %>">
+        <td class="id-column"><%%= <%= var_name %>.id %></td>
         <%- if attributes.any? -%>
-        <td class="title-column"><%%= link_to <%= singular_var_name %>.<%= attributes[0].name %>, <%= singular_table_name %>_path(<%= singular_var_name %>) %></td>
+        <td class="title-column"><%%= link_to <%= var_name %>.<%= attributes[0].name %>, <%= singular_table_name %>_path(<%= var_name %>) %></td>
         <%- attributes[1..-1].each do |attribute| -%>
         <%- if [:datetime, :timestamp, :time, :date].include? attribute.type -%>
-        <td><%% unless <%= singular_var_name %>.<%= attribute.name %>.nil? %><%%=l <%= singular_var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %><%% end %></td>
+        <td><%% unless <%= var_name %>.<%= attribute.name %>.nil? %><%%=l <%= var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %><%% end %></td>
         <%- else -%>
-        <td><%%= <%= singular_var_name %>.<%= attribute.name %> %></td>
+        <td><%%= <%= var_name %>.<%= attribute.name %> %></td>
         <%- end -%>
         <%- end -%>
         <%- end -%>
-        <td><%%=l <%= singular_var_name %>.created_at %></td>
+        <td><%%=l <%= var_name %>.created_at %></td>
         <td class="table-actions">
           <%%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_<%= singular_table_name %>_path(<%= singular_var_name %>), :class => 'btn btn-mini', :disabled => !can?(:update, <%= singular_var_name %>) %>
+                      edit_<%= singular_table_name %>_path(<%= var_name %>), :class => 'btn btn-mini', :disabled => !can?(:update, <%= var_name %>) %>
           <%%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      <%= singular_table_name %>_path(<%= singular_var_name %>),
+                      <%= singular_table_name %>_path(<%= var_name %>),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger',
-                      :disabled => !can?(:destroy, <%= singular_var_name %>) %>
+                      :disabled => !can?(:destroy, <%= var_name %>) %>
         </td>
       </tr>
     <%% end %>
   </tbody>
 </table>
 
-<%% if can?(:create, <%= file_name.classify %>) %>
+<%% if can?(:create, <%= local_class_name %>) %>
   <%%= link_to t('.new', :default => t("helpers.links.new")),
             new_<%= singular_table_name %>_path,
             :class => 'btn btn-primary' %>

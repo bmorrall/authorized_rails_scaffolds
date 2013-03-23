@@ -1,7 +1,11 @@
 require 'spec_helper'
 
-<% output_attributes = attributes.reject{|attribute| [:timestamp].index(attribute.type) } -%>
 <%-
+
+local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
+var_name = file_name # Non-namespaced variable name
+
+output_attributes   = attributes.reject{|attribute| [:timestamp].include? attribute.type }
 
 # Returns code that will generate attribute_value as an attribute_type
 def factory_attribute_value(attribute_type, attribute_value)
@@ -13,7 +17,7 @@ def factory_attribute_value(attribute_type, attribute_value)
     "Time.parse(#{value_as_time.dump})"
   when :date
     value_as_date = attribute_value.to_time.strftime('%Y-%m-%d')
-    "Date.parse(#{value_as_date})"
+    "Date.parse(#{value_as_date.dump})"
   else
     attribute_value
   end
@@ -39,7 +43,7 @@ end
 -%>
 describe "<%= ns_table_name %>/show" do
   before(:each) do
-    @<%= file_name %> = FactoryGirl.build_stubbed(:<%= file_name %><%= output_attributes.empty? ? ')' : ',' %>
+    @<%= var_name %> = FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
       :<%= attribute.name %> => <%= factory_attribute_value attribute.type, value_for(attribute) %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>

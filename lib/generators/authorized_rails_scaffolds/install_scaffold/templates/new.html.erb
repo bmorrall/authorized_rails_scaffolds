@@ -1,4 +1,9 @@
-<%%- model_class = <%= file_name.classify %> -%>
+<%-
+
+local_class_name = file_name.classify # Non-Namespaced class name
+
+-%>
+<%%- model_class = <%= local_class_name %> -%>
 <div class="page-header">
   <h1><%%=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human %></h1>
 </div>

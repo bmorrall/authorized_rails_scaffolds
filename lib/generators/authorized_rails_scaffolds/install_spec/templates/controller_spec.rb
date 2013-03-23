@@ -19,19 +19,25 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 <% module_namespacing do -%>
-<%- local_class_name = class_name.split("::")[-1] -%>
+<%-
+
+local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
+var_name = file_name # Non-namespaced variable name
+plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
+
+-%>
 describe <%= controller_class_name %>Controller do
 
   # This should return the minimal set of attributes required to create a valid
   # <%= local_class_name %>.
   def valid_create_attributes
-    FactoryGirl.attributes_for(:<%= file_name %>)
+    FactoryGirl.attributes_for(:<%= var_name %>)
   end
 
   # This should return the minimal set of attributes required to update a valid
   # <%= local_class_name %>.
   def valid_update_attributes
-    FactoryGirl.attributes_for(:<%= file_name %>)
+    FactoryGirl.attributes_for(:<%= var_name %>)
   end
 
 <% unless options[:singleton] -%>
@@ -39,7 +45,7 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           get :index, {}
         end
         it { should redirect_to(new_user_session_path) }
@@ -50,7 +56,7 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           get :index, {}
         end
         it { should redirect_to(root_url) }
@@ -61,14 +67,14 @@ describe <%= controller_class_name %>Controller do
       login_user_with_ability :read, <%= local_class_name %>
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           get :index, {}
         end
         it { should respond_with(:success) }
         it { should render_template(:index) }
         it { should render_with_layout(:application) }
-        it "assigns all <%= file_name.pluralize %> as @<%= file_name.pluralize %>" do
-          assigns(:<%= file_name.pluralize %>).should eq([@<%= file_name %>])
+        it "assigns all <%= plural_var_name %> as @<%= plural_var_name %>" do
+          assigns(:<%= plural_var_name %>).should eq([@<%= var_name %>])
         end
       end
     end
@@ -79,8 +85,8 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          get :show, {:id => @<%= file_name %>.to_param}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          get :show, {:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -90,8 +96,8 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          get :show, {:id => @<%= file_name %>.to_param}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          get :show, {:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(<%= index_helper %>_path) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -101,14 +107,14 @@ describe <%= controller_class_name %>Controller do
       login_user_with_ability :read, <%= local_class_name %>
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          get :show, {:id => @<%= file_name %>.to_param}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          get :show, {:id => @<%= var_name %>.to_param}
         end
         it { should respond_with(:success) }
         it { should render_template(:show) }
         it { should render_with_layout(:application) }
-        it "assigns the requested <%= file_name %> as @<%= file_name %>" do
-          assigns(:<%= file_name %>).should eq(@<%= file_name %>)
+        it "assigns the requested <%= var_name %> as @<%= var_name %>" do
+          assigns(:<%= var_name %>).should eq(@<%= var_name %>)
         end
       end
     end
@@ -143,8 +149,8 @@ describe <%= controller_class_name %>Controller do
         it { should respond_with(:success) }
         it { should render_template(:new) }
         it { should render_with_layout(:application) }
-        it "assigns a new <%= file_name %> as @<%= file_name %>" do
-          assigns(:<%= file_name %>).should be_a_new(<%= local_class_name %>)
+        it "assigns a new <%= var_name %> as @<%= var_name %>" do
+          assigns(:<%= var_name %>).should be_a_new(<%= local_class_name %>)
         end
       end
     end
@@ -154,8 +160,8 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          get :edit, {:id => @<%= file_name %>.to_param}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          get :edit, {:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -165,8 +171,8 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          get :edit, {:id => @<%= file_name %>.to_param}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          get :edit, {:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(<%= index_helper %>_url) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -176,14 +182,14 @@ describe <%= controller_class_name %>Controller do
       login_user_with_ability :update, <%= local_class_name %>
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          get :edit, {:id => @<%= file_name %>.to_param}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          get :edit, {:id => @<%= var_name %>.to_param}
         end
         it { should respond_with(:success) }
         it { should render_template(:edit) }
         it { should render_with_layout(:application) }
-        it "assigns the requested <%= file_name %> as @<%= file_name %>" do
-          assigns(:<%= file_name %>).should eq(@<%= file_name %>)
+        it "assigns the requested <%= var_name %> as @<%= var_name %>" do
+          assigns(:<%= var_name %>).should eq(@<%= var_name %>)
         end
       end
     end
@@ -193,7 +199,7 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid params' do
         before(:each) do
-          post :create, {:<%= file_name %> => valid_create_attributes}
+          post :create, {:<%= var_name %> => valid_create_attributes}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -203,7 +209,7 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe "with valid params" do
         before(:each) do
-          post :create, {:<%= file_name %> => valid_create_attributes}
+          post :create, {:<%= var_name %> => valid_create_attributes}
         end
         it { should redirect_to(<%= index_helper %>_url) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -214,19 +220,19 @@ describe <%= controller_class_name %>Controller do
       describe "with valid params" do
         it "creates a new <%= local_class_name %>" do
           expect {
-            post :create, {:<%= file_name %> => valid_create_attributes}
+            post :create, {:<%= var_name %> => valid_create_attributes}
           }.to change(<%= local_class_name %>, :count).by(1)
         end
       end
       describe 'with valid params' do
         before(:each) do
-          post :create, {:<%= file_name %> => valid_create_attributes}
+          post :create, {:<%= var_name %> => valid_create_attributes}
         end
-        it "assigns a newly created <%= file_name %> as @<%= file_name %>" do
-          assigns(:<%= file_name %>).should be_a(<%= local_class_name %>)
-          assigns(:<%= file_name %>).should be_persisted
+        it "assigns a newly created <%= var_name %> as @<%= var_name %>" do
+          assigns(:<%= var_name %>).should be_a(<%= local_class_name %>)
+          assigns(:<%= var_name %>).should be_persisted
         end
-        it "redirects to the created <%= file_name %>" do
+        it "redirects to the created <%= var_name %>" do
           response.should redirect_to(<%= ns_file_name %>_path(<%= local_class_name %>.last))
         end
       end
@@ -234,12 +240,12 @@ describe <%= controller_class_name %>Controller do
         before(:each) do
           # Trigger the behavior that occurs when invalid params are submitted
           <%= local_class_name %>.any_instance.stub(:save).and_return(false)
-          post :create, {:<%= file_name %> => <%= formatted_hash(example_invalid_attributes) %>}
+          post :create, {:<%= var_name %> => <%= formatted_hash(example_invalid_attributes) %>}
         end
         it { should render_template(:new) }
         it { should render_with_layout(:application) }
-        it "assigns a newly created but unsaved <%= file_name %> as @<%= file_name %>" do
-          assigns(:<%= file_name %>).should be_a_new(<%= local_class_name %>)
+        it "assigns a newly created but unsaved <%= var_name %> as @<%= var_name %>" do
+          assigns(:<%= var_name %>).should be_a_new(<%= local_class_name %>)
         end
       end
     end
@@ -249,8 +255,8 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid params' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          put :update, {:id => @<%= file_name %>.to_param, :<%= file_name %> => valid_update_attributes}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          put :update, {:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -260,8 +266,8 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe "with valid params" do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          put :update, {:id => @<%= file_name %>.to_param, :<%= file_name %> => valid_update_attributes}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          put :update, {:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
         it { should redirect_to(<%= index_helper %>_url) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -270,9 +276,9 @@ describe <%= controller_class_name %>Controller do
     context 'as user with update ability' do
       login_user_with_ability :update, <%= local_class_name %>
       describe "with valid params" do
-        it "updates the requested <%= file_name %>" do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          # Assuming there are no other <%= file_name %> in the database, this
+        it "updates the requested <%= var_name %>" do
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          # Assuming there are no other <%= var_name %> in the database, this
           # specifies that the <%= local_class_name %> created on the previous line
           # receives the :update_attributes message with whatever params are
           # submitted in the request.
@@ -281,32 +287,32 @@ describe <%= controller_class_name %>Controller do
           <%- else -%>
           <%= local_class_name %>.any_instance.should_receive(:update_attributes).with(<%= formatted_hash(example_params_for_update) %>)
           <%- end -%>
-          put :update, {:id => @<%= file_name %>.to_param, :<%= file_name %> => <%= formatted_hash(example_params_for_update) %>}
+          put :update, {:id => @<%= var_name %>.to_param, :<%= var_name %> => <%= formatted_hash(example_params_for_update) %>}
         end
       end
       describe "with valid params" do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          put :update, {:id => @<%= file_name %>.to_param, :<%= file_name %> => valid_update_attributes}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          put :update, {:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
-        it "assigns the requested <%= file_name %> as @<%= file_name %>" do
-          assigns(:<%= file_name %>).should eq(@<%= file_name %>)
+        it "assigns the requested <%= var_name %> as @<%= var_name %>" do
+          assigns(:<%= var_name %>).should eq(@<%= var_name %>)
         end
-        it "redirects to the <%= file_name %>" do
-          response.should redirect_to(<%= ns_file_name %>_path(@<%= file_name %>))
+        it "redirects to the <%= var_name %>" do
+          response.should redirect_to(<%= ns_file_name %>_path(@<%= var_name %>))
         end
       end
       describe "with invalid params" do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           # Trigger the behavior that occurs when invalid params are submitted
           <%= local_class_name %>.any_instance.stub(:save).and_return(false)
-          put :update, {:id => @<%= file_name %>.to_param, :<%= file_name %> => <%= formatted_hash(example_invalid_attributes) %>}
+          put :update, {:id => @<%= var_name %>.to_param, :<%= var_name %> => <%= formatted_hash(example_invalid_attributes) %>}
         end
         it { should render_template(:edit) }
         it { should render_with_layout(:application) }
-        it "assigns the <%= file_name %> as @<%= file_name %>" do
-          assigns(:<%= file_name %>).should eq(@<%= file_name %>)
+        it "assigns the <%= var_name %> as @<%= var_name %>" do
+          assigns(:<%= var_name %>).should eq(@<%= var_name %>)
         end
       end
     end
@@ -316,8 +322,8 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          delete :destroy, {:id => @<%= file_name %>.to_param}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          delete :destroy, {:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -327,8 +333,8 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe "with valid request" do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          delete :destroy, {:id => @<%= file_name %>.to_param}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          delete :destroy, {:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(<%= index_helper %>_url) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -336,18 +342,18 @@ describe <%= controller_class_name %>Controller do
     end
     context 'as user with destroy ability' do
       login_user_with_ability :destroy, <%= local_class_name %>
-      it "destroys the requested <%= file_name %>" do
-        @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
+      it "destroys the requested <%= var_name %>" do
+        @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
         expect {
-          delete :destroy, {:id => @<%= file_name %>.to_param}
+          delete :destroy, {:id => @<%= var_name %>.to_param}
         }.to change(<%= local_class_name %>, :count).by(-1)
       end
       describe 'with valid request' do
         before(:each) do
-          @<%= file_name %> = FactoryGirl.create(:<%= file_name %>)
-          delete :destroy, {:id => @<%= file_name %>.to_param}
+          @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
+          delete :destroy, {:id => @<%= var_name %>.to_param}
         end
-        it "redirects to the <%= file_name %> list" do
+        it "redirects to the <%= var_name %> list" do
           response.should redirect_to(<%= index_helper %>_url)
         end
       end
