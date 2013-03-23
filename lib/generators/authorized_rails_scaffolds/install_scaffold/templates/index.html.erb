@@ -23,7 +23,7 @@
         <td class="title-column"><%%= link_to <%= singular_var_name %>.<%= attributes[0].name %>, <%= singular_table_name %>_path(<%= singular_var_name %>) %></td>
         <%- attributes[1..-1].each do |attribute| -%>
         <%- if [:datetime, :timestamp, :time, :date].include? attribute.type -%>
-        <td><%%=l <%= singular_var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %></td>
+        <td><%% unless <%= singular_var_name %>.<%= attribute.name %>.nil? %><%%=l <%= singular_var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %><%% end %></td>
         <%- else -%>
         <td><%%= <%= singular_var_name %>.<%= attribute.name %> %></td>
         <%- end -%>
