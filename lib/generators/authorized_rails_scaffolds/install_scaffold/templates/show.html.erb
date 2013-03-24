@@ -14,7 +14,7 @@ path_prefix = singular_table_name[0..-(file_name.length+1)]
 
 <dl class="dl-horizontal item-summary">
 <%- attributes.each do |attribute| -%>
-<%- attribute_label = "model_class.human_attribute_name(:#{attribute.name})" -%>
+  <%- attribute_label = "model_class.human_attribute_name(:#{attribute.name})" -%>
   <%- if attribute.type == :references -%>
   <%% if @<%= var_name %>.<%= attribute.name %>.present? && can?(:read, @<%= var_name %>.<%= attribute.name %>) %>
   <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
@@ -25,9 +25,16 @@ path_prefix = singular_table_name[0..-(file_name.length+1)]
   <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
   <dd><%%=l @<%= var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %></dd>
   <%% end %>
-  <%- else -%>
+  <%- elsif attribute.type == :string -%>
+  <%% unless @<%= var_name %>.<%= attribute.name %>.blank? %>
   <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
   <dd><%%= @<%= var_name %>.<%= attribute.name %> %></dd>
+  <%% end %>
+  <%- else -%>
+  <%% unless @<%= var_name %>.<%= attribute.name %>.nil? %>
+  <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
+  <dd><%%= @<%= var_name %>.<%= attribute.name %> %></dd>
+  <%% end %>
   <%- end -%>
 <%- end -%>
 </dl>
