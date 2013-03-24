@@ -4,6 +4,8 @@ local_class_name = file_name.classify # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
+path_prefix = singular_table_name[0..-(file_name.length+1)]
+
 -%>
 <%%- model_class = <%= local_class_name %> -%>
 <div class="page-header">
@@ -12,12 +14,19 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
 <dl class="dl-horizontal item-summary">
 <%- attributes.each do |attribute| -%>
-  <dt><strong><%%= model_class.human_attribute_name(:<%= attribute.name %>) %>:</strong></dt>
-  <%- if [:datetime, :timestamp, :time, :date].include? attribute.type -%>
+<%- attribute_label = "model_class.human_attribute_name(:#{attribute.name})" -%>
+  <%- if attribute.type == :references -%>
+  <%% if @<%= var_name %>.<%= attribute.name %>.present? && can?(:read, @<%= var_name %>.<%= attribute.name %>) %>
+  <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
+  <dd><%%= link_to @<%= var_name %>.<%= attribute.name %>, <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>) %></dd>
+  <%% end %>
+  <%- elsif [:datetime, :timestamp, :time, :date].include? attribute.type -%>
   <%% unless @<%= var_name %>.<%= attribute.name %>.nil? %>
+  <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
   <dd><%%=l @<%= var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %></dd>
   <%% end %>
   <%- else -%>
+  <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
   <dd><%%= @<%= var_name %>.<%= attribute.name %> %></dd>
   <%- end -%>
 <%- end -%>

@@ -5,7 +5,10 @@ require 'spec_helper'
 local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 
-output_attributes   = attributes.reject{|attribute| [:timestamp].include? attribute.type }
+output_attributes   = attributes.reject{|attribute| [:timestamp, :references].include? attribute.type }
+references_attributes = attributes.reject{|attribute| ![:references].include? attribute.type }
+
+path_prefix = ns_file_name[0..-(file_name.length+1)]
 
 # Returns code that will generate attribute_value as an attribute_type
 def factory_attribute_value(attribute_type, attribute_value)
@@ -60,7 +63,7 @@ describe "<%= ns_table_name %>/show" do
 <% unless webrat? -%>
     # Run the generator again with the --webrat flag if you want to use webrat matchers
 <% end -%>
-<% for attribute in attributes -%>
+<% for attribute in output_attributes -%>
 <% if webrat? -%>
     rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>)
     rendered.should have_selector("dl>dd", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s)
@@ -70,4 +73,40 @@ describe "<%= ns_table_name %>/show" do
 <% end -%>
 <% end -%>
   end
+
+<% for attribute in references_attributes -%>
+  context "with a <%= attribute.name %> reference" do
+    before(:each) do
+      @<%= var_name %>.<%= attribute.name %> = FactoryGirl.build_stubbed(:<%= attribute.name %>)
+    end
+    context 'without read <%= attribute.name.classify %> permissions' do
+      it "should not render link to <%= attribute.name %>" do
+        render
+<% if webrat? -%>
+        rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>, :count => 0)
+        rendered.should have_selector("dl>dd>a[href]", :href => <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>), :count => 0)
+<% else -%>
+        assert_select "dl>dt", :text => <%= "#{attribute.human_name}:".dump %>, :count => 0
+        assert_select "dl>dd>a[href=?]", <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>), :count => 0
+<% end -%>
+      end
+    end
+    context 'with read <%= attribute.name.classify %> permissions' do
+      before(:each) do
+        @ability.can :read, <%= attribute.name.classify %>
+      end
+      it "renders references as a namespaced link" do
+        render
+<% if webrat? -%>
+        rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>)
+        rendered.should have_selector("dl>dd>a[href]", :href => <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>), :count => 1)
+<% else -%>
+        assert_select "dl>dt", :text => <%= "#{attribute.human_name}:".dump %>
+        assert_select "dl>dd>a[href=?]", <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>), :count => 1
+<% end -%>
+      end
+    end
+  end
+
+<% end -%>
 end
