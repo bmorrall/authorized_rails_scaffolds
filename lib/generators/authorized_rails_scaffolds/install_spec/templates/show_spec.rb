@@ -80,7 +80,7 @@ describe "<%= ns_table_name %>/show" do
       @<%= var_name %>.<%= attribute.name %> = FactoryGirl.build_stubbed(:<%= attribute.name %>)
     end
     context 'without read <%= attribute.name.classify %> permissions' do
-      it "should not render link to <%= attribute.name %>" do
+      it "should not a render link to <%= attribute.name %>" do
         render
 <% if webrat? -%>
         rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>, :count => 0)
@@ -95,7 +95,7 @@ describe "<%= ns_table_name %>/show" do
       before(:each) do
         @ability.can :read, <%= attribute.name.classify %>
       end
-      it "renders references as a namespaced link" do
+      it "renders a namespaced link to <%= attribute.name %>" do
         render
 <% if webrat? -%>
         rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>)
