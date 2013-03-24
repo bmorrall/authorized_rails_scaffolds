@@ -34,7 +34,7 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
         <%- end -%>
         <%- end -%>
         <%- end -%>
-        <td><%%=l <%= var_name %>.created_at %></td>
+        <td><%%=l <%= var_name %>.created_at, :format => :long %></td>
         <td class="table-actions">
           <%%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_<%= singular_table_name %>_path(<%= var_name %>),
