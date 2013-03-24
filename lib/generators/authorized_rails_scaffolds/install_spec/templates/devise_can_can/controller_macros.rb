@@ -1,4 +1,4 @@
-module DeviceCanCanControllerMacros
+module DeviseCanCanControllerMacros
   def login_unauthorized_user
     before(:each) do
       @ability = Object.new
