@@ -1,6 +1,6 @@
 <%-
 
-var PARENT_MODEL = ''
+PARENT_MODEL = []
 
 local_class_name = file_name.classify # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
@@ -10,7 +10,7 @@ parent_prefix = PARENT_MODEL.blank? ? PARENT_MODEL : "#{PARENT_MODEL.underscore}
 parent_variable = PARENT_MODEL.blank? ? PARENT_MODEL : "@#{PARENT_MODEL.underscore}"
 
 parent_prefix = PARENT_MODEL.collect { |x| x.underscore }.join('_')
-parent_prefix += '_' unless parent_prefix.blanc?
+parent_prefix += '_' unless parent_prefix.blank?
 parent_variables = PARENT_MODEL.collect{ |x| "@#{x.underscore}" }.join(', ')
 
 namespace_prefix = singular_table_name[0..(file_name.length + 2)] # Remove _ before namespace

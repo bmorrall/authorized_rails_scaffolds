@@ -131,7 +131,7 @@ describe <%= controller_class_name %>Controller do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           get :show, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
-        it { should redirect_to(<%= index_helper %>_path) }
+        it { should redirect_to(<%= controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -168,7 +168,7 @@ describe <%= controller_class_name %>Controller do
         before(:each) do
           get :new, {<%= index_params %>}
         end
-        it { should redirect_to(<%= index_helper %>_url) }
+        it { should redirect_to(<%= controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -206,7 +206,7 @@ describe <%= controller_class_name %>Controller do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           get :edit, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
-        it { should redirect_to(<%= index_helper %>_url) }
+        it { should redirect_to(<%= controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -243,7 +243,7 @@ describe <%= controller_class_name %>Controller do
         before(:each) do
           post :create, {<%= action_params %>:<%= var_name %> => valid_create_attributes}
         end
-        it { should redirect_to(<%= index_helper %>_url) }
+        it { should redirect_to(<%= controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -265,7 +265,7 @@ describe <%= controller_class_name %>Controller do
           assigns(:<%= var_name %>).should be_persisted
         end
         it "redirects to the created <%= var_name %>" do
-          response.should redirect_to(<%= ns_file_name %>_path(<%= local_class_name %>.last))
+          response.should redirect_to(<%= single_path_prefix %>_path(<%= route_params_prefix %><%= local_class_name %>.last))
         end
       end
       describe "with invalid params" do
@@ -301,7 +301,7 @@ describe <%= controller_class_name %>Controller do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           put :update, {<%= action_params %>:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
-        it { should redirect_to(<%= index_helper %>_url) }
+        it { should redirect_to(<%= controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -331,7 +331,7 @@ describe <%= controller_class_name %>Controller do
           assigns(:<%= var_name %>).should eq(@<%= var_name %>)
         end
         it "redirects to the <%= var_name %>" do
-          response.should redirect_to(<%= ns_file_name %>_path(@<%= var_name %>))
+          response.should redirect_to(<%= single_path_prefix %>_path(<%= route_params_prefix %>@<%= var_name %>))
         end
       end
       describe "with invalid params" do
@@ -368,7 +368,7 @@ describe <%= controller_class_name %>Controller do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           delete :destroy, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
-        it { should redirect_to(<%= index_helper %>_url) }
+        it { should redirect_to(<%= controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -386,7 +386,7 @@ describe <%= controller_class_name %>Controller do
           delete :destroy, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it "redirects to the <%= var_name %> list" do
-          response.should redirect_to(<%= index_helper %>_url)
+          response.should redirect_to(<%= controller_index_route %>)
         end
       end
     end
