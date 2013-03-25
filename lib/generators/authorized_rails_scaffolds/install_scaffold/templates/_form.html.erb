@@ -1,8 +1,24 @@
 <%-
 
+var PARENT_MODEL = ''
+
 local_class_name = file_name.classify # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
+
+parent_prefix = PARENT_MODEL.blank? ? PARENT_MODEL : "#{PARENT_MODEL.underscore}_"
+parent_variable = PARENT_MODEL.blank? ? PARENT_MODEL : "@#{PARENT_MODEL.underscore}"
+
+def controller_index_route
+  params = parent_variable.blank? ? : "(#{parent_variable})"
+  "#{parent_prefix}#{index_helper}_url#{params}"
+end
+
+def controller_path_route(variable)
+  params = [ parent_variable, variable ].reject { |a| a.blank? }
+  params.join(', ')
+  "#{parent_prefix}#{singular_table_name}_path(#{params})"
+end
 
 form_objects = singular_table_name.split(file_name, -1)[0..-2].join(file_name)
 form_object_array = form_objects.blank? ? "@#{var_name}" : "[:#{form_objects.split('_').join(', :')}, @#{var_name}]"
