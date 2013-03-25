@@ -12,7 +12,7 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
 orm_instance = Rails::Generators::ActiveModel.new var_name
 
-# Determine namespcae prefix i.e awesome_
+# Determine namespace prefix i.e awesome_
 namespace_prefix = singular_table_name[0..-(file_name.length + 1)]
 
 # Determine Parent Prefix i.e. user_company

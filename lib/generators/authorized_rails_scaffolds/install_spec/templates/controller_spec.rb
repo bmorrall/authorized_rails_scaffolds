@@ -21,9 +21,33 @@ require 'spec_helper'
 <% module_namespacing do -%>
 <%-
 
+PARENT_MODEL = [] # i.e. ['User', 'Category'] for user_category_examples_path(@user, @category)
+
 local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
+
+# Determine namespace prefix i.e awesome_
+namespace_prefix = singular_table_name[0..-(file_name.length + 1)]
+
+# Determine Parent Prefix i.e. user_company
+parent_prefix = PARENT_MODEL.collect{ |x| x.underscore }.join('_')
+parent_prefix = "#{parent_prefix}_" unless parent_prefix.blank?
+
+# Route Prefix i.e. awesome_user_company
+route_prefix = namespace_prefix + parent_prefix
+
+parent_variables = PARENT_MODEL.collect{ |x| "@#{x.underscore}" }.join(', ')
+
+# Route Helpers
+route_params_prefix = parent_variables.blank? ? "" : "#{parent_variables}, "
+index_path_prefix = "#{route_prefix}#{plural_var_name}"
+single_path_prefix = "#{route_prefix}#{var_name}"
+controller_index_route = "#{index_path_prefix}_url(#{parent_variables})"
+
+# call arguments
+index_params = PARENT_MODEL.any? ? PARENT_MODEL.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ') : ""
+action_params = index_params.blank? ? '' : "#{index_params}, "
 
 -%>
 describe <%= controller_class_name %>Controller do
@@ -41,12 +65,20 @@ describe <%= controller_class_name %>Controller do
   end
 
 <% unless options[:singleton] -%>
+  <%- if PARENT_MODEL.any? -%>
+  before(:each) do
+    <%- PARENT_MODEL.each do |model| -%>
+    @<%= model.underscore %> = FactoryGirl.create(:<%= model.underscore %>)
+    <%- end -%>
+  end
+
+  <%- end -%>
   describe "GET index" do
     context 'without a user' do
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          get :index, {}
+          get :index, {<%= index_params %>}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -57,7 +89,7 @@ describe <%= controller_class_name %>Controller do
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          get :index, {}
+          get :index, {<%= index_params %>}
         end
         it { should redirect_to(root_url) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -68,7 +100,7 @@ describe <%= controller_class_name %>Controller do
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          get :index, {}
+          get :index, {<%= index_params %>}
         end
         it { should respond_with(:success) }
         it { should render_template(:index) }
@@ -86,7 +118,7 @@ describe <%= controller_class_name %>Controller do
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          get :show, {:id => @<%= var_name %>.to_param}
+          get :show, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -97,7 +129,7 @@ describe <%= controller_class_name %>Controller do
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          get :show, {:id => @<%= var_name %>.to_param}
+          get :show, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(<%= index_helper %>_path) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -108,7 +140,7 @@ describe <%= controller_class_name %>Controller do
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          get :show, {:id => @<%= var_name %>.to_param}
+          get :show, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it { should respond_with(:success) }
         it { should render_template(:show) }
@@ -124,7 +156,7 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid request' do
         before(:each) do
-          get :new, {}
+          get :new, {<%= index_params %>}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -134,7 +166,7 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe 'with valid request' do
         before(:each) do
-          get :new, {}
+          get :new, {<%= index_params %>}
         end
         it { should redirect_to(<%= index_helper %>_url) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -144,7 +176,7 @@ describe <%= controller_class_name %>Controller do
       login_user_with_ability :create, <%= local_class_name %>
       describe 'with valid request' do
         before(:each) do
-          get :new, {}
+          get :new, {<%= index_params %>}
         end
         it { should respond_with(:success) }
         it { should render_template(:new) }
@@ -161,7 +193,7 @@ describe <%= controller_class_name %>Controller do
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          get :edit, {:id => @<%= var_name %>.to_param}
+          get :edit, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -172,7 +204,7 @@ describe <%= controller_class_name %>Controller do
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          get :edit, {:id => @<%= var_name %>.to_param}
+          get :edit, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(<%= index_helper %>_url) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -183,7 +215,7 @@ describe <%= controller_class_name %>Controller do
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          get :edit, {:id => @<%= var_name %>.to_param}
+          get :edit, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it { should respond_with(:success) }
         it { should render_template(:edit) }
@@ -199,7 +231,7 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid params' do
         before(:each) do
-          post :create, {:<%= var_name %> => valid_create_attributes}
+          post :create, {<%= action_params %>:<%= var_name %> => valid_create_attributes}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -209,7 +241,7 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe "with valid params" do
         before(:each) do
-          post :create, {:<%= var_name %> => valid_create_attributes}
+          post :create, {<%= action_params %>:<%= var_name %> => valid_create_attributes}
         end
         it { should redirect_to(<%= index_helper %>_url) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -220,13 +252,13 @@ describe <%= controller_class_name %>Controller do
       describe "with valid params" do
         it "creates a new <%= local_class_name %>" do
           expect {
-            post :create, {:<%= var_name %> => valid_create_attributes}
+            post :create, {<%= action_params %>:<%= var_name %> => valid_create_attributes}
           }.to change(<%= local_class_name %>, :count).by(1)
         end
       end
       describe 'with valid params' do
         before(:each) do
-          post :create, {:<%= var_name %> => valid_create_attributes}
+          post :create, {<%= action_params %>:<%= var_name %> => valid_create_attributes}
         end
         it "assigns a newly created <%= var_name %> as @<%= var_name %>" do
           assigns(:<%= var_name %>).should be_a(<%= local_class_name %>)
@@ -240,7 +272,7 @@ describe <%= controller_class_name %>Controller do
         before(:each) do
           # Trigger the behavior that occurs when invalid params are submitted
           <%= local_class_name %>.any_instance.stub(:save).and_return(false)
-          post :create, {:<%= var_name %> => <%= formatted_hash(example_invalid_attributes) %>}
+          post :create, {<%= action_params %>:<%= var_name %> => <%= formatted_hash(example_invalid_attributes) %>}
         end
         it { should render_template(:new) }
         it { should render_with_layout(:application) }
@@ -256,7 +288,7 @@ describe <%= controller_class_name %>Controller do
       describe 'with valid params' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          put :update, {:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
+          put :update, {<%= action_params %>:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -267,7 +299,7 @@ describe <%= controller_class_name %>Controller do
       describe "with valid params" do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          put :update, {:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
+          put :update, {<%= action_params %>:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
         it { should redirect_to(<%= index_helper %>_url) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -287,13 +319,13 @@ describe <%= controller_class_name %>Controller do
           <%- else -%>
           <%= local_class_name %>.any_instance.should_receive(:update_attributes).with(<%= formatted_hash(example_params_for_update) %>)
           <%- end -%>
-          put :update, {:id => @<%= var_name %>.to_param, :<%= var_name %> => <%= formatted_hash(example_params_for_update) %>}
+          put :update, {<%= action_params %>:id => @<%= var_name %>.to_param, :<%= var_name %> => <%= formatted_hash(example_params_for_update) %>}
         end
       end
       describe "with valid params" do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          put :update, {:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
+          put :update, {<%= action_params %>:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
         it "assigns the requested <%= var_name %> as @<%= var_name %>" do
           assigns(:<%= var_name %>).should eq(@<%= var_name %>)
@@ -307,7 +339,7 @@ describe <%= controller_class_name %>Controller do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           # Trigger the behavior that occurs when invalid params are submitted
           <%= local_class_name %>.any_instance.stub(:save).and_return(false)
-          put :update, {:id => @<%= var_name %>.to_param, :<%= var_name %> => <%= formatted_hash(example_invalid_attributes) %>}
+          put :update, {<%= action_params %>:id => @<%= var_name %>.to_param, :<%= var_name %> => <%= formatted_hash(example_invalid_attributes) %>}
         end
         it { should render_template(:edit) }
         it { should render_with_layout(:application) }
@@ -323,7 +355,7 @@ describe <%= controller_class_name %>Controller do
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          delete :destroy, {:id => @<%= var_name %>.to_param}
+          delete :destroy, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(new_user_session_path) }
         it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -334,7 +366,7 @@ describe <%= controller_class_name %>Controller do
       describe "with valid request" do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          delete :destroy, {:id => @<%= var_name %>.to_param}
+          delete :destroy, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(<%= index_helper %>_url) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -345,13 +377,13 @@ describe <%= controller_class_name %>Controller do
       it "destroys the requested <%= var_name %>" do
         @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
         expect {
-          delete :destroy, {:id => @<%= var_name %>.to_param}
+          delete :destroy, {<%= action_params %>:id => @<%= var_name %>.to_param}
         }.to change(<%= local_class_name %>, :count).by(-1)
       end
       describe 'with valid request' do
         before(:each) do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
-          delete :destroy, {:id => @<%= var_name %>.to_param}
+          delete :destroy, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it "redirects to the <%= var_name %> list" do
           response.should redirect_to(<%= index_helper %>_url)
