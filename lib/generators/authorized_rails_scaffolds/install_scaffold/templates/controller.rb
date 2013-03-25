@@ -4,7 +4,7 @@ require_dependency "<%= namespaced_file_path %>/application_controller"
 <% end -%>
 <%-
 
-PARENT_MODEL = '' # i.e. Category|User
+PARENT_MODEL = [] # i.e. ['User', 'Category'] for user_category_examples_path(@user, @category)
 
 local_class_name = local_class_name = class_name.split("::")[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
@@ -12,11 +12,12 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
 orm_instance = Rails::Generators::ActiveModel.new var_name
 
-parent_prefix = PARENT_MODEL.blank? ? PARENT_MODEL : "#{PARENT_MODEL.underscore}_"
-parent_variable = PARENT_MODEL.blank? ? PARENT_MODEL : "@#{PARENT_MODEL.underscore}"
+parent_prefix = PARENT_MODEL.collect { |x| x.underscore }.join('_')
+parent_prefix += '_' unless parent_prefix.blanc?
+parent_variables = PARENT_MODEL.collect { |x| "@#{x.underscore}" }.join(', ')
 
 def controller_index_route
-  params = parent_variable.blank? ? : "(#{parent_variable})"
+  params = parent_variable.blank? ? '' : "(#{parent_variable})"
   "#{parent_prefix}#{index_helper}_url#{params}"
 end
 
