@@ -30,8 +30,10 @@ end
 -%>
 <% module_namespacing do -%>
 class <%= controller_class_name %>Controller < ApplicationController
-  <% unless PARENT_MODEL.blank? %>load_and_authorize_resource :<%= PARENT_MODEL.underscore %><% end %>
-  load_and_authorize_resource<%= unless PARENT_MODEL.blank? %> :through => :<%= PARENT_MODEL.underscore %><% end %>
+  <%- PARENT_MODEL.each_with_index do |model, model_index| -%>
+  load_and_authorize_resource :<%= model.underscore %><% if model_index > 0 %> :through => :<%= PARENT_MODEL[model_index - 1].underscore %><% end %>
+  <%- end -%>
+  load_and_authorize_resource :<%= var_name%><%= if PARENT_MODEL.any? %> :through => :<%= PARENT_MODEL.last.underscore %><% end %>
 
   # GET <%= route_url %>
   # GET <%= route_url %>.json
