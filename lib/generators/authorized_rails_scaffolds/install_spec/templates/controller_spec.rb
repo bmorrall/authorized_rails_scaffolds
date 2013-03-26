@@ -27,21 +27,6 @@ local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
-# Determine namespace prefix i.e awesome_
-namespace_prefix = singular_table_name[0..-(file_name.length + 1)]
-
-# Determine Parent Prefix i.e. user_company
-parent_prefix = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| x.underscore }.join('_')
-parent_prefix = "#{parent_prefix}_" unless parent_prefix.blank?
-
-# Route Prefix i.e. awesome_user_company
-route_prefix = namespace_prefix + parent_prefix
-
-parent_variables = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| "@#{x.underscore}" }.join(', ')
-
-# call arguments
-action_params = index_params.blank? ? '' : "#{index_params}, "
-
 -%>
 describe <%= controller_class_name %>Controller do
 
@@ -64,7 +49,7 @@ describe <%= controller_class_name %>Controller do
     <%- end -%>
   end
 
-  <%- end -%>
+<%- end -%>
 <% unless options[:singleton] -%>
   describe "GET index" do
     context 'without a user' do
