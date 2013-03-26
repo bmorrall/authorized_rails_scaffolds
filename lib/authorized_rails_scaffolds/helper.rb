@@ -11,13 +11,13 @@ module AuthorizedRailsScaffolds
       @namespace_prefix = singular_table_name[0..-(file_name.length + 2)]
 
       # Determine Parent Prefix i.e. user_company
-      parent_prefix = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| x.underscore }.join('_')
+      parent_prefix = AuthorizedRailsScaffolds.parent_models.collect{ |x| x.underscore }.join('_')
       parent_prefix = "#{parent_prefix}_" unless parent_prefix.blank?
 
       # Route Prefix i.e. awesome_user_company
       @route_prefix = @namespace_prefix.blank? ? parent_prefix : "#{@namespace_prefix}_#{parent_prefix}"
 
-      @parent_variables = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| "@#{x.underscore}" }.join(', ')
+      @parent_variables = AuthorizedRailsScaffolds.parent_models.collect{ |x| "@#{x.underscore}" }.join(', ')
 
       # Route Helpers
       @route_params_prefix = @parent_variables.blank? ? "" : "#{@parent_variables}, "
@@ -39,7 +39,7 @@ module AuthorizedRailsScaffolds
 
     def create_model_with_attributes(attributes)
       extra_params = ''
-      attribute = AuthorizedRailsScaffolds::PARENT_MODELS.any? ? AuthorizedRailsScaffolds::PARENT_MODELS.last.underscore : nil
+      attribute = AuthorizedRailsScaffolds.parent_models.any? ? AuthorizedRailsScaffolds.parent_models.last.underscore : nil
       if attribute && attributes.collect{|a|a.name.underscore}.include?(attribute)
         extra_params = ", :#{attribute} => @#{attribute}"
       end
@@ -76,8 +76,8 @@ module AuthorizedRailsScaffolds
 
     # call arguments
     def index_action_params_prefix
-      if AuthorizedRailsScaffolds::PARENT_MODELS.any?
-        AuthorizedRailsScaffolds::PARENT_MODELS.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ')
+      if AuthorizedRailsScaffolds.parent_models.any?
+        AuthorizedRailsScaffolds.parent_models.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ')
       else
         ''
       end
@@ -85,7 +85,7 @@ module AuthorizedRailsScaffolds
 
     def references_show_route(attribute_name, variable = nil)
       variable ||= "@#{@var_name}.#{attribute_name}"
-      if AuthorizedRailsScaffolds::PARENT_MODELS.any? && AuthorizedRailsScaffolds::PARENT_MODELS.last.underscore == attribute_name
+      if AuthorizedRailsScaffolds.parent_models.any? && AuthorizedRailsScaffolds.parent_models.last.underscore == attribute_name
         references_path = "#{@route_prefix}path(#{variable})"
       else
         references_path = "#{attribute_name}_path(#{variable})"

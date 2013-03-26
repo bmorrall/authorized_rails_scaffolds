@@ -2,5 +2,8 @@ require "authorized_rails_scaffolds/version"
 require "authorized_rails_scaffolds/helper"
 
 module AuthorizedRailsScaffolds
-  # Your code goes here...
+  
+  mattr_accessor :parent_models
+  @@parent_models = []
+  
 end

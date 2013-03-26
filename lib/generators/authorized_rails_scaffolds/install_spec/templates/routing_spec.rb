@@ -5,7 +5,7 @@ require "spec_helper"
 
 parts = ns_table_name.split('/')[0..-2] || []
 
-AuthorizedRailsScaffolds::PARENT_MODELS.each_with_index do |model, model_index|
+AuthorizedRailsScaffolds.parent_models.each_with_index do |model, model_index|
   parts << model.underscore.pluralize
   parts << model_index + 2
 end
@@ -14,8 +14,8 @@ parts << ns_table_name.split('/')[-1]
 request_path = parts.join('/')
 
 extra_arguments = ''
-if AuthorizedRailsScaffolds::PARENT_MODELS.any?
-  AuthorizedRailsScaffolds::PARENT_MODELS.each_with_index do |model, model_index|
+if AuthorizedRailsScaffolds.parent_models.any?
+  AuthorizedRailsScaffolds.parent_models.each_with_index do |model, model_index|
     extra_arguments += ", :#{model.underscore}_id => \"#{model_index + 2}\""
   end
 end

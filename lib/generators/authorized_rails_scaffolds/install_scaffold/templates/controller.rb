@@ -15,10 +15,10 @@ orm_instance = Rails::Generators::ActiveModel.new var_name
 -%>
 <% module_namespacing do -%>
 class <%= controller_class_name %>Controller < ApplicationController
-  <%- AuthorizedRailsScaffolds::PARENT_MODELS.each_with_index do |model, model_index| -%>
-  load_resource :<%= model.underscore %><% if model_index > 0 %>, :through => :<%= AuthorizedRailsScaffolds::PARENT_MODELS[model_index - 1].underscore %><% end %>
+  <%- AuthorizedRailsScaffolds.parent_models.each_with_index do |model, model_index| -%>
+  load_resource :<%= model.underscore %><% if model_index > 0 %>, :through => :<%= AuthorizedRailsScaffolds.parent_models[model_index - 1].underscore %><% end %>
   <%- end -%>
-  load_and_authorize_resource :<%= var_name%><% if AuthorizedRailsScaffolds::PARENT_MODELS.any? %>, :through => :<%= AuthorizedRailsScaffolds::PARENT_MODELS.last.underscore %><% end %>
+  load_and_authorize_resource :<%= var_name%><% if AuthorizedRailsScaffolds.parent_models.any? %>, :through => :<%= AuthorizedRailsScaffolds.parent_models.last.underscore %><% end %>
 
   # GET <%= route_url %>
   # GET <%= route_url %>.json

@@ -42,9 +42,9 @@ describe <%= controller_class_name %>Controller do
     FactoryGirl.attributes_for(:<%= var_name %>)
   end
 
-<%- if AuthorizedRailsScaffolds::PARENT_MODELS.any? -%>
+<%- if AuthorizedRailsScaffolds.parent_models.any? -%>
   before(:each) do
-    <%- AuthorizedRailsScaffolds::PARENT_MODELS.each do |model| -%>
+    <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
     @<%= model.underscore %> = FactoryGirl.create(:<%= model.underscore %>)
     <%- end -%>
   end

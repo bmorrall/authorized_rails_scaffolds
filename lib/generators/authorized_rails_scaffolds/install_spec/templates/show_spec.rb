@@ -13,7 +13,7 @@ references_attributes = attributes.reject{|attribute| ![:references].include? at
 -%>
 describe "<%= ns_table_name %>/show" do
   before(:each) do
-    <%- AuthorizedRailsScaffolds::PARENT_MODELS.each do |model| -%>
+    <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
     @<%= model.underscore %> = assign(:<%= model.underscore %>, FactoryGirl.build_stubbed(:<%= model.underscore %>))
     <%- end -%>
     @<%= var_name %> = FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? ')' : ',' %>

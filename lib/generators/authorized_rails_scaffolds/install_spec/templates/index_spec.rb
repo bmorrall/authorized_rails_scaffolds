@@ -13,7 +13,7 @@ output_attributes   = attributes.reject{|attribute| [:timestamp].include? attrib
 -%>
 describe "<%= ns_table_name %>/index" do
   before(:each) do
-    <%- AuthorizedRailsScaffolds::PARENT_MODELS.each do |model| -%>
+    <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
     @<%= model.underscore %> = assign(:<%= model.underscore %>, FactoryGirl.build_stubbed(:<%= model.underscore %>))
     <%- end -%>
 <% [1,2].each_with_index do |id, model_index| -%>

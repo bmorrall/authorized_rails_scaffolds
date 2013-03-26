@@ -14,7 +14,7 @@ datetime_attributes = attributes.reject{|attribute| ![:time, :date, :datetime].i
 -%>
 describe "<%= ns_table_name %>/new" do
   before(:each) do
-    <%- AuthorizedRailsScaffolds::PARENT_MODELS.each do |model| -%>
+    <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
     @<%= model.underscore %> = assign(:<%= model.underscore %>, FactoryGirl.build_stubbed(:<%= model.underscore %>))
     <%- end -%>
     assign(:<%= var_name %>, FactoryGirl.build(:<%= var_name %><%= output_attributes.empty? ? '))' : ',' %>
