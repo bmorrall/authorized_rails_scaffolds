@@ -14,6 +14,7 @@ class AuthorizedRailsScaffolds::InstallSpecGenerator < Rails::Generators::Base
     copy_scaffold_template 'index_spec.rb'
     copy_scaffold_template 'new_spec.rb'
     copy_scaffold_template 'show_spec.rb'
+    copy_scaffold_template 'routing_spec.rb'
   end
 
   def create_controller_macros
