@@ -6,17 +6,25 @@ local_class_name = file_name.classify # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
-parent_prefix = PARENT_MODEL.blank? ? PARENT_MODEL : "#{PARENT_MODEL.underscore}_"
-parent_variable = PARENT_MODEL.blank? ? PARENT_MODEL : "@#{PARENT_MODEL.underscore}"
+# Determine namespcae prefix i.e awesome_
+namespace_prefix = singular_table_name[0..-(file_name.length + 1)]
 
-parent_prefix = PARENT_MODEL.collect { |x| x.underscore }.join('_')
-parent_prefix += '_' unless parent_prefix.blank?
-parent_variables = PARENT_MODEL.collect{ |x| "@#{x.underscore}" }.join(', ')
+# Determine Parent Prefix i.e. user_company
+parent_prefix = PARENT_MODEL.collect{ |x| x.underscore }.join('_')
+parent_prefix = "#{parent_prefix}_" unless parent_prefix.blank?
 
-namespace_prefix = singular_table_name[0..(file_name.length + 2)] # Remove _ before namespace
+# Route Prefix i.e. awesome_user_company
+route_prefix = namespace_prefix + parent_prefix
 
-form_object_prefix = namespace_prefix.blank? ? '' : ":#{namespace_prefix}"
-form_object_array = [form_object_prefix, parent_variables, "@#{var_name}"].reject{ |x| x.blank? }.join(', ')
+parent_variables = PARENT_MODEL.collect { |x| "@#{x.underscore}" }.join(', ')
+
+# Route Helpers
+route_params_prefix = parent_variables.blank? ? "" : "#{parent_variables}, "
+index_path_prefix = "#{route_prefix}#{plural_var_name}"
+single_path_prefix = "#{route_prefix}#{var_name}"
+controller_index_route = "#{index_path_prefix}_path(#{parent_variables})"
+
+form_object_array = [namespace_prefix, parent_variables, "@#{var_name}"].reject{ |x| x.blank? || x == '_' }.join(', ')
 form_object_array = "[#{form_object_array}]"
 
 -%>
