@@ -2,8 +2,6 @@ require 'spec_helper'
 
 <%-
 
-PARENT_MODEL = [] # i.e. ['User', 'Category'] for user_category_examples_path(@user, @category)
-
 local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 
@@ -30,7 +28,7 @@ end
 -%>
 describe "<%= ns_table_name %>/edit" do
   before(:each) do
-    <%- PARENT_MODEL.each do |model| -%>
+    <%- AuthorizedRailsScaffolds::PARENT_MODELS.each do |model| -%>
     @<%= model.underscore %> = assign(:<%= model.underscore %>, FactoryGirl.build_stubbed(:<%= model.underscore %>))
     <%- end -%>
     @<%= var_name %> = assign(:<%= var_name %>, FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? '))' : ',' %>

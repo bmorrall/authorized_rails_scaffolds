@@ -4,8 +4,6 @@ require_dependency "<%= namespaced_file_path %>/application_controller"
 <% end -%>
 <%-
 
-PARENT_MODEL = [] # i.e. ['User', 'Category'] for user_category_examples_path(@user, @category)
-
 local_class_name = local_class_name = class_name.split("::")[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
@@ -16,13 +14,13 @@ orm_instance = Rails::Generators::ActiveModel.new var_name
 namespace_prefix = singular_table_name[0..-(file_name.length + 1)]
 
 # Determine Parent Prefix i.e. user_company
-parent_prefix = PARENT_MODEL.collect{ |x| x.underscore }.join('_')
+parent_prefix = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| x.underscore }.join('_')
 parent_prefix = "#{parent_prefix}_" unless parent_prefix.blank?
 
 # Route Prefix i.e. awesome_user_company
 route_prefix = namespace_prefix + parent_prefix
 
-parent_variables = PARENT_MODEL.collect { |x| "@#{x.underscore}" }.join(', ')
+parent_variables = AuthorizedRailsScaffolds::PARENT_MODELS.collect { |x| "@#{x.underscore}" }.join(', ')
 
 # Route Helpers
 route_params_prefix = parent_variables.blank? ? "" : "#{parent_variables}, "
@@ -33,10 +31,10 @@ controller_index_route = "#{index_path_prefix}_url(#{parent_variables})"
 -%>
 <% module_namespacing do -%>
 class <%= controller_class_name %>Controller < ApplicationController
-  <%- PARENT_MODEL.each_with_index do |model, model_index| -%>
-  load_resource :<%= model.underscore %><% if model_index > 0 %>, :through => :<%= PARENT_MODEL[model_index - 1].underscore %><% end %>
+  <%- AuthorizedRailsScaffolds::PARENT_MODELS.each_with_index do |model, model_index| -%>
+  load_resource :<%= model.underscore %><% if model_index > 0 %>, :through => :<%= AuthorizedRailsScaffolds::PARENT_MODELS[model_index - 1].underscore %><% end %>
   <%- end -%>
-  load_and_authorize_resource :<%= var_name%><% if PARENT_MODEL.any? %>, :through => :<%= PARENT_MODEL.last.underscore %><% end %>
+  load_and_authorize_resource :<%= var_name%><% if AuthorizedRailsScaffolds::PARENT_MODELS.any? %>, :through => :<%= AuthorizedRailsScaffolds::PARENT_MODELS.last.underscore %><% end %>
 
   # GET <%= route_url %>
   # GET <%= route_url %>.json

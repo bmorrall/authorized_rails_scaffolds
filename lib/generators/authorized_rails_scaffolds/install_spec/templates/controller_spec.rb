@@ -21,8 +21,6 @@ require 'spec_helper'
 <% module_namespacing do -%>
 <%-
 
-PARENT_MODEL = [] # i.e. ['User', 'Category'] for user_category_examples_path(@user, @category)
-
 local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
@@ -31,13 +29,13 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 namespace_prefix = singular_table_name[0..-(file_name.length + 1)]
 
 # Determine Parent Prefix i.e. user_company
-parent_prefix = PARENT_MODEL.collect{ |x| x.underscore }.join('_')
+parent_prefix = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| x.underscore }.join('_')
 parent_prefix = "#{parent_prefix}_" unless parent_prefix.blank?
 
 # Route Prefix i.e. awesome_user_company
 route_prefix = namespace_prefix + parent_prefix
 
-parent_variables = PARENT_MODEL.collect{ |x| "@#{x.underscore}" }.join(', ')
+parent_variables = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| "@#{x.underscore}" }.join(', ')
 
 # Route Helpers
 route_params_prefix = parent_variables.blank? ? "" : "#{parent_variables}, "
@@ -46,7 +44,7 @@ single_path_prefix = "#{route_prefix}#{var_name}"
 controller_index_route = "#{index_path_prefix}_url(#{parent_variables})"
 
 # call arguments
-index_params = PARENT_MODEL.any? ? PARENT_MODEL.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ') : ""
+index_params = AuthorizedRailsScaffolds::PARENT_MODELS.any? ? AuthorizedRailsScaffolds::PARENT_MODELS.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ') : ""
 action_params = index_params.blank? ? '' : "#{index_params}, "
 
 -%>
@@ -64,9 +62,9 @@ describe <%= controller_class_name %>Controller do
     FactoryGirl.attributes_for(:<%= var_name %>)
   end
 
-<%- if PARENT_MODEL.any? -%>
+<%- if AuthorizedRailsScaffolds::PARENT_MODELS.any? -%>
   before(:each) do
-    <%- PARENT_MODEL.each do |model| -%>
+    <%- AuthorizedRailsScaffolds::PARENT_MODELS.each do |model| -%>
     @<%= model.underscore %> = FactoryGirl.create(:<%= model.underscore %>)
     <%- end -%>
   end
