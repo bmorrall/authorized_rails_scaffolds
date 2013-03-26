@@ -27,7 +27,7 @@ describe "<%= ns_table_name %>/new" do
     render
 
 <% if webrat? -%>
-    rendered.should have_selector("form", :action => <%= table_name %>_path, :method => "post") do |form|
+    rendered.should have_selector("form", :action => <%= t_helper.controller_index_route %>, :method => "post") do |form|
 <% for attribute in standard_attributes -%>
     <%- if attribute.type == :references -%>
       form.should have_selector("select#<%= var_name %>_<%= attribute.name %>_id", :name => "<%= var_name %>[<%= attribute.name %>_id]")
@@ -55,7 +55,7 @@ describe "<%= ns_table_name %>/new" do
     render
 
 <% if webrat? -%>
-    rendered.should have_selector("form", :action => <%= table_name %>_path, :method => "post") do |form|
+    rendered.should have_selector("form", :action => <%= t_helper.controller_index_route %>, :method => "post") do |form|
 <% for attribute in datetime_attributes -%>
   <%- if [:date, :datetime].include? attribute.type -%>
     form.should have_selector("select#<%= var_name %>_<%= attribute.name %>", :name => "<%= var_name %>[<%= attribute.name %>]")
@@ -70,7 +70,7 @@ describe "<%= ns_table_name %>/new" do
     end
 <% else -%>
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "form[action=?][method=?]", <%= table_name %>_path, "post" do
+    assert_select "form[action=?][method=?]", <%= t_helper.controller_index_route %>, "post" do
 <% for attribute in datetime_attributes -%>
       # <%= attribute.name %> values
   <%- if [:date, :datetime].include? attribute.type -%>
