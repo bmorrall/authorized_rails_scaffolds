@@ -19,7 +19,7 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
   <div class="form-actions">
     <%%= f.button :submit, :class => 'btn-primary' %>
     <%%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                <%= t_helper.controller_index_route %>,
+                <%= t_helper.controller_index_path %>,
                 :class => 'btn'
     %>
   </div>

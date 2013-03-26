@@ -41,7 +41,7 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
 <div class="form-actions">
   <%%= link_to t('.back', :default => t("helpers.links.back")),
-              <%= t_helper.controller_index_route %>, :class => 'btn'  %>
+              <%= t_helper.controller_index_path %>, :class => 'btn'  %>
   <%% if can? :update, @<%= var_name %> %>
     <%%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_<%= t_helper.controller_show_route "@#{var_name}" %>,

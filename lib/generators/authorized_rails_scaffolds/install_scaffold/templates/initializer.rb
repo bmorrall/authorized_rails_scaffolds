@@ -51,6 +51,14 @@ module AuthorizedRailsScaffolds
       "#{@single_path_prefix}_path(#{@route_params_prefix}#{variable})"
     end
 
+    def controller_index_path
+      if @parent_variables.blank?
+        "#{@index_path_prefix}_path"
+      else
+        "#{@index_path_prefix}_path(#{@parent_variables})"
+      end
+    end
+
     def controller_index_route
       if @parent_variables.blank?
         "#{@index_path_prefix}_url"
