@@ -2,6 +2,8 @@ require 'spec_helper'
 
 <%-
 
+t_helper = AuthorizedRailsScaffolds::Helper.new(class_name, singular_table_name, file_name)
+
 local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
@@ -50,7 +52,7 @@ describe "<%= ns_table_name %>/index" do
 <% [1,2].each_with_index do |id, model_index| -%>
     @<%= var_name %>_<%= model_index + 1 %> = FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
-      :<%= attribute.name %> => <%= factory_attribute_value attribute.type, value_for(attribute) %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
+      :<%= attribute.name %> => <%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
 <% if !output_attributes.empty? -%>
     )

@@ -67,6 +67,39 @@ module AuthorizedRailsScaffolds
       index_params.blank? ? '' : "#{index_params}, "
     end
 
+    # Returns code that will generate attribute_value as an attribute_type
+    def factory_attribute_value(attribute_type, attribute_value)
+      case attribute_type
+      when :datetime
+        "DateTime.parse(#{attribute_value})"
+      when :time
+        value_as_time = attribute_value.to_time.strftime('%T')
+        "Time.parse(#{value_as_time.dump})"
+      when :date
+        value_as_date = attribute_value.to_time.strftime('%Y-%m-%d')
+        "Date.parse(#{value_as_date.dump})"
+      else
+        attribute_value
+      end
+    end
+
+    # Returns the expected output string of attribute_value if it is an attribute_type
+    def factory_attribute_string(attribute_type, attribute_value)
+      case attribute_type
+      when :datetime
+        attribute_value_as_date = DateTime.parse(attribute_value)
+        I18n.l(attribute_value_as_date, :format => :long).dump
+      when :time
+        attribute_value_as_time = Time.parse(attribute_value)
+        I18n.l(attribute_value_as_time, :format => :short).dump
+      when :date
+        attribute_value_as_date = Date.parse(attribute_value)
+        I18n.l(attribute_value_as_date).dump
+      else
+        attribute_value
+      end
+    end
+
   end
 
 end
