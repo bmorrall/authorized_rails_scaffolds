@@ -28,7 +28,7 @@ describe "<%= ns_table_name %>/edit" do
     render
 
 <% if webrat? -%>
-    rendered.should have_selector("form", :action => <%= ns_file_name %>_path(@<%= var_name %>), :method => "post") do |form|
+    rendered.should have_selector("form", :action => <%= t_helper.controller_show_route "@#{var_name}" %>, :method => "post") do |form|
 <% for attribute in standard_attributes -%>
   <%- if attribute.type == :references -%>
     form.should have_selector("select#<%= var_name %>_<%= attribute.name %>_id", :name => "<%= var_name %>[<%= attribute.name %>_id]")
@@ -39,7 +39,7 @@ describe "<%= ns_table_name %>/edit" do
     end
 <% else -%>
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "form[action=?][method=?]", <%= ns_file_name %>_path(@<%= var_name %>), "post" do
+    assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route "@#{var_name}" %>, "post" do
 <% for attribute in standard_attributes -%>
   <%- if attribute.type == :references -%>
       assert_select "select#<%= var_name %>_<%= attribute.name %>_id[name=?]", "<%= var_name %>[<%= attribute.name %>_id]"
@@ -56,7 +56,7 @@ describe "<%= ns_table_name %>/edit" do
     render
 
 <% if webrat? -%>
-    rendered.should have_selector("form", :action => <%= ns_file_name %>_path(@<%= var_name %>), :method => "post") do |form|
+    rendered.should have_selector("form", :action => <%= t_helper.controller_show_route "@#{var_name}" %>, :method => "post") do |form|
 <% for attribute in datetime_attributes -%>
   <%- if [:date, :datetime].include? attribute.type -%>
     form.should have_selector("select#<%= var_name %>_<%= attribute.name %>", :name => "<%= var_name %>[<%= attribute.name %>]")
@@ -71,7 +71,7 @@ describe "<%= ns_table_name %>/edit" do
     end
 <% else -%>
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "form[action=?][method=?]", <%= ns_file_name %>_path(@<%= var_name %>), "post" do
+    assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route "@#{var_name}" %>, "post" do
 <% for attribute in datetime_attributes -%>
       # <%= attribute.name %> values
   <%- if [:date, :datetime].include? attribute.type -%>
