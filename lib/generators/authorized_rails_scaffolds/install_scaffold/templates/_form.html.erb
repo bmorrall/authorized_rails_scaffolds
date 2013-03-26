@@ -1,14 +1,13 @@
 <%-
 
+t_helper = AuthorizedRailsScaffolds::Helper.new(class_name, singular_table_name, file_name)
+
 local_class_name = file_name.classify # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
-form_objects = singular_table_name.split(file_name, -1)[0..-2].join(file_name)
-form_object_array = form_objects.blank? ? "@#{var_name}" : "[:#{form_objects.split('_').join(', :')}, @#{var_name}]"
-
 -%>
-<%%= simple_form_for(<%= form_object_array %>, :html => { class: 'form-horizontal' }) do |f| %>
+<%%= simple_form_for(<%= t_helper.form_object_array %>, :html => { class: 'form-horizontal' }) do |f| %>
   <%%= f.error_notification %>
 
   <div class="form-inputs">
@@ -20,7 +19,7 @@ form_object_array = form_objects.blank? ? "@#{var_name}" : "[:#{form_objects.spl
   <div class="form-actions">
     <%%= f.button :submit, :class => 'btn-primary' %>
     <%%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                <%= index_helper %>_path,
+                <%= t_helper.controller_index_path %>,
                 :class => 'btn'
     %>
   </div>

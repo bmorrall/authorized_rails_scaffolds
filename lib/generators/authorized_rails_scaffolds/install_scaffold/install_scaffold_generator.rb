@@ -9,6 +9,10 @@ class AuthorizedRailsScaffolds::InstallScaffoldGenerator < Rails::Generators::Ba
     copy_erb_template 'show.html.erb'
   end
 
+  def copy_initializer
+    copy_file 'initializer.rb', 'config/initializers/authorized_rails_scaffolds.rb'
+  end
+
   def copy_rails_templates
     copy_rails_template 'controller.rb'
   end

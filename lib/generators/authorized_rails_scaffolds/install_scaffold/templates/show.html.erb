@@ -1,10 +1,10 @@
 <%-
 
+t_helper = AuthorizedRailsScaffolds::Helper.new(class_name, singular_table_name, file_name)
+
 local_class_name = file_name.classify # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
-
-path_prefix = singular_table_name[0..-(file_name.length+1)]
 
 -%>
 <%%- model_class = <%= local_class_name %> -%>
@@ -18,7 +18,7 @@ path_prefix = singular_table_name[0..-(file_name.length+1)]
   <%- if attribute.type == :references -%>
   <%% if @<%= var_name %>.<%= attribute.name %>.present? && can?(:read, @<%= var_name %>.<%= attribute.name %>) %>
   <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
-  <dd><%%= link_to @<%= var_name %>.<%= attribute.name %>, <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>) %></dd>
+  <dd><%%= link_to @<%= var_name %>.<%= attribute.name %>, <%= t_helper.references_show_route attribute.name %> %></dd>
   <%% end %>
   <%- elsif [:datetime, :timestamp, :time, :date].include? attribute.type -%>
   <%% unless @<%= var_name %>.<%= attribute.name %>.nil? %>
@@ -41,16 +41,16 @@ path_prefix = singular_table_name[0..-(file_name.length+1)]
 
 <div class="form-actions">
   <%%= link_to t('.back', :default => t("helpers.links.back")),
-              <%= index_helper %>_path, :class => 'btn'  %>
+              <%= t_helper.controller_index_path %>, :class => 'btn'  %>
   <%% if can? :update, @<%= var_name %> %>
     <%%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_<%= singular_table_name %>_path(@<%= var_name %>),
+              edit_<%= t_helper.controller_show_route "@#{var_name}" %>,
               :class => 'btn'
     %>
   <%% end %>
   <%% if can? :destroy, @<%= var_name %> %>
     <%%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              <%= singular_table_name %>_path(@<%= var_name %>),
+              <%= t_helper.controller_show_route "@#{var_name}" %>,
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'act act-danger pull-right'

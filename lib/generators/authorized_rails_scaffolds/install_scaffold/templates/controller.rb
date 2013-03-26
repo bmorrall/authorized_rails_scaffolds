@@ -4,16 +4,38 @@ require_dependency "<%= namespaced_file_path %>/application_controller"
 <% end -%>
 <%-
 
+t_helper = AuthorizedRailsScaffolds::Helper.new(class_name, singular_table_name, file_name)
+
 local_class_name = local_class_name = class_name.split("::")[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
 orm_instance = Rails::Generators::ActiveModel.new var_name
 
+# Determine namespace prefix i.e awesome_
+namespace_prefix = singular_table_name[0..-(file_name.length + 1)]
+
+# Determine Parent Prefix i.e. user_company
+parent_prefix = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| x.underscore }.join('_')
+parent_prefix = "#{parent_prefix}_" unless parent_prefix.blank?
+
+# Route Prefix i.e. awesome_user_company
+route_prefix = namespace_prefix + parent_prefix
+
+parent_variables = AuthorizedRailsScaffolds::PARENT_MODELS.collect { |x| "@#{x.underscore}" }.join(', ')
+
+# Route Helpers
+route_params_prefix = parent_variables.blank? ? "" : "#{parent_variables}, "
+index_path_prefix = "#{route_prefix}#{plural_var_name}"
+single_path_prefix = "#{route_prefix}#{var_name}"
+
 -%>
 <% module_namespacing do -%>
 class <%= controller_class_name %>Controller < ApplicationController
-  load_and_authorize_resource
+  <%- AuthorizedRailsScaffolds::PARENT_MODELS.each_with_index do |model, model_index| -%>
+  load_resource :<%= model.underscore %><% if model_index > 0 %>, :through => :<%= AuthorizedRailsScaffolds::PARENT_MODELS[model_index - 1].underscore %><% end %>
+  <%- end -%>
+  load_and_authorize_resource :<%= var_name%><% if AuthorizedRailsScaffolds::PARENT_MODELS.any? %>, :through => :<%= AuthorizedRailsScaffolds::PARENT_MODELS.last.underscore %><% end %>
 
   # GET <%= route_url %>
   # GET <%= route_url %>.json
@@ -60,8 +82,8 @@ class <%= controller_class_name %>Controller < ApplicationController
 
     respond_to do |format|
       if @<%= orm_instance.save %>
-        format.html { redirect_to <%= singular_table_name %>_path(@<%= var_name %>), <%= key_value :notice, "'#{human_name} was successfully created.'" %> }
-        format.json { render <%= key_value :json, "@#{var_name}" %>, <%= key_value :status, ':created' %>, <%= key_value :location, "#{singular_table_name}_path(@#{var_name})" %> }
+        format.html { redirect_to <%= "#{single_path_prefix}_path(#{route_params_prefix}@#{var_name})" %>, <%= key_value :notice, "'#{human_name} was successfully created.'" %> }
+        format.json { render <%= key_value :json, "@#{var_name}" %>, <%= key_value :status, ':created' %>, <%= key_value :location, "#{single_path_prefix}_path(#{route_params_prefix}@#{var_name})" %> }
       else
         format.html { render <%= key_value :action, '"new"' %> }
         format.json { render <%= key_value :json, "@#{orm_instance.errors}" %>, <%= key_value :status, ':unprocessable_entity' %> }
@@ -76,7 +98,7 @@ class <%= controller_class_name %>Controller < ApplicationController
 
     respond_to do |format|
       if @<%= orm_instance.update_attributes("params[:#{var_name}]") %>
-        format.html { redirect_to <%= singular_table_name %>_path(@<%= var_name %>), <%= key_value :notice, "'#{human_name} was successfully updated.'" %> }
+        format.html { redirect_to <%= "#{single_path_prefix}_path(#{route_params_prefix}@#{var_name})" %>, <%= key_value :notice, "'#{human_name} was successfully updated.'" %> }
         format.json { head :no_content }
       else
         format.html { render <%= key_value :action, '"edit"' %> }
@@ -92,7 +114,7 @@ class <%= controller_class_name %>Controller < ApplicationController
     @<%= orm_instance.destroy %>
 
     respond_to do |format|
-      format.html { redirect_to <%= index_helper %>_url }
+      format.html { redirect_to <%= t_helper.controller_index_route %> }
       format.json { head :no_content }
     end
   end
@@ -104,7 +126,7 @@ class <%= controller_class_name %>Controller < ApplicationController
     if params[:action] == 'index'
       redirect_to root_url, :alert => exception.message
     else
-      redirect_to <%= index_helper %>_url, :alert => exception.message
+      redirect_to <%= t_helper.controller_index_route %>, :alert => exception.message
     end
   end
 
