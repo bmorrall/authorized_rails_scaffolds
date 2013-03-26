@@ -44,13 +44,13 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
               <%= t_helper.controller_index_route %>, :class => 'btn'  %>
   <%% if can? :update, @<%= var_name %> %>
     <%%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_<%= t_helper.references_show_route "@#{var_name}" %>,
+              edit_<%= t_helper.controller_show_route "@#{var_name}" %>,
               :class => 'btn'
     %>
   <%% end %>
   <%% if can? :destroy, @<%= var_name %> %>
     <%%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              <%= t_helper.references_show_route "@#{var_name}" %>,
+              <%= t_helper.controller_show_route "@#{var_name}" %>,
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'act act-danger pull-right'
