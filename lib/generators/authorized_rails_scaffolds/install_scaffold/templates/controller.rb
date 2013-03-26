@@ -4,6 +4,8 @@ require_dependency "<%= namespaced_file_path %>/application_controller"
 <% end -%>
 <%-
 
+t_helper = AuthorizedRailsScaffolds::Helper.new(class_name, singular_table_name, file_name)
+
 local_class_name = local_class_name = class_name.split("::")[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
@@ -26,7 +28,6 @@ parent_variables = AuthorizedRailsScaffolds::PARENT_MODELS.collect { |x| "@#{x.u
 route_params_prefix = parent_variables.blank? ? "" : "#{parent_variables}, "
 index_path_prefix = "#{route_prefix}#{plural_var_name}"
 single_path_prefix = "#{route_prefix}#{var_name}"
-controller_index_route = "#{index_path_prefix}_url(#{parent_variables})"
 
 -%>
 <% module_namespacing do -%>
@@ -113,7 +114,7 @@ class <%= controller_class_name %>Controller < ApplicationController
     @<%= orm_instance.destroy %>
 
     respond_to do |format|
-      format.html { redirect_to <%= controller_index_route %> }
+      format.html { redirect_to <%= t_helper.controller_index_route %> }
       format.json { head :no_content }
     end
   end
@@ -125,7 +126,7 @@ class <%= controller_class_name %>Controller < ApplicationController
     if params[:action] == 'index'
       redirect_to root_url, :alert => exception.message
     else
-      redirect_to <%= controller_index_route %>, :alert => exception.message
+      redirect_to <%= t_helper.controller_index_route %>, :alert => exception.message
     end
   end
 

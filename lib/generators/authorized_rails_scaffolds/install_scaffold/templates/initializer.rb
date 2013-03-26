@@ -4,13 +4,13 @@ module AuthorizedRailsScaffolds
 
   class Helper
 
-    def initalize(class_name, singular_table_name, file_name, plural_file_name = nil)
+    def initialize(class_name, singular_table_name, file_name, plural_file_name = nil)
       @local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
       @var_name = file_name # Non-namespaced variable name
       @plural_var_name = plural_file_name || file_name.pluralize # Pluralized non-namespaced variable name
 
       # Determine namespace prefix i.e awesome
-      @namespace_prefix = singular_table_name[0..-(file_name.length + 2)]
+      namespace_prefix = singular_table_name[0..-(file_name.length + 2)]
 
       # Determine Parent Prefix i.e. user_company
       parent_prefix = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| x.underscore }.join('_')
@@ -41,7 +41,6 @@ module AuthorizedRailsScaffolds
 
     def controller_show_route(variable = nil)
       variable ||= "@#{@var_name}"
-      params+prefix
       "#{@single_path_prefix}_path(#{@route_params_prefix}#{variable})"
     end
 
@@ -54,7 +53,7 @@ module AuthorizedRailsScaffolds
     end
 
     # call arguments
-    def index_action_params
+    def index_action_params_prefix
       if AuthorizedRailsScaffolds::PARENT_MODELS.any?
         AuthorizedRailsScaffolds::PARENT_MODELS.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ')
       else
@@ -62,9 +61,13 @@ module AuthorizedRailsScaffolds
       end
     end
 
-    def action_params
-      index_params = index_action_params
-      index_params.blank? ? '' : "#{index_params}, "
+    def action_params_prefix
+      index_action_params = index_action_params_prefix
+      if index_action_params.blank?
+        ''
+      else
+        "#{index_action_params}, "
+      end
     end
 
     # Returns code that will generate attribute_value as an attribute_type
