@@ -1,5 +1,7 @@
 <%-
 
+t_helper = AuthorizedRailsScaffolds::Helper.new(class_name, singular_table_name, file_name)
+
 local_class_name = file_name.classify # Non-Namespaced class name
 
 -%>

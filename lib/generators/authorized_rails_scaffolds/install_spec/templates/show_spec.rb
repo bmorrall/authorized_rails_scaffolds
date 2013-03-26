@@ -10,8 +10,6 @@ var_name = file_name # Non-namespaced variable name
 output_attributes   = attributes.reject{|attribute| [:timestamp, :references].include? attribute.type }
 references_attributes = attributes.reject{|attribute| ![:references].include? attribute.type }
 
-path_prefix = ns_file_name[0..-(file_name.length+1)]
-
 -%>
 describe "<%= ns_table_name %>/show" do
   before(:each) do

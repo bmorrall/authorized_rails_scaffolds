@@ -38,7 +38,7 @@ describe "<%= ns_table_name %>/new" do
     end
 <% else -%>
     # Run the generator again with the --webrat flag if you want to use webrat matchers
-    assert_select "form[action=?][method=?]", <%= index_helper %>_path, "post" do
+    assert_select "form[action=?][method=?]", <%= t_helper.controller_index_route %>, "post" do
 <% for attribute in standard_attributes -%>
   <%- if attribute.type == :references -%>
       assert_select "select#<%= var_name %>_<%= attribute.name %>_id[name=?]", "<%= var_name %>[<%= attribute.name %>_id]"
