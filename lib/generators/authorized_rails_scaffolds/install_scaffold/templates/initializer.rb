@@ -55,7 +55,7 @@ module AuthorizedRailsScaffolds
 
     # call arguments
     def index_action_params
-      AuthorizedRailsScaffolds::PARENT_MODELS.any?
+      if AuthorizedRailsScaffolds::PARENT_MODELS.any?
         AuthorizedRailsScaffolds::PARENT_MODELS.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ')
       else
         ''
