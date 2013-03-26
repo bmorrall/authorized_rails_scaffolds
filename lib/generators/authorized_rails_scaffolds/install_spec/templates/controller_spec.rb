@@ -21,6 +21,8 @@ require 'spec_helper'
 <% module_namespacing do -%>
 <%-
 
+t_helper = AuthorizedRailsScaffolds::Helper.new(class_name, singular_table_name, file_name)
+
 local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
@@ -36,12 +38,6 @@ parent_prefix = "#{parent_prefix}_" unless parent_prefix.blank?
 route_prefix = namespace_prefix + parent_prefix
 
 parent_variables = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| "@#{x.underscore}" }.join(', ')
-
-# Route Helpers
-route_params_prefix = parent_variables.blank? ? "" : "#{parent_variables}, "
-index_path_prefix = "#{route_prefix}#{plural_var_name}"
-single_path_prefix = "#{route_prefix}#{var_name}"
-controller_index_route = "#{index_path_prefix}_url(#{parent_variables})"
 
 # call arguments
 index_params = AuthorizedRailsScaffolds::PARENT_MODELS.any? ? AuthorizedRailsScaffolds::PARENT_MODELS.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ') : ""
@@ -129,7 +125,7 @@ describe <%= controller_class_name %>Controller do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           get :show, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
-        it { should redirect_to(<%= controller_index_route %>) }
+        it { should redirect_to(<%= t_helper.controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -166,7 +162,7 @@ describe <%= controller_class_name %>Controller do
         before(:each) do
           get :new, {<%= index_params %>}
         end
-        it { should redirect_to(<%= controller_index_route %>) }
+        it { should redirect_to(<%= t_helper.controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -204,7 +200,7 @@ describe <%= controller_class_name %>Controller do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           get :edit, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
-        it { should redirect_to(<%= controller_index_route %>) }
+        it { should redirect_to(<%= t_helper.controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -241,7 +237,7 @@ describe <%= controller_class_name %>Controller do
         before(:each) do
           post :create, {<%= action_params %>:<%= var_name %> => valid_create_attributes}
         end
-        it { should redirect_to(<%= controller_index_route %>) }
+        it { should redirect_to(<%= t_helper.controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -263,7 +259,7 @@ describe <%= controller_class_name %>Controller do
           assigns(:<%= var_name %>).should be_persisted
         end
         it "redirects to the created <%= var_name %>" do
-          response.should redirect_to(<%= single_path_prefix %>_path(<%= route_params_prefix %><%= local_class_name %>.last))
+          response.should redirect_to(<%= t_helper.controller_show_route "#{local_class_name}.last" %>)
         end
       end
       describe "with invalid params" do
@@ -299,7 +295,7 @@ describe <%= controller_class_name %>Controller do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           put :update, {<%= action_params %>:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
-        it { should redirect_to(<%= controller_index_route %>) }
+        it { should redirect_to(<%= t_helper.controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -329,7 +325,7 @@ describe <%= controller_class_name %>Controller do
           assigns(:<%= var_name %>).should eq(@<%= var_name %>)
         end
         it "redirects to the <%= var_name %>" do
-          response.should redirect_to(<%= single_path_prefix %>_path(<%= route_params_prefix %>@<%= var_name %>))
+          response.should redirect_to(<%= t_helper.controller_show_route "@#{var_name}" %>)
         end
       end
       describe "with invalid params" do
@@ -366,7 +362,7 @@ describe <%= controller_class_name %>Controller do
           @<%= var_name %> = FactoryGirl.create(:<%= var_name %>)
           delete :destroy, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
-        it { should redirect_to(<%= controller_index_route %>) }
+        it { should redirect_to(<%= t_helper.controller_index_route %>) }
         it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
       end
     end
@@ -384,11 +380,10 @@ describe <%= controller_class_name %>Controller do
           delete :destroy, {<%= action_params %>:id => @<%= var_name %>.to_param}
         end
         it "redirects to the <%= var_name %> list" do
-          response.should redirect_to(<%= controller_index_route %>)
+          response.should redirect_to(<%= t_helper.controller_index_route %>)
         end
       end
     end
   end
 
 end
-<% end -%>
