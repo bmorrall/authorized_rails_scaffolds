@@ -33,10 +33,10 @@ controller_index_route = "#{index_path_prefix}_url(#{parent_variables})"
 -%>
 <% module_namespacing do -%>
 class <%= controller_class_name %>Controller < ApplicationController
-    <%- PARENT_MODEL.each_with_index do |model, model_index| -%>
-  load_and_authorize_resource :<%= model.underscore %><% if model_index > 0 %> :through => :<%= PARENT_MODEL[model_index - 1].underscore %><% end %>
+  <%- PARENT_MODEL.each_with_index do |model, model_index| -%>
+  load_resource :<%= model.underscore %><% if model_index > 0 %>, :through => :<%= PARENT_MODEL[model_index - 1].underscore %><% end %>
   <%- end -%>
-  load_and_authorize_resource :<%= var_name%><% if PARENT_MODEL.any? %> :through => :<%= PARENT_MODEL.last.underscore %><% end %>
+  load_and_authorize_resource :<%= var_name%><% if PARENT_MODEL.any? %>, :through => :<%= PARENT_MODEL.last.underscore %><% end %>
 
   # GET <%= route_url %>
   # GET <%= route_url %>.json
