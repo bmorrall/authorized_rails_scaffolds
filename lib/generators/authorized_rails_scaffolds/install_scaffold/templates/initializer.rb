@@ -39,6 +39,15 @@ module AuthorizedRailsScaffolds
       @plural_var_name
     end
 
+    def create_model_with_attributes(attributes)
+      extra_params = ''
+      attribute = AuthorizedRailsScaffolds::PARENT_MODELS.any? ? AuthorizedRailsScaffolds::PARENT_MODELS.last.underscore : nil
+      if attribute && attributes.collect{|a|a.name.underscore}.include?(attribute)
+        extra_params = ", :#{attribute} => @#{attribute}"
+      end
+      "FactoryGirl.create(:#{var_name}#{extra_params})"
+    end
+
     def form_object_array(variable = nil)
       variable ||= "@#{var_name}"
       namespace_prefix = ":#{@namespace_prefix}" unless @namespace_prefix.blank?
