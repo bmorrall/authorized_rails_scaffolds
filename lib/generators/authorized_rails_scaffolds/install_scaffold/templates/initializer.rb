@@ -10,14 +10,14 @@ module AuthorizedRailsScaffolds
       @plural_var_name = plural_file_name || file_name.pluralize # Pluralized non-namespaced variable name
 
       # Determine namespace prefix i.e awesome
-      namespace_prefix = singular_table_name[0..-(file_name.length + 2)]
+      @namespace_prefix = singular_table_name[0..-(file_name.length + 2)]
 
       # Determine Parent Prefix i.e. user_company
       parent_prefix = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| x.underscore }.join('_')
       parent_prefix = "#{parent_prefix}_" unless parent_prefix.blank?
 
       # Route Prefix i.e. awesome_user_company
-      @route_prefix = namespace_prefix.blank? ? parent_prefix : "#{namespace_prefix}_#{parent_prefix}"
+      @route_prefix = @namespace_prefix.blank? ? parent_prefix : "#{@namespace_prefix}_#{parent_prefix}"
 
       @parent_variables = AuthorizedRailsScaffolds::PARENT_MODELS.collect{ |x| "@#{x.underscore}" }.join(', ')
 
@@ -59,6 +59,15 @@ module AuthorizedRailsScaffolds
       else
         ''
       end
+    end
+
+    def references_show_route(attribute_name, variable = nil)
+      variable ||= "@#{@var_name}.#{attribute_name}"
+      references_path = "#{attribute_name}_path(#{variable})"
+      unless @namespace_prefix.blank?
+        references_path = "#{@namespace_prefix}_#{references_path}"
+      end
+      references_path
     end
 
     def action_params_prefix

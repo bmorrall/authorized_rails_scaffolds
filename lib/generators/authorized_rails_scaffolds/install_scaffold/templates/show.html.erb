@@ -18,7 +18,7 @@ path_prefix = singular_table_name[0..-(file_name.length+1)]
   <%- if attribute.type == :references -%>
   <%% if @<%= var_name %>.<%= attribute.name %>.present? && can?(:read, @<%= var_name %>.<%= attribute.name %>) %>
   <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
-  <dd><%%= link_to @<%= var_name %>.<%= attribute.name %>, <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>) %></dd>
+  <dd><%%= link_to @<%= var_name %>.<%= attribute.name %>, <%= t_helper.references_show_route attribute.name %> %></dd>
   <%% end %>
   <%- elsif [:datetime, :timestamp, :time, :date].include? attribute.type -%>
   <%% unless @<%= var_name %>.<%= attribute.name %>.nil? %>

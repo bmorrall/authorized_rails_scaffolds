@@ -56,10 +56,10 @@ describe "<%= ns_table_name %>/show" do
         render
 <% if webrat? -%>
         rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>, :count => 0)
-        rendered.should have_selector("dl>dd>a[href]", :href => <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>), :count => 0)
+        rendered.should have_selector("dl>dd>a[href]", :href => <%= t_helper.references_show_route attribute.name %>, :count => 0)
 <% else -%>
         assert_select "dl>dt", :text => <%= "#{attribute.human_name}:".dump %>, :count => 0
-        assert_select "dl>dd>a[href=?]", <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>), :count => 0
+        assert_select "dl>dd>a[href=?]", <%= t_helper.references_show_route attribute.name %>, :count => 0
 <% end -%>
       end
     end
@@ -71,10 +71,10 @@ describe "<%= ns_table_name %>/show" do
         render
 <% if webrat? -%>
         rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>)
-        rendered.should have_selector("dl>dd>a[href]", :href => <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>), :count => 1)
+        rendered.should have_selector("dl>dd>a[href]", :href => <%= t_helper.references_show_route attribute.name %>, :count => 1)
 <% else -%>
         assert_select "dl>dt", :text => <%= "#{attribute.human_name}:".dump %>
-        assert_select "dl>dd>a[href=?]", <%= path_prefix %><%= attribute.name %>_path(@<%= var_name %>.<%= attribute.name %>), :count => 1
+        assert_select "dl>dd>a[href=?]", <%= t_helper.references_show_route attribute.name %>, :count => 1
 <% end -%>
       end
     end
