@@ -78,9 +78,13 @@ module AuthorizedRailsScaffolds
 
     def references_show_route(attribute_name, variable = nil)
       variable ||= "@#{@var_name}.#{attribute_name}"
-      references_path = "#{attribute_name}_path(#{variable})"
-      unless @namespace_prefix.blank?
+      if AuthorizedRailsScaffolds::PARENT_MODELS.any? && AuthorizedRailsScaffolds::PARENT_MODELS.last.underscore == attribute_name
+        references_path = "#{@route_prefix}path(#{variable})"
+      else
+        references_path = "#{attribute_name}_path(#{variable})"
+        unless @namespace_prefix.blank?
         references_path = "#{@namespace_prefix}_#{references_path}"
+      end
       end
       references_path
     end
