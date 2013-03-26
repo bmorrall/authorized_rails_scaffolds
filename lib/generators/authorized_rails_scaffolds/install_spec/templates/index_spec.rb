@@ -87,9 +87,9 @@ describe "<%= ns_table_name %>/index" do
         render
 <% [1,2].each do |model_index| -%>
 <% if webrat? -%>
-        rendered.should have_selector("td>a[href]:not([data-method])", :href => <%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1)
+        rendered.should have_selector("td>a[href]:not([data-method])", :href => <%= t_helper.controller_show_route "@#{var_name}_#{model_index}" %>, :count => 1)
 <% else -%>
-        assert_select "td>a[href=?]:not([data-method])", <%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1
+        assert_select "td>a[href=?]:not([data-method])", <%= t_helper.controller_show_route "@#{var_name}_#{model_index}" %>, :count => 1
 <% end -%>
 <% end -%>
       end
@@ -101,9 +101,9 @@ describe "<%= ns_table_name %>/index" do
           render
 <% [1,2].each do |model_index| -%>
 <% if webrat? -%>
-          rendered.should_not have_selector("td>a[href][disabled=disabled]", :href => edit_<%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1)
+          rendered.should_not have_selector("td>a[href][disabled=disabled]", :href => edit_<%= t_helper.controller_show_route "@#{var_name}_#{model_index}" %>, :count => 1)
 <% else -%>
-          assert_select "td>a[href=?][disabled=disabled]", edit_<%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1
+          assert_select "td>a[href=?][disabled=disabled]", edit_<%= t_helper.controller_show_route "@#{var_name}_#{model_index}" %>, :count => 1
 <% end -%>
 <% end -%>
         end
@@ -114,9 +114,9 @@ describe "<%= ns_table_name %>/index" do
           render
 <% [1,2].each do |model_index| -%>
 <% if webrat? -%>
-          rendered.should have_selector("td>a[href]:not([disabled])", :href => edit_<%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1)
+          rendered.should have_selector("td>a[href]:not([disabled])", :href => edit_<%= t_helper.controller_show_route "@#{var_name}_#{model_index}" %>, :count => 1)
 <% else -%>
-          assert_select "td>a[href=?]:not([disabled])", edit_<%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1
+          assert_select "td>a[href=?]:not([disabled])", edit_<%= t_helper.controller_show_route "@#{var_name}_#{model_index}" %>, :count => 1
 <% end -%>
 <% end -%>
         end
@@ -129,9 +129,9 @@ describe "<%= ns_table_name %>/index" do
           render
 <% [1,2].each do |model_index| -%>
 <% if webrat? -%>
-          rendered.should_not have_selector("td>a[href][data-method=delete][disabled=disabled]", :href => <%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1)
+          rendered.should_not have_selector("td>a[href][data-method=delete][disabled=disabled]", :href => <%= t_helper.controller_show_route "@#{var_name}_#{model_index}" %>, :count => 1)
 <% else -%>
-          assert_select "td>a[href=?][data-method=delete][disabled=disabled]", <%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1
+          assert_select "td>a[href=?][data-method=delete][disabled=disabled]", <%= t_helper.controller_show_route "@#{var_name}_#{model_index}" %>, :count => 1
 <% end -%>
 <% end -%>
         end
@@ -142,9 +142,9 @@ describe "<%= ns_table_name %>/index" do
           render
 <% [1,2].each do |model_index| -%>
 <% if webrat? -%>
-          rendered.should have_selector("td>a[href][data-method=delete]:not([disabled])", :href => <%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1)
+          rendered.should have_selector("td>a[href][data-method=delete]:not([disabled])", :href => <%= t_helper.controller_show_route "@#{var_name}_#{model_index}" %>, :count => 1)
 <% else -%>
-          assert_select "td>a[href=?][data-method=delete]:not([disabled])", <%= ns_file_name %>_path(@<%= var_name %>_<%= model_index %>), :count => 1
+          assert_select "td>a[href=?][data-method=delete]:not([disabled])", <%= t_helper.controller_show_route "@#{var_name}_#{model_index}" %>, :count => 1
 <% end -%>
 <% end -%>
         end
