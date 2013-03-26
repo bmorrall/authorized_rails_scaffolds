@@ -38,7 +38,7 @@ describe "<%= ns_table_name %>/show" do
 <% for attribute in output_attributes -%>
 <% if webrat? -%>
     rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>)
-    rendered.should have_selector("dl>dd", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s)
+    rendered.should have_selector("dl>dd", :content => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s)
 <% else -%>
     assert_select "dl>dt", :text => <%= "#{attribute.human_name}:".dump %>
     assert_select "dl>dd", :text => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s
