@@ -64,8 +64,7 @@ describe <%= controller_class_name %>Controller do
     FactoryGirl.attributes_for(:<%= var_name %>)
   end
 
-<% unless options[:singleton] -%>
-  <%- if PARENT_MODEL.any? -%>
+<%- if PARENT_MODEL.any? -%>
   before(:each) do
     <%- PARENT_MODEL.each do |model| -%>
     @<%= model.underscore %> = FactoryGirl.create(:<%= model.underscore %>)
@@ -73,6 +72,7 @@ describe <%= controller_class_name %>Controller do
   end
 
   <%- end -%>
+<% unless options[:singleton] -%>
   describe "GET index" do
     context 'without a user' do
       describe 'with valid request' do

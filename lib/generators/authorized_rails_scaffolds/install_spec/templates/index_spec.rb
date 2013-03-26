@@ -2,6 +2,8 @@ require 'spec_helper'
 
 <%-
 
+PARENT_MODEL = [] # i.e. ['User', 'Category'] for user_category_examples_path(@user, @category)
+
 local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name
 plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
@@ -44,6 +46,9 @@ end
 -%>
 describe "<%= ns_table_name %>/index" do
   before(:each) do
+    <%- PARENT_MODEL.each do |model| -%>
+    @<%= model.underscore %> = assign(:<%= model.underscore %>, FactoryGirl.build_stubbed(:<%= model.underscore %>))
+    <%- end -%>
 <% [1,2].each_with_index do |id, model_index| -%>
     @<%= var_name %>_<%= model_index + 1 %> = FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
