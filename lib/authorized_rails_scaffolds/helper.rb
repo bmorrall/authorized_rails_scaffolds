@@ -55,7 +55,11 @@ module AuthorizedRailsScaffolds
 
     def controller_show_route(variable = nil)
       variable ||= ""
-      "#{@single_path_prefix}_path(#{@route_params_prefix}#{variable})"
+      if variable.blank?
+        "#{@single_path_prefix}_path(#{@parent_variables})"
+      else
+        "#{@single_path_prefix}_path(#{@route_params_prefix}#{variable})"        
+      end
     end
 
     def controller_index_path
