@@ -41,7 +41,7 @@ describe "<%= ns_table_name %>/show" do
     rendered.should have_selector("dl>dd", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s)
 <% else -%>
     assert_select "dl>dt", :text => <%= "#{attribute.human_name}:".dump %>
-    assert_select "dl>dd", :text => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s
+    assert_select "dl>dd", :text => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s
 <% end -%>
 <% end -%>
   end

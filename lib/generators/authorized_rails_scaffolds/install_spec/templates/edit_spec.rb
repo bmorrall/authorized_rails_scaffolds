@@ -11,22 +11,6 @@ output_attributes   = attributes.reject{|attribute| [:timestamp].include? attrib
 standard_attributes = attributes.reject{|attribute| [:time, :date, :datetime].include? attribute.type }
 datetime_attributes = attributes.reject{|attribute| ![:time, :date, :datetime].include? attribute.type }
 
-# Returns code that will generate attribute_value as an attribute_type
-def factory_attribute_value(attribute_type, attribute_value)
-  case attribute_type
-  when :datetime
-    "DateTime.parse(#{attribute_value})"
-  when :time
-    value_as_time = attribute_value.to_time.strftime('%T')
-    "Time.parse(#{value_as_time.dump})"
-  when :date
-    value_as_date = attribute_value.to_time.strftime('%Y-%m-%d')
-    "Date.parse(#{value_as_date.dump})"
-  else
-    attribute_value
-  end
-end
-
 -%>
 describe "<%= ns_table_name %>/edit" do
   before(:each) do

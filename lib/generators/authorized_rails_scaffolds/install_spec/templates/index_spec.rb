@@ -10,39 +10,6 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
 output_attributes   = attributes.reject{|attribute| [:timestamp].include? attribute.type }
 
-# Returns code that will generate attribute_value as an attribute_type
-def factory_attribute_value(attribute_type, attribute_value)
-  case attribute_type
-  when :datetime
-    "DateTime.parse(#{attribute_value})"
-  when :time
-    value_as_time = attribute_value.to_time.strftime('%T')
-    "Time.parse(#{value_as_time.dump})"
-  when :date
-    value_as_date = attribute_value.to_time.strftime('%Y-%m-%d')
-    "Date.parse(#{value_as_date.dump})"
-  else
-    attribute_value
-  end
-end
-
-# Returns the expected output string of attribute_value if it is an attribute_type
-def factory_attribute_string(attribute_type, attribute_value)
-  case attribute_type
-  when :datetime
-    attribute_value_as_date = DateTime.parse(attribute_value)
-    I18n.l(attribute_value_as_date, :format => :long).dump
-  when :time
-    attribute_value_as_time = Time.parse(attribute_value)
-    I18n.l(attribute_value_as_time, :format => :short).dump
-  when :date
-    attribute_value_as_date = Date.parse(attribute_value)
-    I18n.l(attribute_value_as_date).dump
-  else
-    attribute_value
-  end
-end
-
 -%>
 describe "<%= ns_table_name %>/index" do
   before(:each) do
@@ -110,7 +77,7 @@ describe "<%= ns_table_name %>/index" do
 <% if webrat? -%>
       rendered.should have_selector("tr>td", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2)
 <% else -%>
-      assert_select "tr>td", :text => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2
+      assert_select "tr>td", :text => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2
 <% end -%>
 <% end -%>
     end
