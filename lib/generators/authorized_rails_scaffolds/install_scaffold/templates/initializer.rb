@@ -53,6 +53,20 @@ module AuthorizedRailsScaffolds
       end
     end
 
+    # call arguments
+    def index_action_params
+      AuthorizedRailsScaffolds::PARENT_MODELS.any?
+        AuthorizedRailsScaffolds::PARENT_MODELS.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ')
+      else
+        ''
+      end
+    end
+
+    def action_params
+      index_params = index_action_params
+      index_params.blank? ? '' : "#{index_params}, "
+    end
+
   end
 
 end
