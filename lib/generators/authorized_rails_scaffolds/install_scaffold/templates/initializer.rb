@@ -47,7 +47,7 @@ module AuthorizedRailsScaffolds
     end
 
     def controller_show_route(variable = nil)
-      variable ||= "@#{@var_name}"
+      variable ||= ""
       "#{@single_path_prefix}_path(#{@route_params_prefix}#{variable})"
     end
 

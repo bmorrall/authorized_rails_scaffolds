@@ -27,7 +27,7 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
       <tr class="<%= var_name %>_<%%= <%= var_name %>.id %>">
         <td class="id-column"><%%= <%= var_name %>.id %></td>
         <%- if attributes.any? -%>
-        <td class="title-column"><%%= link_to <%= var_name %>.<%= attributes[0].name %>, <%= singular_table_name %>_path(<%= var_name %>) %></td>
+        <td class="title-column"><%%= link_to <%= var_name %>.<%= attributes[0].name %>, <%= t_helper.controller_show_route(var_name) %> %></td>
         <%- attributes[1..-1].each do |attribute| -%>
         <%- if [:datetime, :timestamp, :time, :date].include? attribute.type -%>
         <td><%% unless <%= var_name %>.<%= attribute.name %>.nil? %><%%=l <%= var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %><%% end %></td>
@@ -39,12 +39,12 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
         <td><%%=l <%= var_name %>.created_at, :format => :long %></td>
         <td class="table-actions">
           <%%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_<%= singular_table_name %>_path(<%= var_name %>),
+                      edit_<%= t_helper.controller_show_route var_name %>,
                       :class => 'btn btn-mini',
                       :disabled => !can?(:update, <%= var_name %>)
           %>
           <%%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      <%= singular_table_name %>_path(<%= var_name %>),
+                      <%= t_helper.controller_show_route var_name %>,
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger',
@@ -58,6 +58,6 @@ plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
 
 <%% if can?(:create, <%= local_class_name %>) %>
   <%%= link_to t('.new', :default => t("helpers.links.new")),
-            new_<%= singular_table_name %>_path,
+            new_<%= t_helper.controller_show_route %>,
             :class => 'btn btn-primary' %>
 <%% end %>
