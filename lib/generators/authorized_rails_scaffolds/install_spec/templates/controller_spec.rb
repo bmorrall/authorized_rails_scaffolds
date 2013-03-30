@@ -21,7 +21,11 @@ require 'spec_helper'
 <% module_namespacing do -%>
 <%-
 
-t_helper = AuthorizedRailsScaffolds::Helper.new(class_name, singular_table_name, file_name)
+t_helper = AuthorizedRailsScaffolds::Helper.new(
+  :class_name => class_name,
+  :singular_table_name => singular_table_name,
+  :file_name => file_name
+)
 
 local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
 var_name = file_name # Non-namespaced variable name

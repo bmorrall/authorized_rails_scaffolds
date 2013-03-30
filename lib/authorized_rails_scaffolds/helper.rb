@@ -2,20 +2,19 @@ module AuthorizedRailsScaffolds
   
   class Helper
 
-    def initialize(class_name, singular_table_name, file_name, plural_file_name = nil)
-      @local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
-      @var_name = file_name # Non-namespaced variable name
-      @plural_var_name = plural_file_name || file_name.pluralize # Pluralized non-namespaced variable name
-
+    def initialize(options = {})
+      @local_class_name = options[:local_class_name] || options[:class_name].split('::')[-1]
+      @var_name = options[:var_name] || options[:file_name] # Non-namespaced variable name
+      @plural_var_name = options[:plural_var_name:] || @var_name.pluralize # Pluralized non-namespaced variable name
       # Determine namespace prefix i.e awesome
-      @namespace_prefix = singular_table_name[0..-(file_name.length + 2)]
+      @namespace_prefix = options[:namespace_prefix] || options[:singular_table_name][0..-(@var_name.length + 2)]
 
       # Determine Parent Prefix i.e. user_company
       parent_prefix = AuthorizedRailsScaffolds.parent_models.collect{ |x| x.underscore }.join('_')
-      parent_prefix = "#{parent_prefix}_" unless parent_prefix.blank?
 
       # Route Prefix i.e. awesome_user_company
-      @route_prefix = @namespace_prefix.blank? ? parent_prefix : "#{@namespace_prefix}_#{parent_prefix}"
+      route_prefix = [@namespace_prefix, parent_prefix].reject{ |x|x.blank? }.join('_')
+      @route_prefix = route_prefix.blank? '' : "#{route_prefix}_"
 
       @parent_variables = AuthorizedRailsScaffolds.parent_models.collect{ |x| "@#{x.underscore}" }.join(', ')
 
@@ -25,14 +24,17 @@ module AuthorizedRailsScaffolds
       @single_path_prefix = "#{@route_prefix}#{var_name}"
     end
 
+    # Non-namespaced class name (i.e. FooBar)
     def local_class_name
       @local_class_name
     end
 
+    # Non-namespaced variable name (i.e. foo_bar)
     def var_name
       @var_name
     end
 
+    # Pluralized non-namespaced variable name (i.e. foo_bars)
     def plural_var_name
       @plural_var_name
     end
