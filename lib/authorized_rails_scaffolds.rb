@@ -1,5 +1,4 @@
 require "authorized_rails_scaffolds/version"
-require "authorized_rails_scaffolds/helper"
 
 module AuthorizedRailsScaffolds
   
@@ -7,3 +6,6 @@ module AuthorizedRailsScaffolds
   @@parent_models = []
   
 end
+
+require "authorized_rails_scaffolds/helper"
+require "authorized_rails_scaffolds/view_spec_helper"

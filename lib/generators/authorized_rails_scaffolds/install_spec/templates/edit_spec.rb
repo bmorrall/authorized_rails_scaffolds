@@ -2,18 +2,19 @@ require 'spec_helper'
 
 <%-
 
-t_helper = AuthorizedRailsScaffolds::Helper.new(
+t_helper = AuthorizedRailsScaffolds::ViewSpecHelper.new(
   :class_name => class_name,
   :singular_table_name => singular_table_name,
-  :file_name => file_name
+  :file_name => file_name,
+  :attributes => attributes
 )
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 
-output_attributes   = attributes.reject{|attribute| [:timestamp].include? attribute.type }
-standard_attributes = attributes.reject{|attribute| [:time, :date, :datetime].include? attribute.type }
-datetime_attributes = attributes.reject{|attribute| ![:time, :date, :datetime].include? attribute.type }
+output_attributes = t_helper.output_attributes
+standard_attributes = t_helper.standard_attributes
+datetime_attributes = t_helper.datetime_attributes
 
 -%>
 describe "<%= ns_table_name %>/edit" do

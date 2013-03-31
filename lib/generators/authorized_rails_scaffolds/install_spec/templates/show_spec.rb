@@ -2,17 +2,18 @@ require 'spec_helper'
 
 <%-
 
-t_helper = AuthorizedRailsScaffolds::Helper.new(
+t_helper = AuthorizedRailsScaffolds::ViewSpecHelper.new(
   :class_name => class_name,
   :singular_table_name => singular_table_name,
-  :file_name => file_name
+  :file_name => file_name,
+  :attributes => attributes
 )
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 
-output_attributes   = attributes.reject{|attribute| [:timestamp, :references].include? attribute.type }
-references_attributes = attributes.reject{|attribute| ![:references].include? attribute.type }
+output_attributes = t_helper.output_attributes
+references_attributes = t_helper.references_attributes
 
 -%>
 describe "<%= ns_table_name %>/show" do
