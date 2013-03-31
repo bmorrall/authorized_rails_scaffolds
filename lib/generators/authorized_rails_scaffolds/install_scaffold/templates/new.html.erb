@@ -6,7 +6,7 @@ t_helper = AuthorizedRailsScaffolds::Helper.new(
   :file_name => file_name
 )
 
-local_class_name = file_name.classify # Non-Namespaced class name
+local_class_name = t_helper.local_class_name # Non-Namespaced class name
 
 -%>
 <%%- model_class = <%= local_class_name %> -%>

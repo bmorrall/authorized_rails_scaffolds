@@ -5,7 +5,7 @@ module AuthorizedRailsScaffolds
     def initialize(options = {})
       @local_class_name = options[:local_class_name] || options[:class_name].split('::')[-1]
       @var_name = options[:var_name] || options[:file_name] # Non-namespaced variable name
-      @plural_var_name = options[:plural_var_name:] || @var_name.pluralize # Pluralized non-namespaced variable name
+      @plural_var_name = options[:plural_var_name] || @var_name.pluralize # Pluralized non-namespaced variable name
       # Determine namespace prefix i.e awesome
       @namespace_prefix = options[:namespace_prefix] || options[:singular_table_name][0..-(@var_name.length + 2)]
 
@@ -14,7 +14,7 @@ module AuthorizedRailsScaffolds
 
       # Route Prefix i.e. awesome_user_company
       route_prefix = [@namespace_prefix, parent_prefix].reject{ |x|x.blank? }.join('_')
-      @route_prefix = route_prefix.blank? '' : "#{route_prefix}_"
+      @route_prefix = route_prefix.blank? ? '' : "#{route_prefix}_"
 
       @parent_variables = AuthorizedRailsScaffolds.parent_models.collect{ |x| "@#{x.underscore}" }.join(', ')
 

@@ -8,8 +8,8 @@ t_helper = AuthorizedRailsScaffolds::Helper.new(
   :file_name => file_name
 )
 
-local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
-var_name = file_name # Non-namespaced variable name
+local_class_name = t_helper.local_class_name # Non-Namespaced class name
+var_name = t_helper.var_name # Non-namespaced variable name
 
 output_attributes   = attributes.reject{|attribute| [:timestamp].include? attribute.type }
 standard_attributes = attributes.reject{|attribute| [:time, :date, :datetime].include? attribute.type }

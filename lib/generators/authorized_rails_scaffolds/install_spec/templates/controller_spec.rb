@@ -27,9 +27,9 @@ t_helper = AuthorizedRailsScaffolds::Helper.new(
   :file_name => file_name
 )
 
-local_class_name = class_name.split('::')[-1] # Non-Namespaced class name
-var_name = file_name # Non-namespaced variable name
-plural_var_name = var_name.pluralize # Pluralized non-namespaced variable name
+local_class_name = t_helper.local_class_name # Non-Namespaced class name
+var_name = t_helper.var_name # Non-namespaced variable name
+plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
 
 -%>
 describe <%= controller_class_name %>Controller do
