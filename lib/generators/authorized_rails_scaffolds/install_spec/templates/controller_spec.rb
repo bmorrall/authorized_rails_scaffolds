@@ -21,10 +21,11 @@ require 'spec_helper'
 <% module_namespacing do -%>
 <%-
 
-t_helper = AuthorizedRailsScaffolds::Helper.new(
+t_helper = AuthorizedRailsScaffolds::ControllerSpecHelper.new(
   :class_name => class_name,
   :singular_table_name => singular_table_name,
-  :file_name => file_name
+  :file_name => file_name,
+  :attributes => attributes
 )
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
@@ -49,7 +50,7 @@ describe <%= controller_class_name %>Controller do
 <%- if AuthorizedRailsScaffolds.parent_models.any? -%>
   before(:each) do
     <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
-    @<%= model.underscore %> = FactoryGirl.create(:<%= model.underscore %>)
+    @<%= model.underscore %> = <%= t_helper.create_parent_model model.underscore %>
     <%- end -%>
   end
 
@@ -59,7 +60,7 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           get :index, {<%= t_helper.index_action_params_prefix %>}
         end
         it { should redirect_to(new_user_session_path) }
@@ -70,7 +71,7 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           get :index, {<%= t_helper.index_action_params_prefix %>}
         end
         it { should redirect_to(root_url) }
@@ -81,7 +82,7 @@ describe <%= controller_class_name %>Controller do
       login_user_with_ability :read, <%= local_class_name %>
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           get :index, {<%= t_helper.index_action_params_prefix %>}
         end
         it { should respond_with(:success) }
@@ -99,7 +100,7 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           get :show, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(new_user_session_path) }
@@ -110,7 +111,7 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           get :show, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(<%= t_helper.controller_index_route %>) }
@@ -121,7 +122,7 @@ describe <%= controller_class_name %>Controller do
       login_user_with_ability :read, <%= local_class_name %>
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           get :show, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param}
         end
         it { should respond_with(:success) }
@@ -174,7 +175,7 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           get :edit, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(new_user_session_path) }
@@ -185,7 +186,7 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           get :edit, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(<%= t_helper.controller_index_route %>) }
@@ -196,7 +197,7 @@ describe <%= controller_class_name %>Controller do
       login_user_with_ability :update, <%= local_class_name %>
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           get :edit, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param}
         end
         it { should respond_with(:success) }
@@ -269,7 +270,7 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid params' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           put :update, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
         it { should redirect_to(new_user_session_path) }
@@ -280,7 +281,7 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe "with valid params" do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           put :update, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
         it { should redirect_to(<%= t_helper.controller_index_route %>) }
@@ -291,7 +292,7 @@ describe <%= controller_class_name %>Controller do
       login_user_with_ability :update, <%= local_class_name %>
       describe "with valid params" do
         it "updates the requested <%= var_name %>" do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           # Assuming there are no other <%= var_name %> in the database, this
           # specifies that the <%= local_class_name %> created on the previous line
           # receives the :update_attributes message with whatever params are
@@ -306,7 +307,7 @@ describe <%= controller_class_name %>Controller do
       end
       describe "with valid params" do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           put :update, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param, :<%= var_name %> => valid_update_attributes}
         end
         it "assigns the requested <%= var_name %> as @<%= var_name %>" do
@@ -318,7 +319,7 @@ describe <%= controller_class_name %>Controller do
       end
       describe "with invalid params" do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           # Trigger the behavior that occurs when invalid params are submitted
           <%= local_class_name %>.any_instance.stub(:save).and_return(false)
           put :update, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param, :<%= var_name %> => <%= formatted_hash(example_invalid_attributes) %>}
@@ -336,7 +337,7 @@ describe <%= controller_class_name %>Controller do
     context 'without a user' do
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           delete :destroy, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(new_user_session_path) }
@@ -347,7 +348,7 @@ describe <%= controller_class_name %>Controller do
       login_unauthorized_user
       describe "with valid request" do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           delete :destroy, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param}
         end
         it { should redirect_to(<%= t_helper.controller_index_route %>) }
@@ -357,14 +358,14 @@ describe <%= controller_class_name %>Controller do
     context 'as user with destroy ability' do
       login_user_with_ability :destroy, <%= local_class_name %>
       it "destroys the requested <%= var_name %>" do
-        @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+        @<%= var_name %> = <%= t_helper.create_factory_model %>
         expect {
           delete :destroy, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param}
         }.to change(<%= local_class_name %>, :count).by(-1)
       end
       describe 'with valid request' do
         before(:each) do
-          @<%= var_name %> = <%= t_helper.create_model_with_attributes attributes %>
+          @<%= var_name %> = <%= t_helper.create_factory_model %>
           delete :destroy, {<%= t_helper.action_params_prefix %>:id => @<%= var_name %>.to_param}
         end
         it "redirects to the <%= var_name %> list" do

@@ -8,4 +8,5 @@ module AuthorizedRailsScaffolds
 end
 
 require "authorized_rails_scaffolds/helper"
+require "authorized_rails_scaffolds/controller_spec_helper"
 require "authorized_rails_scaffolds/view_spec_helper"
