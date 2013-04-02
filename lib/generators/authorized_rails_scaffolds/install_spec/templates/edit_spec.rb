@@ -81,21 +81,21 @@ describe "<%= ns_table_name %>/edit" do
       # <%= attribute.name %> values
   <%- if [:date, :datetime].include? attribute.type -%>
       assert_select "select#<%= var_name %>_<%= attribute.name %>_1i[name=?]", "<%= var_name %>[<%= attribute.name %>(1i)]" do
-        assert_select "option[selected=selected]", :text => <%= DateTime.parse(attribute.default).strftime('%Y').dump %>, :count => 1
+        assert_select "option[selected=selected]", :text => "<%= t_helper.date_select_year_value attribute.default %>", :count => 1
       end
       assert_select "select#<%= var_name %>_<%= attribute.name %>_2i[name=?]", "<%= var_name %>[<%= attribute.name %>(2i)]" do
-        assert_select "option[selected=selected][value=?]", <%= DateTime.parse(attribute.default).strftime('%-m').dump %>, :text => <%= DateTime.parse(attribute.default).strftime('%B').dump %>, :count => 1
+        assert_select "option[selected=selected][value=?]", "<%= t_helper.date_select_month_value attribute.default %>", :text => "<%= t_helper.date_select_month_text attribute.default %>", :count => 1
       end
       assert_select "select#<%= var_name %>_<%= attribute.name %>_3i[name=?]", "<%= var_name %>[<%= attribute.name %>(3i)]" do
-        assert_select "option[selected=selected]", :text => <%= DateTime.parse(attribute.default).strftime('%d').dump %>, :count => 1
+        assert_select "option[selected=selected]", :text => "<%= t_helper.date_select_day_value attribute.default %>", :count => 1
       end
   <%- end -%>
   <%- if [:time, :datetime].include? attribute.type -%>
       assert_select "select#<%= var_name %>_<%= attribute.name %>_4i[name=?]", "<%= var_name %>[<%= attribute.name %>(4i)]" do
-        assert_select "option[selected=selected]", :text => <%= DateTime.parse(attribute.default).strftime('%H').dump %>, :count => 1
+        assert_select "option[selected=selected]", :text => "<%= t_helper.date_select_hour_value attribute.default %>", :count => 1
       end
       assert_select "select#<%= var_name %>_<%= attribute.name %>_5i[name=?]", "<%= var_name %>[<%= attribute.name %>(5i)]" do
-        assert_select "option[selected=selected]", :text => <%= DateTime.parse(attribute.default).strftime('%M').dump %>, :count => 1
+        assert_select "option[selected=selected]", :text => "<%= t_helper.date_select_minute_value attribute.default %>", :count => 1
       end
   <%- end -%>
 <% end -%>
