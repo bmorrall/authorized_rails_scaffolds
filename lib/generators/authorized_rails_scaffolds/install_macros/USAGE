@@ -2,8 +2,8 @@ Description:
     Installs rspec templates that offer better coverage than the default rspec templates
 
 Example:
-    rails generate authorized_rails_scaffolds:install_spec
+    rails generate authorized_rails_scaffolds:install_macros
 
     This will create:
-        RSpec controller and view spec templates in lib/rspec/scaffold
+        Controller spec macros in spec/support
         

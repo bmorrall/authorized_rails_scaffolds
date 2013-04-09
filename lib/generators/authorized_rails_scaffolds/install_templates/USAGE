@@ -7,3 +7,4 @@ Example:
     This will create:
         ERB view templates in lib/erb/scaffold
         Scaffold controller templates in lib/rails/scaffold_controller
+        RSpec controller and view spec templates in lib/rspec/scaffold
