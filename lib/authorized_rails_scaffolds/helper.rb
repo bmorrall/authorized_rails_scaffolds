@@ -8,6 +8,7 @@ module AuthorizedRailsScaffolds
       @plural_var_name = options[:plural_var_name] || @var_name.pluralize # Pluralized non-namespaced variable name
       # Determine namespace prefix i.e awesome
       @namespace_prefix = options[:namespace_prefix] || options[:singular_table_name][0..-(@var_name.length + 2)]
+      @controller_prefix = options[:controller_prefix] || options[:class_name].split('::')[0..-2].join('::')
 
       # Determine Parent Prefix i.e. user_company
       parent_prefix = AuthorizedRailsScaffolds.parent_models.collect{ |x| x.underscore }.join('_')
@@ -22,6 +23,11 @@ module AuthorizedRailsScaffolds
       @route_params_prefix = @parent_variables.blank? ? "" : "#{@parent_variables}, "
       @index_path_prefix = "#{@route_prefix}#{@plural_var_name}"
       @single_path_prefix = "#{@route_prefix}#{var_name}"
+    end
+
+    # Prefix for Controllers (i.e. Admin::)
+    def ns_controller_prefix
+      "#{@controller_prefix}::" unless @controller_prefix.blank?
     end
 
     # Non-namespaced class name (i.e. FooBar)
