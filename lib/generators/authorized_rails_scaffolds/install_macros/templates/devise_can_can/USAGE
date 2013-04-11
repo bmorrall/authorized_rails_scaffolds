@@ -3,5 +3,5 @@
 #
 RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :controller
-  config.extend DeviseCanCanControllerMacros, :type => :controller
+  config.include DeviseCanCanControllerMacros, :type => :controller
 end
