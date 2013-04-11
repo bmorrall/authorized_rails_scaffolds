@@ -58,6 +58,10 @@ describe <%= controller_class_name %>Controller do
 <% unless options[:singleton] -%>
   describe "GET index" do
     context do # Within default nesting
+      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      grant_ability :read, <%= model.classify %>
+      <%- end -%>
+
       context 'without a user' do
         describe 'with valid request' do
           before(:each) do
@@ -100,7 +104,15 @@ describe <%= controller_class_name %>Controller do
 <% end -%>
   describe "GET show" do
     context do # Within default nesting
+      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      grant_ability :read, <%= model.classify %>
+      <%- end -%>
+
       context 'without a user' do
+        <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+        grant_ability :read, <%= model.classify %>
+        <%- end -%>
+
         describe 'with valid request' do
           before(:each) do
             @<%= var_name %> = <%= t_helper.create_factory_model %>
@@ -141,6 +153,10 @@ describe <%= controller_class_name %>Controller do
 
   describe "GET new" do
     context do # Within default nesting
+      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      grant_ability :read, <%= model.classify %>
+      <%- end -%>
+
       context 'without a user' do
         describe 'with valid request' do
           before(:each) do
@@ -179,6 +195,10 @@ describe <%= controller_class_name %>Controller do
 
   describe "GET edit" do
     context do # Within default nesting
+      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      grant_ability :read, <%= model.classify %>
+      <%- end -%>
+
       context 'without a user' do
         describe 'with valid request' do
           before(:each) do
@@ -220,6 +240,10 @@ describe <%= controller_class_name %>Controller do
 
   describe "POST create" do
     context do # Within default nesting
+      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      grant_ability :read, <%= model.classify %>
+      <%- end -%>
+
       context 'without a user' do
         describe 'with valid params' do
           before(:each) do
@@ -278,6 +302,10 @@ describe <%= controller_class_name %>Controller do
 
   describe "PUT update" do
     context do # Within default nesting
+      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      grant_ability :read, <%= model.classify %>
+      <%- end -%>
+
       context 'without a user' do
         describe 'with valid params' do
           before(:each) do
@@ -347,6 +375,10 @@ describe <%= controller_class_name %>Controller do
 
   describe "DELETE destroy" do
     context do # Within default nesting
+      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      grant_ability :read, <%= model.classify %>
+      <%- end -%>
+
       context 'without a user' do
         describe 'with valid request' do
           before(:each) do

@@ -1,6 +1,12 @@
 module DeviseCanCanControllerMacros
 
   module ClassMethods
+    def grant_ability(action, subject)
+      before(:each) do
+        stub_ability.can action, subject
+      end
+    end
+
     def login_unauthorized_user
       before(:each) do
         stub_ability
