@@ -62,7 +62,7 @@ describe <%= controller_class_name %>Controller do
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
-      context 'without a user' do
+      context 'without a user session' do
         describe 'with valid request' do
           before(:each) do
             @<%= var_name %> = <%= t_helper.create_factory_model %>
@@ -108,11 +108,7 @@ describe <%= controller_class_name %>Controller do
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
-      context 'without a user' do
-        <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
-        grant_ability :read, <%= model.classify %>
-        <%- end -%>
-
+      context 'without a user session' do
         describe 'with valid request' do
           before(:each) do
             @<%= var_name %> = <%= t_helper.create_factory_model %>
@@ -157,7 +153,7 @@ describe <%= controller_class_name %>Controller do
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
-      context 'without a user' do
+      context 'without a user session' do
         describe 'with valid request' do
           before(:each) do
             get :new, {<%= t_helper.index_action_params_prefix %>}
@@ -199,7 +195,7 @@ describe <%= controller_class_name %>Controller do
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
-      context 'without a user' do
+      context 'without a user session' do
         describe 'with valid request' do
           before(:each) do
             @<%= var_name %> = <%= t_helper.create_factory_model %>
@@ -244,7 +240,7 @@ describe <%= controller_class_name %>Controller do
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
-      context 'without a user' do
+      context 'without a user session' do
         describe 'with valid params' do
           before(:each) do
             post :create, {<%= t_helper.action_params_prefix %>:<%= var_name %> => valid_create_attributes}
@@ -306,7 +302,7 @@ describe <%= controller_class_name %>Controller do
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
-      context 'without a user' do
+      context 'without a user session' do
         describe 'with valid params' do
           before(:each) do
             @<%= var_name %> = <%= t_helper.create_factory_model %>
@@ -379,7 +375,7 @@ describe <%= controller_class_name %>Controller do
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
-      context 'without a user' do
+      context 'without a user session' do
         describe 'with valid request' do
           before(:each) do
             @<%= var_name %> = <%= t_helper.create_factory_model %>
