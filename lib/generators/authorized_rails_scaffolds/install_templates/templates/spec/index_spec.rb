@@ -40,6 +40,10 @@ describe "<%= ns_table_name %>/index" do
 
   context do # Within default nesting
     before(:each) do
+      # Add Properties for default view scope
+<%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      assign(:<%= model.underscore %>, @<%= model.underscore %>)
+<%- end -%>
       @ability = Object.new
       @ability.extend(CanCan::Ability)
       controller.stub(:current_ability) { @ability }
