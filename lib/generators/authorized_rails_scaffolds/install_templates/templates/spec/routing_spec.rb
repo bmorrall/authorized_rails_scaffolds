@@ -3,12 +3,17 @@ require "spec_helper"
 <% module_namespacing do -%>
 <%-
 
-t_helper = AuthorizedRailsScaffolds::RoutingSpecHelper.new(
-  ns_table_name: ns_table_name
+t_helper = AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper.new(
+  :class_name => class_name,
+  :singular_table_name => singular_table_name,
+  :file_name => file_name,
+  :attributes => attributes
 )
 
-request_path = t_helper.request_path
-extra_params = t_helper.extra_params
+# request_path = t_helper.request_path
+controller_directory = t_helper.controller_directory
+example_controller_path = t_helper.example_controller_path
+example_controller_path_extra_params = t_helper.example_controller_path_extra_params
 
 -%>
 describe <%= controller_class_name %>Controller do
@@ -16,32 +21,32 @@ describe <%= controller_class_name %>Controller do
 
 <% unless options[:singleton] -%>
     it "routes to #index" do
-      get("/<%= request_path %>").should route_to("<%= ns_table_name %>#index"<%= extra_params %>)
+      get("<%= example_controller_path %>").should route_to("<%= controller_directory %>#index"<%= example_controller_path_extra_params %>)
     end
 
 <% end -%>
     it "routes to #new" do
-      get("/<%= request_path %>/new").should route_to("<%= ns_table_name %>#new"<%= extra_params %>)
+      get("<%= example_controller_path %>/new").should route_to("<%= controller_directory %>#new"<%= example_controller_path_extra_params %>)
     end
 
     it "routes to #show" do
-      get("/<%= request_path %>/1").should route_to("<%= ns_table_name %>#show"<%= extra_params %>, :id => "1")
+      get("<%= example_controller_path %>/1").should route_to("<%= controller_directory %>#show"<%= example_controller_path_extra_params %>, :id => "1")
     end
 
     it "routes to #edit" do
-      get("/<%= request_path %>/1/edit").should route_to("<%= ns_table_name %>#edit"<%= extra_params %>, :id => "1")
+      get("<%= example_controller_path %>/1/edit").should route_to("<%= controller_directory %>#edit"<%= example_controller_path_extra_params %>, :id => "1")
     end
 
     it "routes to #create" do
-      post("/<%= request_path %>").should route_to("<%= ns_table_name %>#create"<%= extra_params %>)
+      post("<%= example_controller_path %>").should route_to("<%= controller_directory %>#create"<%= example_controller_path_extra_params %>)
     end
 
     it "routes to #update" do
-      put("/<%= request_path %>/1").should route_to("<%= ns_table_name %>#update"<%= extra_params %>, :id => "1")
+      put("<%= example_controller_path %>/1").should route_to("<%= controller_directory %>#update"<%= example_controller_path_extra_params %>, :id => "1")
     end
 
     it "routes to #destroy" do
-      delete("/<%= request_path %>/1").should route_to("<%= ns_table_name %>#destroy"<%= extra_params %>, :id => "1")
+      delete("<%= example_controller_path %>/1").should route_to("<%= controller_directory %>#destroy"<%= example_controller_path_extra_params %>, :id => "1")
     end
 
   end

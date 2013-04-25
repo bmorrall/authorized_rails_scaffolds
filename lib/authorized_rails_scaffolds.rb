@@ -25,5 +25,4 @@ end
 require "authorized_rails_scaffolds/helper"
 require "authorized_rails_scaffolds/rspec_scaffold_generator_helper"
 require "authorized_rails_scaffolds/rspec_scaffold_generator_view_helper"
-require "authorized_rails_scaffolds/routing_spec_helper"
 
