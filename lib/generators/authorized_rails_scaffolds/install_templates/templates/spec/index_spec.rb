@@ -97,6 +97,7 @@ describe "<%= controller_directory %>/index" do
   <%- end -%>
 <% end -%>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
+  <%- next if attribute.type == :references -%>
   <%- if webrat? -%>
         rendered.should have_selector("tr>td", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2)
   <%- else -%>
@@ -104,6 +105,30 @@ describe "<%= controller_directory %>/index" do
   <%- end -%>
 <% end -%>
       end
+<% output_attributes.each_with_index do |attribute, attribute_index| -%>
+  <%- next unless attribute.type == :references && !parent_model_tables.include?(attribute.name.to_s) -%>
+
+      it "displays the <%= attribute.name %> belonging to <%= var_name %>" do
+        render
+  <%- if webrat? -%>
+        rendered.should have_selector("tr>td", :content => <%= attribute.name %>.to_s, :count => 2)
+  <%- else -%>
+        assert_select "tr>td", :text => <%= attribute.name %>.to_s, :count => 2
+  <%- end -%>
+      end
+<% end -%>
+<% output_attributes.each_with_index do |attribute, attribute_index| -%>
+  <%- next unless attribute.type == :references && parent_model_tables.include?(attribute.name.to_s) -%>
+
+      it "does not display the <%= attribute.name %> belonging to <%= var_name %>" do
+        render
+  <%- if webrat? -%>
+        rendered.should have_selector("tr>td", :content => <%= attribute.name %>.to_s, :count => 0)
+  <%- else -%>
+        assert_select "tr>td", :text => <%= attribute.name %>.to_s, :count => 0
+  <%- end -%>
+      end
+<% end -%>
 
       describe 'show <%= var_name %> link' do
         it "renders a link to <%= ns_file_name %>_path" do

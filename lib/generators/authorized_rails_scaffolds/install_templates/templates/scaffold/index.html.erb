@@ -19,9 +19,15 @@ plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable 
   <thead>
     <tr>
       <th>&nbsp;</th>
-      <%- attributes.each do |attribute| -%>
+  <%- attributes.each do |attribute| -%>
+    <%- if attribute.type == :references -%>
+      <%% unless @<%= attribute.name %> %>
+        <th><%%= model_class.human_attribute_name(:<%= attribute.name %>) %></th>
+      <%% end %>
+    <%- else -%>
       <th><%%= model_class.human_attribute_name(:<%= attribute.name %>) %></th>
-      <%- end -%>
+    <%- end -%>
+  <%- end -%>
       <th><%%= model_class.human_attribute_name(:created_at) %></th>
       <th><%%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -30,16 +36,20 @@ plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable 
     <%% @<%= plural_var_name %>.each do |<%= var_name %>| %>
       <tr class="<%= var_name %>_<%%= <%= var_name %>.id %>">
         <td class="id-column"><%%= <%= var_name %>.id %></td>
-        <%- if attributes.any? -%>
+  <%- if attributes.any? -%>
         <td class="title-column"><%%= link_to <%= var_name %>.<%= attributes[0].name %>, <%= t_helper.controller_show_route(var_name) %> %></td>
-        <%- attributes[1..-1].each do |attribute| -%>
-        <%- if [:datetime, :timestamp, :time, :date].include? attribute.type -%>
+    <%- attributes[1..-1].each do |attribute| -%>
+      <%- if attribute.type == :references -%>
+        <%% unless @<%= attribute.name %> %>
+          <td><%%= <%= var_name %>.<%= attribute.name %> %></td>
+        <%% end %>
+      <%- elsif [:datetime, :timestamp, :time, :date].include? attribute.type -%>
         <td><%% unless <%= var_name %>.<%= attribute.name %>.nil? %><%%=l <%= var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %><%% end %></td>
-        <%- else -%>
+      <%- else -%>
         <td><%%= <%= var_name %>.<%= attribute.name %> %></td>
-        <%- end -%>
-        <%- end -%>
-        <%- end -%>
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
         <td><%%=l <%= var_name %>.created_at, :format => :long %></td>
         <td class="table-actions">
           <%%= link_to t('.edit', :default => t("helpers.links.edit")),
