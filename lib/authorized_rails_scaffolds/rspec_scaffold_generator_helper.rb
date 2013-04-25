@@ -1,4 +1,4 @@
-class AuthorizedRailsScaffolds::ControllerSpecHelper < AuthorizedRailsScaffolds::Helper
+class AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper < AuthorizedRailsScaffolds::Helper
 
   def initialize(options = {})
     super options
@@ -14,10 +14,17 @@ class AuthorizedRailsScaffolds::ControllerSpecHelper < AuthorizedRailsScaffolds:
 
     namespace_prefix_modules = class_name_parts[0..-2] # ['Example', 'V1']
     local_class_name = class_name_parts[-1]
+
     parent_model_and_value_parts = []
+    parent_model_param_parts = []
     parent_models.each do |parent_model|
+      parent_value = example_parent_values[parent_model]
+
+      # User, 2
       parent_model_and_value_parts << parent_model.pluralize
-      parent_model_and_value_parts << example_parent_values[parent_model]
+      parent_model_and_value_parts << parent_value
+
+      parent_model_param_parts << "#{parent_model.underscore}_id => #{parent_value}"
     end
 
     # Directory for the generated controller: i.e. awesome/foo_bars
@@ -25,6 +32,8 @@ class AuthorizedRailsScaffolds::ControllerSpecHelper < AuthorizedRailsScaffolds:
 
     # Example index route: i.e. /awesome/users/2/foo_bars
     @example_controller_path = [namespace_prefix_modules + parent_model_and_value_parts + [local_class_name]].join("/").underscore
+
+    @example_controller_path_extra_params = parent_model_param_parts.any? ? ", :#{parent_model_param_parts.join(', :')}" : ''
 
     @attributes = options[:attributes]
   end
@@ -47,6 +56,11 @@ class AuthorizedRailsScaffolds::ControllerSpecHelper < AuthorizedRailsScaffolds:
   # Example index route: i.e. /awesome/users/2/foo_bars
   def example_controller_path
     "/#{@example_controller_path}"
+  end
+
+  # Extra params for an example controller path: i.e. ', :user_id => 2'
+  def example_controller_path_extra_params
+    @example_controller_path_extra_params
   end
 
   protected

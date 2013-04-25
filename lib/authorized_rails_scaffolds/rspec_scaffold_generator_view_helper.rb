@@ -1,9 +1,7 @@
-class AuthorizedRailsScaffolds::ViewSpecHelper < AuthorizedRailsScaffolds::Helper
+class AuthorizedRailsScaffolds::RSpecScaffoldGeneratorViewHelper < AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper
 
   def initialize(options = {})
     super options
-
-    @attributes = options[:attributes]
   end
 
   def output_attributes
