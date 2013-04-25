@@ -25,5 +25,7 @@ end
 require "authorized_rails_scaffolds/resource_macros"
 require "authorized_rails_scaffolds/helper"
 require "authorized_rails_scaffolds/rspec_scaffold_helper"
+require "authorized_rails_scaffolds/rspec_scaffold_controller_helper"
+require "authorized_rails_scaffolds/rspec_scaffold_routing_helper"
 require "authorized_rails_scaffolds/rspec_scaffold_view_helper"
 
