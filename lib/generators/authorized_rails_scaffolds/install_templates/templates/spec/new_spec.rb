@@ -37,9 +37,9 @@ describe "<%= controller_directory %>/new" do
 <%= output_attributes.empty? ? "" : "    )\n" -%>
   end
 
-  context do # Within default nesting
+  context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
     before(:each) do
-      # Add Properties for default view scope
+      # Add Properties for view scope
 <%- parent_model_tables.each do |parent_model| -%>
       assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
 <%- end -%>
