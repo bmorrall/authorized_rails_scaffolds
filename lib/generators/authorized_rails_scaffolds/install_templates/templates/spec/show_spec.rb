@@ -12,11 +12,12 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldGeneratorViewHelper.new(
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 
+controller_directory = t_helper.controller_directory
 output_attributes = t_helper.output_attributes
 references_attributes = t_helper.references_attributes
 
 -%>
-describe "<%= ns_table_name %>/show" do
+describe "<%= controller_directory %>/show" do
   before(:each) do
 <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
     @<%= model.underscore %> = FactoryGirl.build_stubbed(:<%= model.underscore %>)

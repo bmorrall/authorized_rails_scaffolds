@@ -9,6 +9,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldGeneratorViewHelper.new(
   :attributes => attributes
 )
 
+controller_directory = t_helper.controller_directory
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
@@ -16,7 +17,7 @@ plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable 
 output_attributes = t_helper.output_attributes
 
 -%>
-describe "<%= ns_table_name %>/index" do
+describe "<%= controller_directory %>/index" do
 
   before(:each) do
 <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>

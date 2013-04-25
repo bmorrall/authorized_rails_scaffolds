@@ -12,12 +12,13 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldGeneratorViewHelper.new(
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 
+controller_directory = t_helper.controller_directory
 output_attributes = t_helper.output_attributes
 standard_attributes = t_helper.standard_attributes
 datetime_attributes = t_helper.datetime_attributes
 
 -%>
-describe "<%= ns_table_name %>/edit" do
+describe "<%= controller_directory %>/edit" do
 
   before(:each) do
 <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
