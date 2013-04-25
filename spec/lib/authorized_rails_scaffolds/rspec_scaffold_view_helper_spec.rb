@@ -1,6 +1,64 @@
 require 'spec_helper'
 
 describe AuthorizedRailsScaffolds::RSpecScaffoldViewHelper do
+  include RSpecScaffoldViewHelperMacros
   pending
+
+  describe '#parent_model_tables' do
+    context 'with no parent_models' do
+      it 'returns an empty array' do
+        subject = build_view_spec_helper
+        subject.parent_model_tables.should eq([])
+      end
+    end
+    context 'with a parent model' do
+      before(:each) do
+        AuthorizedRailsScaffolds.configure do |config|
+          config.parent_models = ['Parent']
+        end
+      end
+      it 'returns an array containing the models table name' do
+        subject = build_view_spec_helper
+        subject.parent_model_tables.should eq(['parent'])
+      end
+    end
+    context 'with multiple parent models' do
+      before(:each) do
+        AuthorizedRailsScaffolds.configure do |config|
+          config.parent_models = ['Grandparent', 'Parent']
+        end
+      end
+      it 'returns an array containing all model table names' do
+        subject = build_view_spec_helper
+        subject.parent_model_tables.should eq(['grandparent', 'parent'])
+      end
+    end
+  end
+
+  describe '#resource_directory' do
+    it 'underscores the class_name value' do
+      subject = build_view_spec_helper :class_name => 'FooBar'
+      subject.resource_directory.should eq('foo_bars')
+    end
+    it 'adds parent_models to the file path' do
+      subject = build_view_spec_helper :class_name => 'Example::FooBar'
+      subject.resource_directory.should eq('example/foo_bars')
+    end
+    it 'adds multiple parent_models to the file path' do
+      subject = build_view_spec_helper :class_name => 'Example::V1::FooBar'
+      subject.resource_directory.should eq('example/v1/foo_bars')
+    end
+    context 'with a parent model' do
+      before(:each) do
+        AuthorizedRailsScaffolds.configure do |config|
+          config.parent_models = ['Parent']
+        end
+      end
+      it 'ignores the parent_model value' do
+        subject = build_view_spec_helper :class_name => 'FooBar'
+        subject.resource_directory.should eq('foo_bars')
+      end
+    end
+  end
 
 end

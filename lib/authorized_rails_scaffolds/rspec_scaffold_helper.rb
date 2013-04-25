@@ -53,10 +53,6 @@ class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::
 
   # Example index route: i.e. /awesome/users/2/foo_bars
   def example_controller_path
-    unless @example_controller_path
-      
-    end
-
     "/#{@example_controller_path}"
   end
 

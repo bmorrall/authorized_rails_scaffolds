@@ -1,7 +1,7 @@
 
-module RSpecScaffoldHelperMacros
+module RSpecScaffoldRoutingHelperMacros
 
-  def build_controller_spec_helper(args = {})
+  def build_routing_spec_helper(args = {})
     defaults = {
       class_name: 'Scaffold::Example', # Model class name
       singular_table_name: 'scaffold_example', # path and model name
@@ -9,7 +9,7 @@ module RSpecScaffoldHelperMacros
       attributes: [],
     }
     defaults.merge! (args)
-    AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper.new(defaults)
+    AuthorizedRailsScaffolds::RSpecScaffoldRoutingHelper.new(defaults)
   end
 
 end

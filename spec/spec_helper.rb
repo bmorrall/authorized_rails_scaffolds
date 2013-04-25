@@ -4,10 +4,11 @@ Bundler.require
 require 'rails'
 
 require 'authorized_rails_scaffolds'
-require 'support/rspec_scaffold_helper_macros'
+require 'support/rspec_scaffold_controller_helper_macros'
+require 'support/rspec_scaffold_routing_helper_macros'
+require 'support/rspec_scaffold_view_helper_macros'
 
 RSpec.configure do |config|
-  config.include RSpecScaffoldHelperMacros
   # some (optional) config here
 
   config.after(:each) do
