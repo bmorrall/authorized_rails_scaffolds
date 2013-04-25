@@ -28,10 +28,10 @@ class AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper < AuthorizedRailsSc
     end
 
     # Directory for the generated controller: i.e. awesome/foo_bars
-    @controller_directory = [namespace_prefix_modules + [local_class_name]].join("/").underscore
+    @controller_directory = [namespace_prefix_modules + [local_class_name.pluralize]].join("/").underscore
 
     # Example index route: i.e. /awesome/users/2/foo_bars
-    @example_controller_path = [namespace_prefix_modules + parent_model_and_value_parts + [local_class_name]].join("/").underscore
+    @example_controller_path = [namespace_prefix_modules + parent_model_and_value_parts + [local_class_name.pluralize]].join("/").underscore
 
     @example_controller_path_extra_params = parent_model_param_parts.any? ? ", :#{parent_model_param_parts.join(', :')}" : ''
 

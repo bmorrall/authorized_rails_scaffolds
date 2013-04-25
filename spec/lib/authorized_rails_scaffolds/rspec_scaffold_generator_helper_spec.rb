@@ -5,15 +5,15 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper do
   describe '#controller_directory' do
     it 'underscores the class_name value' do
       subject = build_controller_spec_helper :class_name => 'FooBar'
-      subject.controller_directory.should eq('foo_bar')
+      subject.controller_directory.should eq('foo_bars')
     end
     it 'adds parent_models to the file path' do
       subject = build_controller_spec_helper :class_name => 'Example::FooBar'
-      subject.controller_directory.should eq('example/foo_bar')
+      subject.controller_directory.should eq('example/foo_bars')
     end
     it 'adds multiple parent_models to the file path' do
       subject = build_controller_spec_helper :class_name => 'Example::V1::FooBar'
-      subject.controller_directory.should eq('example/v1/foo_bar')
+      subject.controller_directory.should eq('example/v1/foo_bars')
     end
     context 'with a parent model' do
       before(:each) do
@@ -23,7 +23,7 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper do
       end
       it 'ignores the parent_model value' do
         subject = build_controller_spec_helper :class_name => 'FooBar'
-        subject.controller_directory.should eq('foo_bar')
+        subject.controller_directory.should eq('foo_bars')
       end
     end
   end
@@ -31,15 +31,15 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper do
   describe '#example_controller_path' do
     it 'underscores the class_name value' do
       subject = build_controller_spec_helper :class_name => 'FooBar'
-      subject.example_controller_path.should eq('/foo_bar')
+      subject.example_controller_path.should eq('/foo_bars')
     end
     it 'adds parent_models to the file path' do
       subject = build_controller_spec_helper :class_name => 'Example::FooBar'
-      subject.example_controller_path.should eq('/example/foo_bar')
+      subject.example_controller_path.should eq('/example/foo_bars')
     end
     it 'adds multiple parent_models to the file path' do
       subject = build_controller_spec_helper :class_name => 'Example::V1::FooBar'
-      subject.example_controller_path.should eq('/example/v1/foo_bar')
+      subject.example_controller_path.should eq('/example/v1/foo_bars')
     end
     context 'with a parent model' do
       before(:each) do
@@ -49,15 +49,15 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper do
       end
       it 'adds the parent model before the class name' do
         subject = build_controller_spec_helper :class_name => 'FooBar'
-        subject.example_controller_path.should eq('/parents/2/foo_bar')
+        subject.example_controller_path.should eq('/parents/2/foo_bars')
       end
       it 'adds the parent model after the parent module' do
         subject = build_controller_spec_helper :class_name => 'Example::FooBar'
-        subject.example_controller_path.should eq('/example/parents/2/foo_bar')
+        subject.example_controller_path.should eq('/example/parents/2/foo_bars')
       end
       it 'adds the parent model after multiple parent module' do
         subject = build_controller_spec_helper :class_name => 'Example::V1::FooBar'
-        subject.example_controller_path.should eq('/example/v1/parents/2/foo_bar')
+        subject.example_controller_path.should eq('/example/v1/parents/2/foo_bars')
       end
     end
     context 'with multiple parent models' do
@@ -67,11 +67,11 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper do
         end
         it 'adds the parent models before the class name' do
           subject = build_controller_spec_helper :class_name => 'FooBar'
-          subject.example_controller_path.should eq('/grandparents/2/parents/3/foo_bar')
+          subject.example_controller_path.should eq('/grandparents/2/parents/3/foo_bars')
         end
         it 'adds the parent models after the parent module' do
           subject = build_controller_spec_helper :class_name => 'Example::FooBar'
-          subject.example_controller_path.should eq('/example//grandparents/2/parents/3/foo_bar')
+          subject.example_controller_path.should eq('/example//grandparents/2/parents/3/foo_bars')
         end
       end
     end
