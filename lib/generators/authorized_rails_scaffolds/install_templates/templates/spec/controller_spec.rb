@@ -278,6 +278,11 @@ describe <%= controller_class_name %>Controller do
             assigns(:<%= var_name %>).should be_a(<%= local_class_name %>)
             assigns(:<%= var_name %>).should be_persisted
           end
+<% if parent_model_tables.any? -%>
+          it "assigns the parent <%= parent_model_tables[-1].classify %> to <%= var_name %>" do
+            assigns(:<%= var_name %>).<%= parent_model_tables[-1] %>.should eq(@<%= parent_model_tables[-1] %>)
+          end
+<% end -%>
           it "redirects to the created <%= var_name %>" do
             response.should redirect_to(<%= t_helper.controller_show_route "#{local_class_name}.last" %>)
           end
