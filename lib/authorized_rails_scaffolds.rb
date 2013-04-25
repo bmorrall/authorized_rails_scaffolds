@@ -9,12 +9,11 @@ module AuthorizedRailsScaffolds
     end
   end
 
-  class << self
-    attr_accessor :config
+  def self.config
+    @config ||= Configuration.new
   end
 
   def self.configure
-    self.config ||= Configuration.new
     yield(config) if block_given?
   end
 
