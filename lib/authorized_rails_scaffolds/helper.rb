@@ -10,9 +10,6 @@ module AuthorizedRailsScaffolds
       @namespace_prefix = options[:namespace_prefix] || options[:singular_table_name][0..-(@var_name.length + 2)]
       @controller_prefix = options[:controller_prefix] || options[:class_name].split('::')[0..-2].join('::')
 
-      # Directory for the generated controller: i.e. awesome/foo_bars
-      @controller_directory = (options[:class_name] || options[:local_class_name]).split("::").join("/").underscore
-
       # Determine Parent Prefix i.e. user_company
       parent_prefix = AuthorizedRailsScaffolds.config.parent_models.collect{ |x| x.underscore }.join('_')
 
@@ -48,9 +45,12 @@ module AuthorizedRailsScaffolds
       @plural_var_name
     end
 
-    # Directory for the generated controller: i.e. awesome/foo_bars
-    def controller_directory
-      @controller_directory
+    def extra_params
+      extra_params = ''
+      AuthorizedRailsScaffolds.config.parent_models.each_with_index do |model, model_index|
+        extra_params += ", :#{model.underscore}_id => \"#{model_index + 2}\""
+      end
+      extra_params
     end
 
     def form_object_array(variable = nil)
