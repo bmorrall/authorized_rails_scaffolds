@@ -20,7 +20,7 @@ class AuthorizedRailsScaffolds::ControllerSpecHelper < AuthorizedRailsScaffolds:
 
   def extra_model_params(model_name = nil)
     argument_params = []
-    AuthorizedRailsScaffolds.parent_models.each do |parent_model|
+    AuthorizedRailsScaffolds.config.parent_models.each do |parent_model|
       attribute = parent_model.underscore
       break if model_name == attribute
       argument_params << ", :#{attribute} => @#{attribute}"

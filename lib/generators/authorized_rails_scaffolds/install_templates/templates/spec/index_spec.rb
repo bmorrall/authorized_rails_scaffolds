@@ -19,7 +19,7 @@ output_attributes = t_helper.output_attributes
 describe "<%= ns_table_name %>/index" do
 
   before(:each) do
-<%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
     @<%= model.underscore %> = FactoryGirl.build_stubbed(:<%= model.underscore %>)
 <%- end -%>
 <% [1,2].each_with_index do |id, model_index| -%>
@@ -41,7 +41,7 @@ describe "<%= ns_table_name %>/index" do
   context do # Within default nesting
     before(:each) do
       # Add Properties for default view scope
-<%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       assign(:<%= model.underscore %>, @<%= model.underscore %>)
 <%- end -%>
       @ability = Object.new

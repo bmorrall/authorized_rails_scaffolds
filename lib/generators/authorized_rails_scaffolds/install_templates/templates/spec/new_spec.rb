@@ -19,7 +19,7 @@ datetime_attributes = t_helper.datetime_attributes
 -%>
 describe "<%= ns_table_name %>/new" do
   before(:each) do
-<%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
     @<%= model.underscore %> = FactoryGirl.build_stubbed(:<%= model.underscore %>)
 <%- end -%>
     assign(:<%= var_name %>, FactoryGirl.build(:<%= var_name %><%= output_attributes.empty? ? '))' : ',' %>
@@ -31,7 +31,7 @@ describe "<%= ns_table_name %>/new" do
   context do # Within default nesting
     before(:each) do
       # Add Properties for default view scope
-<%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       assign(:<%= model.underscore %>, @<%= model.underscore %>)
 <%- end -%>
     end

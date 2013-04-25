@@ -1,10 +1,26 @@
 require "authorized_rails_scaffolds/version"
 
 module AuthorizedRailsScaffolds
-  
-  mattr_accessor :parent_models
-  @@parent_models = []
-  
+  class Configuration
+    attr_accessor :parent_models
+
+    def initialize
+      self.parent_models = []
+    end
+  end
+
+  class << self
+    attr_accessor :config
+  end
+
+  def self.configure
+    self.config ||= Configuration.new
+    yield(config) if block_given?
+  end
+
+  # mattr_accessor :parent_models
+  # @@parent_models = []
+
 end
 
 require "authorized_rails_scaffolds/helper"

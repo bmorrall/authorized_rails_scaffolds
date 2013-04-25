@@ -11,13 +11,13 @@ module AuthorizedRailsScaffolds
       @controller_prefix = options[:controller_prefix] || options[:class_name].split('::')[0..-2].join('::')
 
       # Determine Parent Prefix i.e. user_company
-      parent_prefix = AuthorizedRailsScaffolds.parent_models.collect{ |x| x.underscore }.join('_')
+      parent_prefix = AuthorizedRailsScaffolds.config.parent_models.collect{ |x| x.underscore }.join('_')
 
       # Route Prefix i.e. awesome_user_company
       route_prefix = [@namespace_prefix, parent_prefix].reject{ |x|x.blank? }.join('_')
       @route_prefix = route_prefix.blank? ? '' : "#{route_prefix}_"
 
-      @parent_variables = AuthorizedRailsScaffolds.parent_models.collect{ |x| "@#{x.underscore}" }.join(', ')
+      @parent_variables = AuthorizedRailsScaffolds.config.parent_models.collect{ |x| "@#{x.underscore}" }.join(', ')
 
       # Route Helpers
       @route_params_prefix = @parent_variables.blank? ? "" : "#{@parent_variables}, "
@@ -79,8 +79,8 @@ module AuthorizedRailsScaffolds
 
     # call arguments
     def index_action_params_prefix
-      if AuthorizedRailsScaffolds.parent_models.any?
-        AuthorizedRailsScaffolds.parent_models.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ')
+      if AuthorizedRailsScaffolds.config.parent_models.any?
+        AuthorizedRailsScaffolds.config.parent_models.collect{|x| ":#{x.underscore}_id => @#{x.underscore}.to_param"}.join(', ')
       else
         ''
       end
@@ -88,7 +88,7 @@ module AuthorizedRailsScaffolds
 
     def references_show_route(attribute_name, variable = nil)
       variable ||= "@#{@var_name}.#{attribute_name}"
-      if AuthorizedRailsScaffolds.parent_models.any? && AuthorizedRailsScaffolds.parent_models.last.underscore == attribute_name
+      if AuthorizedRailsScaffolds.config.parent_models.any? && AuthorizedRailsScaffolds.config.parent_models.last.underscore == attribute_name
         references_path = "#{@route_prefix}path(#{variable})"
       else
         references_path = "#{attribute_name}_path(#{variable})"

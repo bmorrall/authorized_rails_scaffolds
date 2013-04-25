@@ -47,9 +47,9 @@ describe <%= controller_class_name %>Controller do
     FactoryGirl.attributes_for(:<%= var_name %>)
   end
 
-<%- if AuthorizedRailsScaffolds.parent_models.any? -%>
+<%- if AuthorizedRailsScaffolds.config.parent_models.any? -%>
   before(:each) do
-    <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+    <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
     @<%= model.underscore %> = <%= t_helper.create_parent_model model.underscore %>
     <%- end -%>
   end
@@ -58,7 +58,7 @@ describe <%= controller_class_name %>Controller do
 <% unless options[:singleton] -%>
   describe "GET index" do
     context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
@@ -104,7 +104,7 @@ describe <%= controller_class_name %>Controller do
 <% end -%>
   describe "GET show" do
     context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
@@ -149,7 +149,7 @@ describe <%= controller_class_name %>Controller do
 
   describe "GET new" do
     context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
@@ -191,7 +191,7 @@ describe <%= controller_class_name %>Controller do
 
   describe "GET edit" do
     context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
@@ -236,7 +236,7 @@ describe <%= controller_class_name %>Controller do
 
   describe "POST create" do
     context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
@@ -298,7 +298,7 @@ describe <%= controller_class_name %>Controller do
 
   describe "PUT update" do
     context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 
@@ -371,7 +371,7 @@ describe <%= controller_class_name %>Controller do
 
   describe "DELETE destroy" do
     context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       grant_ability :read, <%= model.classify %>
       <%- end -%>
 

@@ -20,7 +20,7 @@ datetime_attributes = t_helper.datetime_attributes
 describe "<%= ns_table_name %>/edit" do
 
   before(:each) do
-<%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
     @<%= model.underscore %> = assign(:<%= model.underscore %>, FactoryGirl.build_stubbed(:<%= model.underscore %>))
 <%- end -%>
     @<%= var_name %> = assign(:<%= var_name %>, FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? '))' : ',' %>
@@ -33,7 +33,7 @@ describe "<%= ns_table_name %>/edit" do
   context do # Within default nesting
     before(:each) do
       # Add Properties for default view scope
-<%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       assign(:<%= model.underscore %>, @<%= model.underscore %>)
 <%- end -%>
     end

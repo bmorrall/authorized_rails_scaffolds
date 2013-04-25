@@ -18,7 +18,7 @@ references_attributes = t_helper.references_attributes
 -%>
 describe "<%= ns_table_name %>/show" do
   before(:each) do
-<%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
     @<%= model.underscore %> = FactoryGirl.build_stubbed(:<%= model.underscore %>)
 <%- end -%>
     @<%= var_name %> = FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? ')' : ',' %>
@@ -33,7 +33,7 @@ describe "<%= ns_table_name %>/show" do
   context do # Within default nesting
     before(:each) do
       # Add Properties for default view scope
-<%- AuthorizedRailsScaffolds.parent_models.each do |model| -%>
+<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
       assign(:<%= model.underscore %>, @<%= model.underscore %>)
 <%- end -%>
       @ability = Object.new
