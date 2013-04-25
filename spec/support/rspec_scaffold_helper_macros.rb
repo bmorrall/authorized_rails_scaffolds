@@ -1,5 +1,5 @@
 
-module RSpecScaffoldGeneratorHelperMacros
+module RSpecScaffoldHelperMacros
 
   def build_controller_spec_helper(args = {})
     defaults = {
@@ -9,7 +9,7 @@ module RSpecScaffoldGeneratorHelperMacros
       attributes: [],
     }
     defaults.merge! (args)
-    AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper.new(defaults)
+    AuthorizedRailsScaffolds::RSpecScaffoldHelper.new(defaults)
   end
 
 end

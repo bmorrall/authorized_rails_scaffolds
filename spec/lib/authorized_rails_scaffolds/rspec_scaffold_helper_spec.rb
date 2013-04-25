@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper do
+describe AuthorizedRailsScaffolds::RSpecScaffoldHelper do
 
   describe '#resource_directory' do
     it 'underscores the class_name value' do

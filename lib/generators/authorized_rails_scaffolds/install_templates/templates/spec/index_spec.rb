@@ -2,7 +2,7 @@ require 'spec_helper'
 
 <%-
 
-t_helper = AuthorizedRailsScaffolds::RSpecScaffoldGeneratorViewHelper.new(
+t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
   :class_name => class_name,
   :singular_table_name => singular_table_name,
   :file_name => file_name,

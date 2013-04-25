@@ -21,7 +21,7 @@ require 'spec_helper'
 <% module_namespacing do -%>
 <%-
 
-t_helper = AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper.new(
+t_helper = AuthorizedRailsScaffolds::RSpecScaffoldHelper.new(
   :class_name => class_name,
   :singular_table_name => singular_table_name,
   :file_name => file_name,

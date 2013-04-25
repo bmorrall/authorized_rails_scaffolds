@@ -1,4 +1,4 @@
-class AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper < AuthorizedRailsScaffolds::Helper
+class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::Helper
 
   def initialize(options = {})
     super options
