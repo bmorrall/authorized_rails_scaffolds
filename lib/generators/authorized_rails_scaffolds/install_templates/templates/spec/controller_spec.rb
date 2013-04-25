@@ -32,6 +32,8 @@ local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
 
+parent_model_tables = t_helper.parent_model_tables
+
 -%>
 describe <%= controller_class_name %>Controller do
 
@@ -47,19 +49,19 @@ describe <%= controller_class_name %>Controller do
     FactoryGirl.attributes_for(:<%= var_name %>)
   end
 
-<%- if AuthorizedRailsScaffolds.config.parent_models.any? -%>
+<%- if parent_model_tables.any? -%>
   before(:each) do
-    <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-    @<%= model.underscore %> = <%= t_helper.create_parent_model model.underscore %>
+    <%- parent_model_tables.each do |parent_model| -%>
+    @<%= parent_model %> = <%= t_helper.create_parent_model parent_model %>
     <%- end -%>
   end
 
 <%- end -%>
 <% unless options[:singleton] -%>
   describe "GET index" do
-    context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-      grant_ability :read, <%= model.classify %>
+    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
+      <%- parent_model_tables.each do |parent_model| -%>
+      grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
       context 'without a user session' do
@@ -103,9 +105,9 @@ describe <%= controller_class_name %>Controller do
 
 <% end -%>
   describe "GET show" do
-    context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-      grant_ability :read, <%= model.classify %>
+    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
+      <%- parent_model_tables.each do |parent_model| -%>
+      grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
       context 'without a user session' do
@@ -148,9 +150,9 @@ describe <%= controller_class_name %>Controller do
   end
 
   describe "GET new" do
-    context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-      grant_ability :read, <%= model.classify %>
+    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
+      <%- parent_model_tables.each do |parent_model| -%>
+      grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
       context 'without a user session' do
@@ -190,9 +192,9 @@ describe <%= controller_class_name %>Controller do
   end
 
   describe "GET edit" do
-    context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-      grant_ability :read, <%= model.classify %>
+    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
+      <%- parent_model_tables.each do |parent_model| -%>
+      grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
       context 'without a user session' do
@@ -235,9 +237,9 @@ describe <%= controller_class_name %>Controller do
   end
 
   describe "POST create" do
-    context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-      grant_ability :read, <%= model.classify %>
+    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
+      <%- parent_model_tables.each do |parent_model| -%>
+      grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
       context 'without a user session' do
@@ -297,9 +299,9 @@ describe <%= controller_class_name %>Controller do
   end
 
   describe "PUT update" do
-    context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-      grant_ability :read, <%= model.classify %>
+    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
+      <%- parent_model_tables.each do |parent_model| -%>
+      grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
       context 'without a user session' do
@@ -370,9 +372,9 @@ describe <%= controller_class_name %>Controller do
   end
 
   describe "DELETE destroy" do
-    context do # Within default nesting
-      <%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-      grant_ability :read, <%= model.classify %>
+    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
+      <%- parent_model_tables.each do |parent_model| -%>
+      grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
       context 'without a user session' do
