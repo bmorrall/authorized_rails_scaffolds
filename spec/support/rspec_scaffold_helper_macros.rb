@@ -9,7 +9,7 @@ module RSpecScaffoldHelperMacros
       attributes: [],
     }
     defaults.merge! (args)
-    AuthorizedRailsScaffolds::RSpecScaffoldHelper.new(defaults)
+    AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper.new(defaults)
   end
 
 end
