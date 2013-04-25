@@ -63,6 +63,10 @@ class AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper < AuthorizedRailsSc
     @example_controller_path_extra_params
   end
 
+  def parent_model_tables
+    @parent_model_tables ||= AuthorizedRailsScaffolds.config.parent_models.map { |model| model.underscore }
+  end
+
   protected
 
   def extra_model_params(model_name = nil)

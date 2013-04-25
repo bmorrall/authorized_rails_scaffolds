@@ -10,6 +10,8 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldGeneratorViewHelper.new(
 )
 
 controller_directory = t_helper.controller_directory
+parent_model_tables = t_helper.parent_model_tables
+
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
@@ -19,32 +21,38 @@ output_attributes = t_helper.output_attributes
 -%>
 describe "<%= controller_directory %>/index" do
 
-  before(:each) do
-<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-    @<%= model.underscore %> = FactoryGirl.build_stubbed(:<%= model.underscore %>)
+<% parent_model_tables.each_with_index do |parent_model, index| -%>
+<%- if index == 0 -%>
+  let(:<%= parent_model %>) { FactoryGirl.build_stubbed(:<%= parent_model %>) }
+<%- else -%>
+  let(:<%= parent_model %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
+<%- end -%>
 <%- end -%>
 <% [1,2].each_with_index do |id, model_index| -%>
-    @<%= var_name %>_<%= model_index + 1 %> = FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? ')' : ',' %>
+  let(:<%= var_name %>_<%= id %>) do
+    FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
-      :<%= attribute.name %> => <%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
+      :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= attribute.name %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
-<% if !output_attributes.empty? -%>
-    )
-<% end -%>
-<% end -%>
-    assign(:<%= plural_var_name %>, [
-<% [1,2].each_with_index do |id, model_index| -%>
-      @<%= var_name %>_<%= id %><%= model_index == 1 ? '' : ',' %>
-<% end -%>
-    ])
+<%= output_attributes.empty? ? "" : "    )\n" -%>
   end
+<% end -%>
 
   context do # Within default nesting
     before(:each) do
       # Add Properties for default view scope
-<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-      assign(:<%= model.underscore %>, @<%= model.underscore %>)
+<%- parent_model_tables.each do |parent_model| -%>
+      assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
 <%- end -%>
+<% [1,2].each_with_index do |id, model_index| -%>
+      @<%= var_name %>_<%= id %> = <%= var_name %>_<%= id %>
+<% end -%>
+      assign(:<%= plural_var_name %>, [
+<% [1,2].each_with_index do |id, model_index| -%>
+        @<%= var_name %>_<%= id %><%= model_index == 1 ? '' : ',' %>
+<% end -%>
+      ])
+
       @ability = Object.new
       @ability.extend(CanCan::Ability)
       controller.stub(:current_ability) { @ability }

@@ -13,6 +13,8 @@ local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 
 controller_directory = t_helper.controller_directory
+parent_model_tables = t_helper.parent_model_tables
+
 output_attributes = t_helper.output_attributes
 standard_attributes = t_helper.standard_attributes
 datetime_attributes = t_helper.datetime_attributes
@@ -20,23 +22,28 @@ datetime_attributes = t_helper.datetime_attributes
 -%>
 describe "<%= controller_directory %>/edit" do
 
-  before(:each) do
-<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-    @<%= model.underscore %> = assign(:<%= model.underscore %>, FactoryGirl.build_stubbed(:<%= model.underscore %>))
+<% parent_model_tables.each_with_index do |parent_model, index| -%>
+<%- if index == 0 -%>
+  let(:<%= parent_model %>) { FactoryGirl.build_stubbed(:<%= parent_model %>) }
+<%- else -%>
+  let(:<%= parent_model %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
 <%- end -%>
-    @<%= var_name %> = assign(:<%= var_name %>, FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? '))' : ',' %>
+<%- end -%>
+  let(:<%= var_name %>) do
+    FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
-      :<%= attribute.name %> => <%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
+      :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= attribute.name %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
-<%= output_attributes.empty? ? "" : "    ))\n" -%>
+<%= output_attributes.empty? ? "" : "    )\n" -%>
   end
 
   context do # Within default nesting
     before(:each) do
       # Add Properties for default view scope
-<%- AuthorizedRailsScaffolds.config.parent_models.each do |model| -%>
-      assign(:<%= model.underscore %>, @<%= model.underscore %>)
+<%- parent_model_tables.each do |parent_model| -%>
+      assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
 <%- end -%>
+      assign(:<%= var_name %>, @<%= var_name %> = <%= var_name %>)
     end
 
     it "renders the edit <%= var_name %> form" do
