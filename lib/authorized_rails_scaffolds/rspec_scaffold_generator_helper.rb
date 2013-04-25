@@ -5,7 +5,9 @@ class AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper < AuthorizedRailsSc
 
     parent_models = AuthorizedRailsScaffolds.config.parent_models
 
-    class_name_parts = (options[:class_name] || options[:local_class_name]).split("::")
+    @controller_class_name = options[:class_name] || options[:local_class_name]
+
+    class_name_parts = @controller_class_name.split("::")
 
     example_parent_values = {}
     parent_models.each_with_index do |parent_model, index|
@@ -27,9 +29,6 @@ class AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper < AuthorizedRailsSc
       parent_model_param_parts << "#{parent_model.underscore}_id => #{parent_value}"
     end
 
-    # Directory for the generated controller: i.e. awesome/foo_bars
-    @controller_directory = [namespace_prefix_modules + [local_class_name.pluralize]].join("/").underscore
-
     # Example index route: i.e. /awesome/users/2/foo_bars
     @example_controller_path = [namespace_prefix_modules + parent_model_and_value_parts + [local_class_name.pluralize]].join("/").underscore
 
@@ -48,23 +47,22 @@ class AuthorizedRailsScaffolds::RSpecScaffoldGeneratorHelper < AuthorizedRailsSc
     "FactoryGirl.create(:#{model_name}#{extra_params})"
   end
 
-  # Directory for the generated controller: i.e. awesome/foo_bars
-  def controller_directory
-    @controller_directory
+  def controller_class_name
+    @controller_class_name
   end
 
   # Example index route: i.e. /awesome/users/2/foo_bars
   def example_controller_path
+    unless @example_controller_path
+      
+    end
+
     "/#{@example_controller_path}"
   end
 
   # Extra params for an example controller path: i.e. ', :user_id => 2'
   def example_controller_path_extra_params
     @example_controller_path_extra_params
-  end
-
-  def parent_model_tables
-    @parent_model_tables ||= AuthorizedRailsScaffolds.config.parent_models.map { |model| model.underscore }
   end
 
   protected

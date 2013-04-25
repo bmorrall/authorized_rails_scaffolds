@@ -9,7 +9,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldGeneratorViewHelper.new(
   :attributes => attributes
 )
 
-controller_directory = t_helper.controller_directory
+resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
@@ -19,7 +19,7 @@ plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable 
 output_attributes = t_helper.output_attributes
 
 -%>
-describe "<%= controller_directory %>/index" do
+describe "<%= resource_directory %>/index" do
 
 <% parent_model_tables.each_with_index do |parent_model, index| -%>
 <%- if index == 0 -%>

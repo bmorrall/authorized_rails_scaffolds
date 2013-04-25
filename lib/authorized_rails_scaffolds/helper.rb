@@ -1,6 +1,6 @@
 module AuthorizedRailsScaffolds
-  
   class Helper
+    include ResourceMacros
 
     def initialize(options = {})
       @local_class_name = options[:local_class_name] || options[:class_name].split('::')[-1]

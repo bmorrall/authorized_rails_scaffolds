@@ -12,14 +12,14 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldGeneratorViewHelper.new(
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 
-controller_directory = t_helper.controller_directory
+resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
 
 output_attributes = t_helper.output_attributes
 references_attributes = t_helper.references_attributes
 
 -%>
-describe "<%= controller_directory %>/show" do
+describe "<%= resource_directory %>/show" do
 
 <% parent_model_tables.each_with_index do |parent_model, index| -%>
 <%- if index == 0 -%>
