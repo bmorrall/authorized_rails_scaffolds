@@ -15,9 +15,19 @@ module ResourceMacros
     @resource_table_name ||= resource_class.underscore
   end
 
+  # Name for plural of a resource
+  def resource_plural_name
+    @resource_plural_name ||= plural_var_name || (var_name || resource_table_name).pluralize
+  end
+
   # Variable resource is assigned to in a singular context (i.e. @foo_bar)
   def resource_var
-    @resource_var_name ||= "@#{@var_name || resource_table_name}"
+    @resource_var_name ||= "@#{var_name || resource_table_name}"
+  end
+
+  # Variable resource is assigned to in a plural context (i.e. @foo_bars)
+  def resources_var
+    @resource_var_name ||= "@#{resource_plural_name}"
   end
 
   # Directory of the current resource: i.e. awesome/foo_bars

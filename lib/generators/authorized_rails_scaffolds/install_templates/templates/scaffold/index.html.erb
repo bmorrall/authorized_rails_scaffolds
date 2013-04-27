@@ -8,7 +8,6 @@ t_helper = AuthorizedRailsScaffolds::RailsErbScaffoldHelper.new(
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
-plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
 
 -%>
 <%%- model_class = <%= local_class_name %> -%>
@@ -33,7 +32,7 @@ plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable 
     </tr>
   </thead>
   <tbody>
-    <%% @<%= plural_var_name %>.each do |<%= var_name %>| %>
+    <%% <%= t_helper.resources_var %>.each do |<%= var_name %>| %>
       <tr class="<%= var_name %>_<%%= <%= var_name %>.id %>">
         <td class="id-column"><%%= <%= var_name %>.id %></td>
   <%- if attributes.any? -%>

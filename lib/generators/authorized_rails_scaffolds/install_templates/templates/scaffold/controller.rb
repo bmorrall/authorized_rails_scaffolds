@@ -24,7 +24,7 @@ t_helper = AuthorizedRailsScaffolds::RailsScaffoldControllerHelper.new(
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 resource_var = t_helper.resource_var
-plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
+resources_var = t_helper.resources_var # Pluralized non-namespaced variable name
 
 # Override default orm instance
 orm_instance = Rails::Generators::ActiveModel.new var_name
@@ -40,11 +40,11 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # GET <%= route_url %>
   # GET <%= route_url %>.json
   def index
-    # @<%= plural_var_name %> = <%= orm_class.all(local_class_name) %>
+    # <%= resources_var %> = <%= orm_class.all(local_class_name) %>
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render <%= key_value :json, "@#{plural_var_name}" %> }
+      format.json { render <%= key_value :json, resources_var %> }
     end
   end
 
@@ -55,7 +55,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render <%= key_value :json, "@#{var_name}" %> }
+      format.json { render <%= key_value :json, resource_var %> }
     end
   end
 

@@ -5,7 +5,10 @@ module AuthorizedRailsScaffolds
     def initialize(options = {})
       @local_class_name = options[:local_class_name] || options[:class_name].split('::')[-1]
       @var_name = options[:var_name] || options[:file_name] # Non-namespaced variable name
-      @plural_var_name = options[:plural_var_name] || @var_name.pluralize # Pluralized non-namespaced variable name
+
+      # Pluralized non-namespaced variable name
+      @plural_var_name ||= options[:plural_var_name] || @var_name.pluralize
+
       # Determine namespace prefix i.e awesome
       @namespace_prefix = options[:namespace_prefix] || options[:singular_table_name][0..-(@var_name.length + 2)]
       @controller_prefix = options[:controller_prefix] || options[:class_name].split('::')[0..-2].join('::')
@@ -35,7 +38,6 @@ module AuthorizedRailsScaffolds
       @var_name
     end
 
-    # Pluralized non-namespaced variable name (i.e. foo_bars)
     def plural_var_name
       @plural_var_name
     end

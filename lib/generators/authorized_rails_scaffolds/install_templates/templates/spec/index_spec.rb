@@ -15,7 +15,6 @@ parent_model_tables = t_helper.parent_model_tables
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 resource_test_var = t_helper.resource_test_var
-plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
 
 output_attributes = t_helper.output_attributes
 
@@ -48,7 +47,7 @@ describe "<%= resource_directory %>/index" do
 <% [1,2].each_with_index do |id, model_index| -%>
       <%= resource_test_var %>_<%= id %> = <%= var_name %>_<%= id %>
 <% end -%>
-      assign(:<%= plural_var_name %>, [
+      assign(:<%= t_helper.resource_plural_name %>, [
 <% [1,2].each_with_index do |id, model_index| -%>
         <%= resource_test_var %>_<%= id %><%= model_index == 1 ? '' : ',' %>
 <% end -%>
@@ -70,7 +69,7 @@ describe "<%= resource_directory %>/index" do
       end
     end
 
-    describe "<%= plural_var_name %> table" do
+    describe "<%= t_helper.resource_plural_name %> table" do
       it 'includes a row for each <%= var_name %>' do
         render
 <% unless webrat? -%>
@@ -85,7 +84,7 @@ describe "<%= resource_directory %>/index" do
 <% end -%>
       end
 
-      it "contains a list of <%= plural_var_name %>" do
+      it "contains a list of <%= t_helper.resource_plural_name %>" do
         render
 <% unless webrat? -%>
         # Run the generator again with the --webrat flag if you want to use webrat matchers

@@ -43,7 +43,6 @@ local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 resource_var = t_helper.resource_var
 resource_test_var = t_helper.resource_test_var
-plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
 
 parent_model_tables = t_helper.parent_model_tables
 
@@ -108,8 +107,8 @@ describe <%= t_helper.controller_class_name %> do
           it { should respond_with(:success) }
           it { should render_template(:index) }
           it { should render_with_layout(:application) }
-          it "assigns all <%= plural_var_name %> as @<%= plural_var_name %>" do
-            assigns(:<%= plural_var_name %>).should eq([<%= resource_test_var %>])
+          it "assigns all <%= t_helper.resource_plural_name %> as <%= t_helper.resources_var %>" do
+            assigns(:<%= t_helper.resource_plural_name %>).should eq([<%= resource_test_var %>])
           end
         end
       end

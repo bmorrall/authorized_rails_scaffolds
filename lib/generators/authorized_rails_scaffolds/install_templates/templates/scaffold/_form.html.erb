@@ -9,7 +9,6 @@ t_helper = AuthorizedRailsScaffolds::RailsErbScaffoldHelper.new(
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
 resource_var = t_helper.resource_var
-plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
 
 -%>
 <%%= simple_form_for(<%= t_helper.scoped_values_for_form %>, :html => { class: 'form-horizontal' }) do |f| %>
