@@ -15,6 +15,11 @@ module ResourceMacros
     @resource_table_name ||= resource_class.underscore
   end
 
+  # Variable resource is assigned to in a singular context (i.e. @foo_bar)
+  def resource_var
+    @resource_var_name ||= "@#{@var_name || resource_table_name}"
+  end
+
   # Directory of the current resource: i.e. awesome/foo_bars
   def resource_directory
     @resource_directory = [parent_module_groups + [resource_table_name.pluralize]].join("/")

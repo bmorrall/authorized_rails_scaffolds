@@ -8,6 +8,7 @@ t_helper = AuthorizedRailsScaffolds::RailsErbScaffoldHelper.new(
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
+resource_var = t_helper.resource_var
 plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
 
 -%>
@@ -20,24 +21,24 @@ plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable 
 <%- attributes.each do |attribute| -%>
   <%- attribute_label = "model_class.human_attribute_name(:#{attribute.name})" -%>
   <%- if attribute.type == :references -%>
-  <%% if @<%= var_name %>.<%= attribute.name %>.present? && can?(:read, @<%= var_name %>.<%= attribute.name %>) %>
+  <%% if <%= resource_var %>.<%= attribute.name %>.present? && can?(:read, <%= resource_var %>.<%= attribute.name %>) %>
   <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
-  <dd><%%= link_to @<%= var_name %>.<%= attribute.name %>, <%= t_helper.references_show_route attribute.name %> %></dd>
+  <dd><%%= link_to <%= resource_var %>.<%= attribute.name %>, <%= t_helper.references_show_route attribute.name %> %></dd>
   <%% end %>
   <%- elsif [:datetime, :timestamp, :time, :date].include? attribute.type -%>
-  <%% unless @<%= var_name %>.<%= attribute.name %>.nil? %>
+  <%% unless <%= resource_var %>.<%= attribute.name %>.nil? %>
   <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
-  <dd><%%=l @<%= var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %></dd>
+  <dd><%%=l <%= resource_var %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %></dd>
   <%% end %>
   <%- elsif attribute.type == :string -%>
-  <%% unless @<%= var_name %>.<%= attribute.name %>.blank? %>
+  <%% unless <%= resource_var %>.<%= attribute.name %>.blank? %>
   <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
-  <dd><%%= @<%= var_name %>.<%= attribute.name %> %></dd>
+  <dd><%%= <%= resource_var %>.<%= attribute.name %> %></dd>
   <%% end %>
   <%- else -%>
-  <%% unless @<%= var_name %>.<%= attribute.name %>.nil? %>
+  <%% unless <%= resource_var %>.<%= attribute.name %>.nil? %>
   <dt><strong><%%= <%= attribute_label %> %>:</strong></dt>
-  <dd><%%= @<%= var_name %>.<%= attribute.name %> %></dd>
+  <dd><%%= <%= resource_var %>.<%= attribute.name %> %></dd>
   <%% end %>
   <%- end -%>
 <%- end -%>
@@ -46,13 +47,13 @@ plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable 
 <div class="form-actions">
   <%%= link_to t('.back', :default => t("helpers.links.back")),
               <%= t_helper.controller_index_path %>, :class => 'btn'  %>
-  <%% if can? :update, @<%= var_name %> %>
+  <%% if can? :update, <%= resource_var %> %>
     <%%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_<%= t_helper.controller_show_route "@#{var_name}" %>,
               :class => 'btn'
     %>
   <%% end %>
-  <%% if can? :destroy, @<%= var_name %> %>
+  <%% if can? :destroy, <%= resource_var %> %>
     <%%= link_to t('.destroy', :default => t("helpers.links.destroy")),
               <%= t_helper.controller_show_route "@#{var_name}" %>,
               :method => 'delete',

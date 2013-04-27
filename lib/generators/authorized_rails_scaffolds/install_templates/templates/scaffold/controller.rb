@@ -23,6 +23,7 @@ t_helper = AuthorizedRailsScaffolds::RailsScaffoldControllerHelper.new(
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
+resource_var = t_helper.resource_var
 plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
 
 # Override default orm instance
@@ -50,7 +51,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # GET <%= route_url %>/1
   # GET <%= route_url %>/1.json
   def show
-    # @<%= var_name %> = <%= orm_class.find(local_class_name, "params[:id]") %>
+    # <%= resource_var %> = <%= orm_class.find(local_class_name, "params[:id]") %>
 
     respond_to do |format|
       format.html # show.html.erb
@@ -61,7 +62,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # GET <%= route_url %>/new
   # GET <%= route_url %>/new.json
   def new
-    # @<%= var_name %> = <%= orm_class.build(local_class_name) %>
+    # <%= resource_var %> = <%= orm_class.build(local_class_name) %>
 
     respond_to do |format|
       format.html # new.html.erb
@@ -71,13 +72,13 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
   # GET <%= route_url %>/1/edit
   def edit
-    # @<%= var_name %> = <%= orm_class.find(local_class_name, "params[:id]") %>
+    # <%= resource_var %> = <%= orm_class.find(local_class_name, "params[:id]") %>
   end
 
   # POST <%= route_url %>
   # POST <%= route_url %>.json
   def create
-    # @<%= var_name %> = <%= orm_class.build(local_class_name, "params[:#{var_name}]") %>
+    # <%= resource_var %> = <%= orm_class.build(local_class_name, "params[:#{var_name}]") %>
 
     respond_to do |format|
       if @<%= orm_instance.save %>
@@ -93,7 +94,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # PUT <%= route_url %>/1
   # PUT <%= route_url %>/1.json
   def update
-    # @<%= var_name %> = <%= orm_class.find(local_class_name, "params[:id]") %>
+    # <%= resource_var %> = <%= orm_class.find(local_class_name, "params[:id]") %>
 
     respond_to do |format|
       if @<%= orm_instance.update_attributes("params[:#{var_name}]") %>
@@ -109,7 +110,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # DELETE <%= route_url %>/1
   # DELETE <%= route_url %>/1.json
   def destroy
-    # @<%= var_name %> = <%= orm_class.find(local_class_name, "params[:id]") %>
+    # <%= resource_var %> = <%= orm_class.find(local_class_name, "params[:id]") %>
     @<%= orm_instance.destroy %>
 
     respond_to do |format|

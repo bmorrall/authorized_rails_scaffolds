@@ -41,6 +41,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper.new(
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
+resource_var = t_helper.resource_var
 resource_test_var = t_helper.resource_test_var
 plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
 
@@ -153,7 +154,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should respond_with(:success) }
           it { should render_template(:show) }
           it { should render_with_layout(:application) }
-          it "assigns the requested <%= var_name %> as @<%= var_name %>" do
+          it "assigns the requested <%= var_name %> as <%= resource_var %>" do
             assigns(:<%= var_name %>).should eq(<%= resource_test_var %>)
           end
         end
@@ -195,7 +196,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should respond_with(:success) }
           it { should render_template(:new) }
           it { should render_with_layout(:application) }
-          it "assigns a new <%= var_name %> as @<%= var_name %>" do
+          it "assigns a new <%= var_name %> as <%= resource_var %>" do
             assigns(:<%= var_name %>).should be_a_new(<%= local_class_name %>)
           end
         end
@@ -240,7 +241,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should respond_with(:success) }
           it { should render_template(:edit) }
           it { should render_with_layout(:application) }
-          it "assigns the requested <%= var_name %> as @<%= var_name %>" do
+          it "assigns the requested <%= var_name %> as <%= resource_var %>" do
             assigns(:<%= var_name %>).should eq(<%= resource_test_var %>)
           end
         end
@@ -286,7 +287,7 @@ describe <%= t_helper.controller_class_name %> do
           before(:each) do
             post :create, {<%= t_helper.action_params_prefix %>:<%= var_name %> => valid_create_attributes}
           end
-          it "assigns a newly created <%= var_name %> as @<%= var_name %>" do
+          it "assigns a newly created <%= var_name %> as <%= resource_var %>" do
             assigns(:<%= var_name %>).should be_a(<%= local_class_name %>)
             assigns(:<%= var_name %>).should be_persisted
           end
@@ -307,7 +308,7 @@ describe <%= t_helper.controller_class_name %> do
           end
           it { should render_template(:new) }
           it { should render_with_layout(:application) }
-          it "assigns a newly created but unsaved <%= var_name %> as @<%= var_name %>" do
+          it "assigns a newly created but unsaved <%= var_name %> as <%= resource_var %>" do
             assigns(:<%= var_name %>).should be_a_new(<%= local_class_name %>)
           end
         end
@@ -364,7 +365,7 @@ describe <%= t_helper.controller_class_name %> do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, :<%= var_name %> => valid_update_attributes}
           end
-          it "assigns the requested <%= var_name %> as @<%= var_name %>" do
+          it "assigns the requested <%= var_name %> as <%= resource_var %>" do
             assigns(:<%= var_name %>).should eq(<%= resource_test_var %>)
           end
           it "redirects to the <%= var_name %>" do
@@ -380,7 +381,7 @@ describe <%= t_helper.controller_class_name %> do
           end
           it { should render_template(:edit) }
           it { should render_with_layout(:application) }
-          it "assigns the <%= var_name %> as @<%= var_name %>" do
+          it "assigns the <%= var_name %> as <%= resource_var %>" do
             assigns(:<%= var_name %>).should eq(<%= resource_test_var %>)
           end
         end

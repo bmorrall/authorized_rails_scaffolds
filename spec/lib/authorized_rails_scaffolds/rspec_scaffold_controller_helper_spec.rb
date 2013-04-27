@@ -132,6 +132,19 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper do
     end
   end
 
+  describe '#resource_var' do
+    it 'returns var_name preceeded by an @' do
+      subject = build_controller_spec_helper :var_name => 'foo_bar'
+      subject.resource_var.should eq('@foo_bar')
+    end
+    context 'with a parent module' do
+      it 'falls back to using class_name if var_name is not present' do
+        subject = build_controller_spec_helper :var_name => nil, :class_name => 'Example::FooBar'
+        subject.resource_var.should eq('@foo_bar')
+      end
+    end
+  end
+
   describe '#resource_test_var' do
     it 'returns var_name preceeded by an @' do
       subject = build_controller_spec_helper :var_name => 'foo_bar'
