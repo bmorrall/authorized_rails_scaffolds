@@ -40,14 +40,6 @@ module AuthorizedRailsScaffolds
       @plural_var_name
     end
 
-    def extra_params
-      extra_params = ''
-      AuthorizedRailsScaffolds.config.parent_models.each_with_index do |model, model_index|
-        extra_params += ", :#{model.underscore}_id => \"#{model_index + 2}\""
-      end
-      extra_params
-    end
-
     def controller_show_route(variable = nil)
       variable ||= ""
       if variable.blank?
