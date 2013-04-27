@@ -48,13 +48,6 @@ module AuthorizedRailsScaffolds
       extra_params
     end
 
-    def form_object_array(variable = nil)
-      variable ||= "@#{var_name}"
-      namespace_prefix = ":#{@namespace_prefix}" unless @namespace_prefix.blank?
-      array = [namespace_prefix, @parent_variables, variable].reject{ |x| x.blank? || x == '_' }.join(', ')
-      "[#{array}]"
-    end
-
     def controller_show_route(variable = nil)
       variable ||= ""
       if variable.blank?

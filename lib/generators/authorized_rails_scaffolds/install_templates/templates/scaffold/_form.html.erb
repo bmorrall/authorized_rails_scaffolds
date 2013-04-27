@@ -11,7 +11,7 @@ var_name = t_helper.var_name # Non-namespaced variable name
 plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable name
 
 -%>
-<%%= simple_form_for(<%= t_helper.form_object_array %>, :html => { class: 'form-horizontal' }) do |f| %>
+<%%= simple_form_for(<%= t_helper.scoped_values_for_form %>, :html => { class: 'form-horizontal' }) do |f| %>
   <%%= f.error_notification %>
 
   <div class="form-inputs">

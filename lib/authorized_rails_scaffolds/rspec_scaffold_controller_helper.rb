@@ -9,18 +9,18 @@ class AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper < AuthorizedRailsS
   end
 
   def create_resource_from_factory
-    extra_params = parent_factory_extra_params
-    "FactoryGirl.create(:#{var_name}#{extra_params})"
+    extra_factory_params = build_extra_factory_params
+    "FactoryGirl.create(:#{var_name}#{extra_factory_params})"
   end
 
   def create_parent_resource_from_factory(model_name)
-    extra_params = parent_factory_extra_params(model_name)
-    "FactoryGirl.create(:#{model_name}#{extra_params})"
+    extra_factory_params = build_extra_factory_params(model_name)
+    "FactoryGirl.create(:#{model_name}#{extra_factory_params})"
   end
 
   protected
 
-  def parent_factory_extra_params(model_name = nil)
+  def build_extra_factory_params(model_name = nil)
     if model_name.nil?
       attribute = parent_model_tables.last
     else

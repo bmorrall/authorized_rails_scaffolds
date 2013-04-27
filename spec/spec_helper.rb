@@ -4,6 +4,7 @@ Bundler.require
 require 'rails'
 
 require 'authorized_rails_scaffolds'
+require 'support/rails_erb_scaffold_helper_macros'
 require 'support/rails_scaffold_controller_helper_macros'
 require 'support/rspec_scaffold_controller_helper_macros'
 require 'support/rspec_scaffold_routing_helper_macros'
