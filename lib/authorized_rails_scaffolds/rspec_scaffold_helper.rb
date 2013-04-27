@@ -14,7 +14,7 @@ class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::
   end
 
   # Variable name stub resource is assigned to (i.e. @foo_bar)
-  def resource_var
+  def resource_test_var
     "@#{var_name}"
   end
 

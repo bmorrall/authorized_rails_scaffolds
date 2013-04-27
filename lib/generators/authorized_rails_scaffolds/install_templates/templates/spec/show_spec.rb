@@ -11,7 +11,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
-resource_var = t_helper.resource_var
+resource_test_var = t_helper.resource_test_var
 
 resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
@@ -43,7 +43,7 @@ describe "<%= resource_directory %>/show" do
 <%- parent_model_tables.each do |parent_model| -%>
       assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
 <%- end -%>
-      assign(:<%= var_name %>, <%= resource_var %> = <%= var_name %>)
+      assign(:<%= var_name %>, <%= resource_test_var %> = <%= var_name %>)
 
       @ability = Object.new
       @ability.extend(CanCan::Ability)
@@ -69,7 +69,7 @@ describe "<%= resource_directory %>/show" do
 
     context "with a <%= attribute.name %> reference" do
       before(:each) do
-        <%= resource_var %>.<%= attribute.name %> = FactoryGirl.build_stubbed(:<%= attribute.name %>)
+        <%= resource_test_var %>.<%= attribute.name %> = FactoryGirl.build_stubbed(:<%= attribute.name %>)
       end
       context 'without read <%= attribute.name.classify %> permissions' do
         it "should not a render link to <%= attribute.name %>" do

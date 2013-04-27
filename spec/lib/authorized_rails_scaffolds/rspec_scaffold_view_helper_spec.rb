@@ -61,10 +61,10 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldViewHelper do
     end
   end
 
-  describe '#resource_var' do
+  describe '#resource_test_var' do
     it 'returns var_name preceeded by an @' do
       subject = build_view_spec_helper :var_name => 'foo_bar'
-      subject.resource_var.should eq('@foo_bar')
+      subject.resource_test_var.should eq('@foo_bar')
     end
   end
 
