@@ -1,6 +1,8 @@
 #
 # requires modular_class_name to be defined
 #
+# also makes use of @controller_class_name value
+#
 module ControllerMacros
 
   # The namespaced class the Controller inherits from (i.e. Example::ApplicationController)
@@ -13,7 +15,8 @@ module ControllerMacros
   end
 
   def controller_class_name
-    "#{modular_class_name}Controller"
+    controller_class_prefix = @controller_class_name || modular_class_name.pluralize
+    "#{controller_class_prefix}Controller"
   end
 
 end

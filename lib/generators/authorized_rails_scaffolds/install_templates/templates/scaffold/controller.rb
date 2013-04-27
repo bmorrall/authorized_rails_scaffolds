@@ -4,8 +4,19 @@ require_dependency "<%= namespaced_file_path %>/application_controller"
 <% end -%>
 <%-
 
+#
+# Available properties:
+# 
+#   class_name
+#   controller_class_name
+#   singular_table_name
+#   file_name
+#   orm_instance
+#
+
 t_helper = AuthorizedRailsScaffolds::RailsScaffoldControllerHelper.new(
   :class_name => class_name,
+  :controller_class_name => controller_class_name,
   :singular_table_name => singular_table_name,
   :file_name => file_name
 )

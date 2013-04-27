@@ -3,8 +3,19 @@ require "spec_helper"
 <% module_namespacing do -%>
 <%-
 
+#
+# Available properties:
+# 
+#   class_name
+#   controller_class_name
+#   singular_table_name
+#   file_name
+#   attributes
+#
+
 t_helper = AuthorizedRailsScaffolds::RSpecScaffoldRoutingHelper.new(
   :class_name => class_name,
+  :controller_class_name => controller_class_name,
   :singular_table_name => singular_table_name,
   :file_name => file_name,
   :attributes => attributes
