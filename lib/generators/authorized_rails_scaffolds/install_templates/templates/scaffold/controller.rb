@@ -4,7 +4,7 @@ require_dependency "<%= namespaced_file_path %>/application_controller"
 <% end -%>
 <%-
 
-t_helper = AuthorizedRailsScaffolds::Helper.new(
+t_helper = AuthorizedRailsScaffolds::RailsScaffoldControllerHelper.new(
   :class_name => class_name,
   :singular_table_name => singular_table_name,
   :file_name => file_name

@@ -1,0 +1,3 @@
+class AuthorizedRailsScaffolds::RailsScaffoldControllerHelper < AuthorizedRailsScaffolds::Helper
+
+end
