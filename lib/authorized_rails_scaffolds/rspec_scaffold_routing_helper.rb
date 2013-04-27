@@ -27,7 +27,7 @@ class AuthorizedRailsScaffolds::RSpecScaffoldRoutingHelper < AuthorizedRailsScaf
 
   # Extra params for an example controller path: i.e. ', :user_id => 2'
   def example_controller_path_extra_params
-    @example_controller_path_extra_params ||= example_parent_values.any? ? ', ' + example_parent_values.map{ |parent_model_id, parent_value| ":#{parent_model_id} => #{parent_value}" }.join(', ') : ''
+    @example_controller_path_extra_params ||= example_parent_values.any? ? ', ' + example_parent_values.map{ |parent_model_id, parent_value| ":#{parent_model_id} => \"#{parent_value}\"" }.join(', ') : ''
   end
 
   protected
