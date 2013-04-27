@@ -8,26 +8,33 @@ class AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper < AuthorizedRailsS
     @controller_class_name = options[:controller_class_name]
   end
 
-  def create_factory_model
-    extra_params = extra_model_params
+  def create_resource_from_factory
+    extra_params = parent_factory_extra_params
     "FactoryGirl.create(:#{var_name}#{extra_params})"
   end
 
-  def create_parent_model(model_name)
-    extra_params = extra_model_params(model_name)
+  def create_parent_resource_from_factory(model_name)
+    extra_params = parent_factory_extra_params(model_name)
     "FactoryGirl.create(:#{model_name}#{extra_params})"
   end
 
   protected
 
-  def extra_model_params(model_name = nil)
-    argument_params = []
-    parent_model_tables.each do |parent_model|
-      attribute = parent_model.underscore
-      break if model_name == attribute
-      argument_params << ", :#{attribute} => @#{attribute}"
+  def parent_factory_extra_params(model_name = nil)
+    if model_name.nil?
+      attribute = parent_model_tables.last
+    else
+      parent_index = parent_model_tables.index(model_name.to_s)
+      unless parent_index.nil? || parent_index == 0
+        attribute = parent_model_tables[parent_index - 1]
+      end
     end
-    argument_params.join('')
+
+    if attribute.nil?
+      return ''
+    else
+      return ", :#{attribute} => @#{attribute}"
+    end
   end
 
 end

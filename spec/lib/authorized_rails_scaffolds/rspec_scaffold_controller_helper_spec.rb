@@ -41,6 +41,66 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper do
     end
   end
 
+  describe '#create_resource_from_factory' do
+    context 'with no parent_models' do
+      it 'returns a code fragment that creates the model' do
+        subject = build_controller_spec_helper :var_name => 'foo_bar'
+        subject.create_resource_from_factory.should eq('FactoryGirl.create(:foo_bar)')
+      end
+    end
+    context 'with a parent model' do
+      before(:each) do
+        AuthorizedRailsScaffolds.configure do |config|
+          config.parent_models = ['Parent']
+        end
+      end
+      it 'returns a code fragment including the parent reference' do
+        subject = build_controller_spec_helper :var_name => 'foo_bar'
+        subject.create_resource_from_factory.should eq('FactoryGirl.create(:foo_bar, :parent => @parent)')
+      end
+    end
+    context 'with multiple parent models' do
+      before(:each) do
+        AuthorizedRailsScaffolds.configure do |config|
+          config.parent_models = ['Grandparent', 'Parent']
+        end
+      end
+      it 'returns a code fragment including the last parent fragment' do
+        subject = build_controller_spec_helper :var_name => 'foo_bar'
+        subject.create_resource_from_factory.should eq('FactoryGirl.create(:foo_bar, :parent => @parent)')
+      end
+    end
+  end
+
+  describe '#create_parent_resource_from_factory' do
+    context 'with a parent model' do
+      before(:each) do
+        AuthorizedRailsScaffolds.configure do |config|
+          config.parent_models = ['Parent']
+        end
+      end
+      it 'returns a code fragment with no parent references' do
+        subject = build_controller_spec_helper
+        subject.create_parent_resource_from_factory('parent').should eq('FactoryGirl.create(:parent)')
+      end
+    end
+    context 'with multiple parent models' do
+      before(:each) do
+        AuthorizedRailsScaffolds.configure do |config|
+          config.parent_models = ['Grandparent', 'Parent']
+        end
+      end
+      it 'returns last parent fragment with a references to the grandparent' do
+        subject = build_controller_spec_helper
+        subject.create_parent_resource_from_factory('parent').should eq('FactoryGirl.create(:parent, :grandparent => @grandparent)')
+      end
+      it 'returns the grandparent element with no references to other classes' do
+        subject = build_controller_spec_helper
+        subject.create_parent_resource_from_factory('grandparent').should eq('FactoryGirl.create(:grandparent)')
+      end
+    end
+  end
+
   describe '#parent_model_tables' do
     context 'with no parent_models' do
       it 'returns an empty array' do
