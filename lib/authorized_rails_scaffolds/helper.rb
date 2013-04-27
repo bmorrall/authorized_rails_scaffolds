@@ -25,11 +25,6 @@ module AuthorizedRailsScaffolds
       @single_path_prefix = "#{@route_prefix}#{var_name}"
     end
 
-    # Prefix for Controllers (i.e. Admin::)
-    def ns_controller_prefix
-      "#{@controller_prefix}::" unless @controller_prefix.blank?
-    end
-
     # Non-namespaced class name (i.e. FooBar)
     def local_class_name
       @local_class_name
