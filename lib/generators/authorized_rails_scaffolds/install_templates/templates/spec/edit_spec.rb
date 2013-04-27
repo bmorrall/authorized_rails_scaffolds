@@ -11,6 +11,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 var_name = t_helper.var_name # Non-namespaced variable name
+resource_var = t_helper.resource_var
 
 resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
@@ -43,14 +44,14 @@ describe "<%= resource_directory %>/edit" do
 <%- parent_model_tables.each do |parent_model| -%>
       assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
 <%- end -%>
-      assign(:<%= var_name %>, @<%= var_name %> = <%= var_name %>)
+      assign(:<%= var_name %>, <%= resource_var %> = <%= var_name %>)
     end
 
     it "renders the edit <%= var_name %> form" do
       render
 
 <% if webrat? -%>
-      rendered.should have_selector("form", :action => <%= t_helper.controller_show_route "@#{var_name}" %>, :method => "post") do |form|
+      rendered.should have_selector("form", :action => <%= t_helper.controller_show_route resource_var %>, :method => "post") do |form|
 <% for attribute in standard_attributes -%>
   <%- if attribute.type == :references -%>
         form.should have_selector("select#<%= var_name %>_<%= attribute.name %>_id", :name => "<%= var_name %>[<%= attribute.name %>_id]")
@@ -61,7 +62,7 @@ describe "<%= resource_directory %>/edit" do
       end
 <% else -%>
       # Run the generator again with the --webrat flag if you want to use webrat matchers
-      assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route "@#{var_name}" %>, "post" do
+      assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route resource_var %>, "post" do
 <% for attribute in standard_attributes -%>
   <%- if attribute.type == :references -%>
         assert_select "select#<%= var_name %>_<%= attribute.name %>_id[name=?]", "<%= var_name %>[<%= attribute.name %>_id]"

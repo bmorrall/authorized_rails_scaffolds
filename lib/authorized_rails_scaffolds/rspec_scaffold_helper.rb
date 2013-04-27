@@ -13,4 +13,9 @@ class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::
     @modular_class_name
   end
 
+  # Variable name stub resource is assigned to (i.e. @foo_bar)
+  def resource_var
+    "@#{var_name}"
+  end
+
 end
