@@ -1,4 +1,5 @@
 class AuthorizedRailsScaffolds::RailsScaffoldControllerHelper < AuthorizedRailsScaffolds::Helper
+  include ControllerMacros
 
   def initialize(options = {})
     super options
@@ -10,15 +11,6 @@ class AuthorizedRailsScaffolds::RailsScaffoldControllerHelper < AuthorizedRailsS
   # Name of class assumed by default generators, used as a base for determining modules and class
   def modular_class_name
     @modular_class_name
-  end
-
-  # The namespaced class the Controller inherits from (i.e. Example::ApplicationController)
-  def application_controller_class
-    @application_controller_class = 'ApplicationController'
-    if parent_modules.any?
-      @application_controller_class = "#{parent_modules.join('::')}::#{@application_controller_class}"
-    end
-    @application_controller_class
   end
 
 end

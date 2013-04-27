@@ -16,7 +16,7 @@ example_controller_path = t_helper.example_controller_path
 example_controller_path_extra_params = t_helper.example_controller_path_extra_params
 
 -%>
-describe <%= controller_class_name %>Controller do
+describe <%= t_helper.controller_class_name %> do
   describe "routing" do
 
 <% unless options[:singleton] -%>

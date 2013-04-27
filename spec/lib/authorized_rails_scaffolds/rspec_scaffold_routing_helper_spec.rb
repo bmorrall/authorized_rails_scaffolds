@@ -3,6 +3,38 @@ require 'spec_helper'
 describe AuthorizedRailsScaffolds::RSpecScaffoldRoutingHelper do
   include RSpecScaffoldRoutingHelperMacros
 
+  describe '#controller_class_name' do
+    context 'with no parent modules' do
+      it 'returns class_name with Controller appended' do
+        subject = build_routing_spec_helper :class_name => 'FooBar'
+        subject.controller_class_name.should eq('FooBarController')
+      end
+    end
+    context 'with a parent modules' do
+      it 'returns a controller class name nested within the parent module' do
+        subject = build_routing_spec_helper :class_name => 'Example::FooBar'
+        subject.controller_class_name.should eq('Example::FooBarController')
+      end
+    end
+    context 'with multiple parent modules' do
+      it 'returns a controller class name nested within the parent modules' do
+        subject = build_routing_spec_helper :class_name => 'Example::V1::FooBar'
+        subject.controller_class_name.should eq('Example::V1::FooBarController')
+      end
+    end
+    context 'with a parent module' do
+      before(:each) do
+        AuthorizedRailsScaffolds.configure do |config|
+          config.parent_models = ['Parent']
+        end
+      end
+      it 'ignores the parent module value' do
+        subject = build_routing_spec_helper :class_name => 'FooBar'
+        subject.controller_class_name.should eq('FooBarController')
+      end
+    end
+  end
+
   describe '#example_controller_path' do
     it 'underscores the class_name value' do
       subject = build_routing_spec_helper :class_name => 'FooBar'

@@ -1,4 +1,5 @@
 class AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper < AuthorizedRailsScaffolds::RSpecScaffoldHelper
+  include ControllerMacros
 
   def create_factory_model
     extra_params = extra_model_params

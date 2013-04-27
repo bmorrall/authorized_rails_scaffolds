@@ -35,7 +35,7 @@ plural_var_name = t_helper.plural_var_name # Pluralized non-namespaced variable 
 parent_model_tables = t_helper.parent_model_tables
 
 -%>
-describe <%= controller_class_name %>Controller do
+describe <%= t_helper.controller_class_name %> do
 
   # This should return the minimal set of attributes required to create a valid
   # <%= local_class_name %>.
