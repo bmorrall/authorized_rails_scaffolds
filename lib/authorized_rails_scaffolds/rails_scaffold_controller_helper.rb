@@ -3,11 +3,13 @@ class AuthorizedRailsScaffolds::RailsScaffoldControllerHelper < AuthorizedRailsS
   def initialize(options = {})
     super options
 
-    @controller_class_name = options[:class_name] || options[:local_class_name]
+    @modular_class_name = options[:class_name] || options[:local_class_name]
   end
 
-  def controller_class_name
-    @controller_class_name
+  # Class name with parent modules included (i.e. Example::FooBar)
+  # Name of class assumed by default generators, used as a base for determining modules and class
+  def modular_class_name
+    @modular_class_name
   end
 
   # The namespaced class the Controller inherits from (i.e. Example::ApplicationController)

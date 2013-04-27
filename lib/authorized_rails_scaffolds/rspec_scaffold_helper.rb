@@ -3,12 +3,14 @@ class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::
   def initialize(options = {})
     super options
 
-    @controller_class_name = options[:class_name] || options[:local_class_name]
+    @modular_class_name = options[:class_name] || options[:local_class_name]
     @attributes = options[:attributes]
   end
 
-  def controller_class_name
-    @controller_class_name
+  # Class name with parent modules included (i.e. Example::FooBar)
+  # Name of class assumed by default generators, used as a base for determining modules and class
+  def modular_class_name
+    @modular_class_name
   end
 
 end

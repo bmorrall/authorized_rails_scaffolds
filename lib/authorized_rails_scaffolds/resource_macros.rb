@@ -1,5 +1,5 @@
 #
-# requires controller_class_name to be defined
+# requires modular_class_name to be defined
 #
 module ResourceMacros
 
@@ -7,7 +7,7 @@ module ResourceMacros
 
   # Class name of the resource being tested (i.e. 'FooBar')
   def resource_class
-    @resource_class ||= controller_class_name.split('::')[-1]
+    @resource_class ||= modular_class_name.split('::')[-1]
   end
 
   # Table name of the Resource being tested (i.e. foo_bar)
@@ -36,7 +36,7 @@ module ResourceMacros
 
   # The parent modules of a controller (i.e. ['Api', 'V1'])
   def parent_modules
-    @parent_modules ||= controller_class_name.split('::')[0..-2]
+    @parent_modules ||= modular_class_name.split('::')[0..-2]
   end
 
   # Array of symbols used for links to parents (i.e. ['api', 'v1'])
