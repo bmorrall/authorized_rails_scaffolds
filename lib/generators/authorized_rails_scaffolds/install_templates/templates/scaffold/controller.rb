@@ -12,6 +12,7 @@ require_dependency "<%= namespaced_file_path %>/application_controller"
 #   singular_table_name
 #   file_name
 #   orm_instance
+#   route_url
 #
 
 t_helper = AuthorizedRailsScaffolds::RailsScaffoldControllerHelper.new(
@@ -27,6 +28,8 @@ resource_table_name = t_helper.resource_table_name
 resource_var = t_helper.resource_var
 resources_var = t_helper.resources_var # Pluralized non-namespaced variable name
 
+example_controller_path = t_helper.example_controller_path
+
 # Override default orm instance
 orm_instance = Rails::Generators::ActiveModel.new resource_table_name
 
@@ -38,8 +41,8 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   <%- end -%>
   load_and_authorize_resource :<%= t_helper.resource_table_name %><% if t_helper.parent_models.any? %>, :through => :<%= t_helper.parent_models.last.underscore %><% end %>
 
-  # GET <%= route_url %>
-  # GET <%= route_url %>.json
+  # GET <%= example_controller_path %>
+  # GET <%= example_controller_path %>.json
   def index
     # <%= resources_var %> = <%= orm_class.all(local_class_name) %>
 
@@ -49,8 +52,8 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     end
   end
 
-  # GET <%= route_url %>/1
-  # GET <%= route_url %>/1.json
+  # GET <%= example_controller_path %>/1
+  # GET <%= example_controller_path %>/1.json
   def show
     # <%= resource_var %> = <%= orm_class.find(local_class_name, "params[:id]") %>
 
@@ -60,8 +63,8 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     end
   end
 
-  # GET <%= route_url %>/new
-  # GET <%= route_url %>/new.json
+  # GET <%= example_controller_path %>/new
+  # GET <%= example_controller_path %>/new.json
   def new
     # <%= resource_var %> = <%= orm_class.build(local_class_name) %>
 
@@ -71,13 +74,13 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     end
   end
 
-  # GET <%= route_url %>/1/edit
+  # GET <%= example_controller_path %>/1/edit
   def edit
     # <%= resource_var %> = <%= orm_class.find(local_class_name, "params[:id]") %>
   end
 
-  # POST <%= route_url %>
-  # POST <%= route_url %>.json
+  # POST <%= example_controller_path %>
+  # POST <%= example_controller_path %>.json
   def create
     # <%= resource_var %> = <%= orm_class.build(local_class_name, "params[#{resource_symbol}]") %>
 
@@ -92,8 +95,8 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     end
   end
 
-  # PUT <%= route_url %>/1
-  # PUT <%= route_url %>/1.json
+  # PUT <%= example_controller_path %>/1
+  # PUT <%= example_controller_path %>/1.json
   def update
     # <%= resource_var %> = <%= orm_class.find(local_class_name, "params[:id]") %>
 
@@ -108,8 +111,8 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     end
   end
 
-  # DELETE <%= route_url %>/1
-  # DELETE <%= route_url %>/1.json
+  # DELETE <%= example_controller_path %>/1
+  # DELETE <%= example_controller_path %>/1.json
   def destroy
     # <%= resource_var %> = <%= orm_class.find(local_class_name, "params[:id]") %>
     @<%= orm_instance.destroy %>

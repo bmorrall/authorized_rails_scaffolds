@@ -1,5 +1,6 @@
 class AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper < AuthorizedRailsScaffolds::RSpecScaffoldHelper
   include ControllerMacros
+  include RouteExampleMacros
 
   def initialize(options = {})
     super options
