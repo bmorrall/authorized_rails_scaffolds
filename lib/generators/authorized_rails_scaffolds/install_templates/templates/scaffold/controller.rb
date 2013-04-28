@@ -22,6 +22,7 @@ t_helper = AuthorizedRailsScaffolds::RailsScaffoldControllerHelper.new(
 )
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
+resource_symbol = t_helper.resource_symbol
 resource_table_name = t_helper.resource_table_name
 resource_var = t_helper.resource_var
 resources_var = t_helper.resources_var # Pluralized non-namespaced variable name
@@ -78,7 +79,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # POST <%= route_url %>
   # POST <%= route_url %>.json
   def create
-    # <%= resource_var %> = <%= orm_class.build(local_class_name, "params[:#{resource_table_name}]") %>
+    # <%= resource_var %> = <%= orm_class.build(local_class_name, "params[#{resource_symbol}]") %>
 
     respond_to do |format|
       if @<%= orm_instance.save %>
@@ -97,7 +98,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     # <%= resource_var %> = <%= orm_class.find(local_class_name, "params[:id]") %>
 
     respond_to do |format|
-      if @<%= orm_instance.update_attributes("params[:#{resource_table_name}]") %>
+      if @<%= orm_instance.update_attributes("params[#{resource_symbol}]") %>
         format.html { redirect_to <%= t_helper.controller_show_route resource_var %>, <%= key_value :notice, "'#{human_name} was successfully updated.'" %> }
         format.json { head :no_content }
       else

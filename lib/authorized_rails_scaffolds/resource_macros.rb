@@ -15,6 +15,11 @@ module ResourceMacros
     @resource_table_name ||= resource_class.underscore
   end
 
+  # Symbol used to represent resource (i.e. :foo_bar)
+  def resource_symbol
+    ":#{resource_table_name}"
+  end
+
   # Name for plural of a resource
   def resource_plural_name
     @resource_plural_name ||= plural_var_name || (var_name || resource_table_name).pluralize
