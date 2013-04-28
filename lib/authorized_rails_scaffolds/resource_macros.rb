@@ -7,6 +7,7 @@ module ResourceMacros
 
   # Class name of the resource being tested (i.e. 'FooBar')
   def resource_class
+    # @local_class_name
     @resource_class ||= modular_class_name.split('::')[-1]
   end
 

@@ -3,7 +3,7 @@ module AuthorizedRailsScaffolds
     include ResourceMacros
 
     def initialize(options = {})
-      @local_class_name = options[:local_class_name] || options[:class_name].split('::')[-1]
+      # @local_class_name = options[:local_class_name]
       @var_name = options[:var_name] || options[:file_name] # Non-namespaced variable name
 
       # Pluralized non-namespaced variable name
@@ -26,11 +26,6 @@ module AuthorizedRailsScaffolds
       @route_params_prefix = @parent_variables.blank? ? "" : "#{@parent_variables}, "
       @index_path_prefix = "#{@route_prefix}#{@plural_var_name}"
       @single_path_prefix = "#{@route_prefix}#{var_name}"
-    end
-
-    # Non-namespaced class name (i.e. FooBar)
-    def local_class_name
-      @local_class_name
     end
 
     # Non-namespaced variable name (i.e. foo_bar)

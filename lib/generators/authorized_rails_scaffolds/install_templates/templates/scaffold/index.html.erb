@@ -6,11 +6,11 @@ t_helper = AuthorizedRailsScaffolds::RailsErbScaffoldHelper.new(
   :file_name => file_name
 )
 
-local_class_name = t_helper.local_class_name # Non-Namespaced class name
+resource_class = t_helper.resource_class
 resource_table_name = t_helper.resource_table_name # Non-namespaced variable name
 
 -%>
-<%%- model_class = <%= local_class_name %> -%>
+<%%- model_class = <%= resource_class %> -%>
 <div class="page-header">
   <h1><%%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
 </div>
@@ -69,7 +69,7 @@ resource_table_name = t_helper.resource_table_name # Non-namespaced variable nam
   </tbody>
 </table>
 
-<%% if can?(:create, <%= local_class_name %>) %>
+<%% if can?(:create, <%= resource_class %>) %>
   <%%= link_to t('.new', :default => t("helpers.links.new")),
             new_<%= t_helper.controller_show_route %>,
             :class => 'btn btn-primary' %>

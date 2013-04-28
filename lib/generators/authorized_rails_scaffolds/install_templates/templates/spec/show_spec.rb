@@ -9,7 +9,6 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
   :attributes => attributes
 )
 
-local_class_name = t_helper.local_class_name # Non-Namespaced class name
 resource_var = t_helper.resource_var
 resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var

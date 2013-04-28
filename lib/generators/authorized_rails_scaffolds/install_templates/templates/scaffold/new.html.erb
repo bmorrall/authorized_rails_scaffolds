@@ -6,10 +6,8 @@ t_helper = AuthorizedRailsScaffolds::RailsErbScaffoldHelper.new(
   :file_name => file_name
 )
 
-local_class_name = t_helper.local_class_name # Non-Namespaced class name
-
 -%>
-<%%- model_class = <%= local_class_name %> -%>
+<%%- model_class = <%= t_helper.resource_class %> -%>
 <div class="page-header">
   <h1><%%=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human %></h1>
 </div>

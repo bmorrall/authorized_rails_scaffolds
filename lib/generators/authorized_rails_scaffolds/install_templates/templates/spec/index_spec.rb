@@ -12,7 +12,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
 
-local_class_name = t_helper.local_class_name # Non-Namespaced class name
+resource_class = t_helper.resource_class # Non-Namespaced class name
 resource_symbol = t_helper.resource_symbol
 resource_table_name = t_helper.resource_table_name
 
@@ -165,7 +165,7 @@ describe "<%= resource_directory %>/index" do
         end
         context 'with update permissions' do
           it "renders a link to edit_<%= ns_file_name %>_path" do
-            @ability.can :update, <%= local_class_name %>
+            @ability.can :update, <%= resource_class %>
             render
 <% [1,2].each do |model_index| -%>
   <%- if webrat? -%>
@@ -193,7 +193,7 @@ describe "<%= resource_directory %>/index" do
         end
         context 'with destroy permissions' do
           it "renders a link to <%= ns_file_name %>_path" do
-            @ability.can :destroy, <%= local_class_name %>
+            @ability.can :destroy, <%= resource_class %>
             render
 <% [1,2].each do |model_index| -%>
   <%- if webrat? -%>
@@ -220,7 +220,7 @@ describe "<%= resource_directory %>/index" do
       end
       context 'with create permissions' do
         it "renders a link to new_<%= ns_file_name %>_path" do
-          @ability.can :create, <%= local_class_name %>
+          @ability.can :create, <%= resource_class %>
           render
 <% if webrat? -%>
           rendered.should have_selector("a[href=?]", new_<%= t_helper.controller_show_route %>, :count => 1)

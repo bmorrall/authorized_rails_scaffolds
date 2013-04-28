@@ -64,11 +64,11 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldViewHelper do
   describe '#resource_test_sym' do
     it 'returns var_name preceeded by an :' do
       subject = build_view_spec_helper :var_name => 'foo_bar'
-      subject.resource_test_var.should eq(':foo_bar')
+      subject.resource_test_sym.should eq(':foo_bar')
     end
     it 'appends a number if included' do
       subject = build_view_spec_helper :var_name => 'foo_bar'
-      subject.resource_test_var(2).should eq(':foo_bar_2')
+      subject.resource_test_sym(2).should eq(':foo_bar_2')
     end
   end
 

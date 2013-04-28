@@ -39,7 +39,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper.new(
   :attributes => attributes
 )
 
-local_class_name = t_helper.local_class_name # Non-Namespaced class name
+resource_class = t_helper.resource_class
 resource_var = t_helper.resource_var
 resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
@@ -51,13 +51,13 @@ parent_model_tables = t_helper.parent_model_tables
 describe <%= t_helper.controller_class_name %> do
 
   # This should return the minimal set of attributes required to create a valid
-  # <%= local_class_name %>.
+  # <%= resource_class %>.
   def valid_create_attributes
     FactoryGirl.attributes_for(<%= resource_symbol %>)
   end
 
   # This should return the minimal set of attributes required to update a valid
-  # <%= local_class_name %>.
+  # <%= resource_class %>.
   def valid_update_attributes
     FactoryGirl.attributes_for(<%= resource_symbol %>)
   end
@@ -99,7 +99,7 @@ describe <%= t_helper.controller_class_name %> do
         end
       end
       context 'as user with read ability' do
-        login_user_with_ability :read, <%= local_class_name %>
+        login_user_with_ability :read, <%= resource_class %>
         describe 'with valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -145,7 +145,7 @@ describe <%= t_helper.controller_class_name %> do
         end
       end
       context 'as user with read ability' do
-        login_user_with_ability :read, <%= local_class_name %>
+        login_user_with_ability :read, <%= resource_class %>
         describe 'with valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -188,7 +188,7 @@ describe <%= t_helper.controller_class_name %> do
         end
       end
       context 'as user with create ability' do
-        login_user_with_ability :create, <%= local_class_name %>
+        login_user_with_ability :create, <%= resource_class %>
         describe 'with valid request' do
           before(:each) do
             get :new, {<%= t_helper.index_action_params_prefix %>}
@@ -197,7 +197,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should render_template(:new) }
           it { should render_with_layout(:application) }
           it "assigns a new <%= resource_table_name %> as <%= resource_var %>" do
-            assigns(<%= resource_symbol %>).should be_a_new(<%= local_class_name %>)
+            assigns(<%= resource_symbol %>).should be_a_new(<%= resource_class %>)
           end
         end
       end
@@ -232,7 +232,7 @@ describe <%= t_helper.controller_class_name %> do
         end
       end
       context 'as user with update ability' do
-        login_user_with_ability :update, <%= local_class_name %>
+        login_user_with_ability :update, <%= resource_class %>
         describe 'with valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -275,12 +275,12 @@ describe <%= t_helper.controller_class_name %> do
         end
       end
       context 'as user with create ability' do
-        login_user_with_ability :create, <%= local_class_name %>
+        login_user_with_ability :create, <%= resource_class %>
         describe "with valid params" do
-          it "creates a new <%= local_class_name %>" do
+          it "creates a new <%= resource_class %>" do
             expect {
               post :create, {<%= t_helper.action_params_prefix %><%= resource_symbol %> => valid_create_attributes}
-            }.to change(<%= local_class_name %>, :count).by(1)
+            }.to change(<%= resource_class %>, :count).by(1)
           end
         end
         describe 'with valid params' do
@@ -288,7 +288,7 @@ describe <%= t_helper.controller_class_name %> do
             post :create, {<%= t_helper.action_params_prefix %><%= resource_symbol %> => valid_create_attributes}
           end
           it "assigns a newly created <%= resource_table_name %> as <%= resource_var %>" do
-            assigns(<%= resource_symbol %>).should be_a(<%= local_class_name %>)
+            assigns(<%= resource_symbol %>).should be_a(<%= resource_class %>)
             assigns(<%= resource_symbol %>).should be_persisted
           end
 <% if parent_model_tables.any? -%>
@@ -297,19 +297,19 @@ describe <%= t_helper.controller_class_name %> do
           end
 <% end -%>
           it "redirects to the created <%= resource_table_name %>" do
-            response.should redirect_to(<%= t_helper.controller_show_route "#{local_class_name}.last" %>)
+            response.should redirect_to(<%= t_helper.controller_show_route "#{resource_class}.last" %>)
           end
         end
         describe "with invalid params" do
           before(:each) do
             # Trigger the behavior that occurs when invalid params are submitted
-            <%= local_class_name %>.any_instance.stub(:save).and_return(false)
+            <%= resource_class %>.any_instance.stub(:save).and_return(false)
             post :create, {<%= t_helper.action_params_prefix %><%= resource_symbol %> => <%= formatted_hash(example_invalid_attributes) %>}
           end
           it { should render_template(:new) }
           it { should render_with_layout(:application) }
           it "assigns a newly created but unsaved <%= resource_table_name %> as <%= resource_var %>" do
-            assigns(<%= resource_symbol %>).should be_a_new(<%= local_class_name %>)
+            assigns(<%= resource_symbol %>).should be_a_new(<%= resource_class %>)
           end
         end
       end
@@ -344,18 +344,18 @@ describe <%= t_helper.controller_class_name %> do
         end
       end
       context 'as user with update ability' do
-        login_user_with_ability :update, <%= local_class_name %>
+        login_user_with_ability :update, <%= resource_class %>
         describe "with valid params" do
           it "updates the requested <%= resource_table_name %>" do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             # Assuming there are no other <%= resource_table_name %> in the database, this
-            # specifies that the <%= local_class_name %> created on the previous line
+            # specifies that the <%= resource_class %> created on the previous line
             # receives the :update_attributes message with whatever params are
             # submitted in the request.
             <%- if Rails.version >= '4' -%>
-            <%= local_class_name %>.any_instance.should_receive(:update).with(<%= formatted_hash(example_params_for_update) %>)
+            <%= resource_class %>.any_instance.should_receive(:update).with(<%= formatted_hash(example_params_for_update) %>)
             <%- else -%>
-            <%= local_class_name %>.any_instance.should_receive(:update_attributes).with(<%= formatted_hash(example_params_for_update) %>)
+            <%= resource_class %>.any_instance.should_receive(:update_attributes).with(<%= formatted_hash(example_params_for_update) %>)
             <%- end -%>
             put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, <%= resource_symbol %> => <%= formatted_hash(example_params_for_update) %>}
           end
@@ -376,7 +376,7 @@ describe <%= t_helper.controller_class_name %> do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             # Trigger the behavior that occurs when invalid params are submitted
-            <%= local_class_name %>.any_instance.stub(:save).and_return(false)
+            <%= resource_class %>.any_instance.stub(:save).and_return(false)
             put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, <%= resource_symbol %> => <%= formatted_hash(example_invalid_attributes) %>}
           end
           it { should render_template(:edit) }
@@ -417,12 +417,12 @@ describe <%= t_helper.controller_class_name %> do
         end
       end
       context 'as user with destroy ability' do
-        login_user_with_ability :destroy, <%= local_class_name %>
+        login_user_with_ability :destroy, <%= resource_class %>
         it "destroys the requested <%= resource_table_name %>" do
           <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
           expect {
             delete :destroy, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param}
-          }.to change(<%= local_class_name %>, :count).by(-1)
+          }.to change(<%= resource_class %>, :count).by(-1)
         end
         describe 'with valid request' do
           before(:each) do
