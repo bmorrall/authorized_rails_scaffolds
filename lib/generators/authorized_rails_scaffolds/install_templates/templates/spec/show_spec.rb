@@ -32,7 +32,7 @@ describe "<%= resource_directory %>/show" do
   let(:<%= parent_model %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
 <%- end -%>
 <%- end -%>
-  let(:<%= resource_table_name %>) do
+  let(<%= t_helper.resource_test_sym %>) do
     FactoryGirl.build_stubbed(:<%= t_helper.resource_table_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
       :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= attribute.name %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>

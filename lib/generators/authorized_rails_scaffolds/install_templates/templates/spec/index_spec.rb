@@ -31,7 +31,7 @@ describe "<%= resource_directory %>/index" do
 <%- end -%>
 <%- end -%>
 <% [1,2].each_with_index do |id, model_index| -%>
-  let(:<%= resource_table_name %>_<%= id %>) do
+  let(<%= t_helper.resource_test_sym(id) %>) do
     FactoryGirl.build_stubbed(:<%= resource_table_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
       :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= attribute.name %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
@@ -47,7 +47,7 @@ describe "<%= resource_directory %>/index" do
       assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
 <%- end -%>
 <% [1,2].each_with_index do |id, model_index| -%>
-      <%= t_helper.resource_test_var(id) %> = <%= resource_table_name %>_<%= id %>
+      <%= t_helper.resource_test_var(id) %> = <%= t_helper.resource_test_property(id) %>
 <% end -%>
       assign(:<%= t_helper.resource_plural_name %>, [
 <% [1,2].each_with_index do |id, model_index| -%>
