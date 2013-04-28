@@ -10,7 +10,7 @@ class AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper < AuthorizedRailsS
 
   def create_resource_from_factory
     extra_factory_params = build_extra_factory_params
-    "FactoryGirl.create(:#{var_name}#{extra_factory_params})"
+    "FactoryGirl.create(:#{resource_table_name}#{extra_factory_params})"
   end
 
   def create_parent_resource_from_factory(model_name)

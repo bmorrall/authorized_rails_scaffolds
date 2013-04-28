@@ -8,7 +8,7 @@ class AuthorizedRailsScaffolds::RailsErbScaffoldHelper < AuthorizedRailsScaffold
 
   # returns values that should be parsed by a form in order for post and put actions to work
   def scoped_values_for_form(variable = nil)
-    variable ||= "@#{var_name}"
+    variable ||= resource_var
 
     form_argument_values = []
 

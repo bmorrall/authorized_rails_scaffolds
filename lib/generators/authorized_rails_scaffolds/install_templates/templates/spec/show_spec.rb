@@ -10,8 +10,9 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 )
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
-var_name = t_helper.var_name # Non-namespaced variable name
+resource_var = t_helper.resource_var
 resource_test_var = t_helper.resource_test_var
+resource_table_name = t_helper.resource_table_name
 
 resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
@@ -29,8 +30,8 @@ describe "<%= resource_directory %>/show" do
   let(:<%= parent_model %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
 <%- end -%>
 <%- end -%>
-  let(:<%= var_name %>) do
-    FactoryGirl.build_stubbed(:<%= var_name %><%= output_attributes.empty? ? ')' : ',' %>
+  let(:<%= resource_table_name %>) do
+    FactoryGirl.build_stubbed(:<%= t_helper.resource_table_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
       :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= attribute.name %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
@@ -43,7 +44,7 @@ describe "<%= resource_directory %>/show" do
 <%- parent_model_tables.each do |parent_model| -%>
       assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
 <%- end -%>
-      assign(:<%= var_name %>, <%= resource_test_var %> = <%= var_name %>)
+      assign(:<%= resource_table_name %>, <%= resource_test_var %> = <%= resource_table_name %>)
 
       @ability = Object.new
       @ability.extend(CanCan::Ability)

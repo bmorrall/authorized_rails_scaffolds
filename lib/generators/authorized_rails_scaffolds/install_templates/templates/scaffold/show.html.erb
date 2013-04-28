@@ -7,7 +7,6 @@ t_helper = AuthorizedRailsScaffolds::RailsErbScaffoldHelper.new(
 )
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
-var_name = t_helper.var_name # Non-namespaced variable name
 resource_var = t_helper.resource_var
 
 -%>
@@ -48,13 +47,13 @@ resource_var = t_helper.resource_var
               <%= t_helper.controller_index_path %>, :class => 'btn'  %>
   <%% if can? :update, <%= resource_var %> %>
     <%%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_<%= t_helper.controller_show_route "@#{var_name}" %>,
+              edit_<%= t_helper.controller_show_route resource_var %>,
               :class => 'btn'
     %>
   <%% end %>
   <%% if can? :destroy, <%= resource_var %> %>
     <%%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              <%= t_helper.controller_show_route "@#{var_name}" %>,
+              <%= t_helper.controller_show_route resource_var %>,
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'act act-danger pull-right'

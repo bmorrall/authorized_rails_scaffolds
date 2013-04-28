@@ -7,7 +7,7 @@ t_helper = AuthorizedRailsScaffolds::RailsErbScaffoldHelper.new(
 )
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
-var_name = t_helper.var_name # Non-namespaced variable name
+resource_table_name = t_helper.resource_table_name # Non-namespaced variable name
 
 -%>
 <%%- model_class = <%= local_class_name %> -%>
@@ -32,36 +32,36 @@ var_name = t_helper.var_name # Non-namespaced variable name
     </tr>
   </thead>
   <tbody>
-    <%% <%= t_helper.resources_var %>.each do |<%= var_name %>| %>
-      <tr class="<%= var_name %>_<%%= <%= var_name %>.id %>">
-        <td class="id-column"><%%= <%= var_name %>.id %></td>
+    <%% <%= t_helper.resources_var %>.each do |<%= resource_table_name %>| %>
+      <tr class="<%= resource_table_name %>_<%%= <%= resource_table_name %>.id %>">
+        <td class="id-column"><%%= <%= resource_table_name %>.id %></td>
   <%- if attributes.any? -%>
-        <td class="title-column"><%%= link_to <%= var_name %>.<%= attributes[0].name %>, <%= t_helper.controller_show_route(var_name) %> %></td>
+        <td class="title-column"><%%= link_to <%= resource_table_name %>.<%= attributes[0].name %>, <%= t_helper.controller_show_route(resource_table_name) %> %></td>
     <%- attributes[1..-1].each do |attribute| -%>
       <%- if attribute.type == :references -%>
         <%% unless @<%= attribute.name %> %>
-          <td><%%= <%= var_name %>.<%= attribute.name %> %></td>
+          <td><%%= <%= resource_table_name %>.<%= attribute.name %> %></td>
         <%% end %>
       <%- elsif [:datetime, :timestamp, :time, :date].include? attribute.type -%>
-        <td><%% unless <%= var_name %>.<%= attribute.name %>.nil? %><%%=l <%= var_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %><%% end %></td>
+        <td><%% unless <%= resource_table_name %>.<%= attribute.name %>.nil? %><%%=l <%= resource_table_name %>.<%= attribute.name %><% if attribute.type == :datetime %>, :format => :long<% end %><% if attribute.type == :time %>, :format => :short<% end %> %><%% end %></td>
       <%- else -%>
-        <td><%%= <%= var_name %>.<%= attribute.name %> %></td>
+        <td><%%= <%= resource_table_name %>.<%= attribute.name %> %></td>
       <%- end -%>
     <%- end -%>
   <%- end -%>
-        <td><%%=l <%= var_name %>.created_at, :format => :long %></td>
+        <td><%%=l <%= resource_table_name %>.created_at, :format => :long %></td>
         <td class="table-actions">
           <%%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_<%= t_helper.controller_show_route var_name %>,
+                      edit_<%= t_helper.controller_show_route resource_table_name %>,
                       :class => 'btn btn-mini',
-                      :disabled => !can?(:update, <%= var_name %>)
+                      :disabled => !can?(:update, <%= resource_table_name %>)
           %>
           <%%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      <%= t_helper.controller_show_route var_name %>,
+                      <%= t_helper.controller_show_route resource_table_name %>,
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger',
-                      :disabled => !can?(:destroy, <%= var_name %>)
+                      :disabled => !can?(:destroy, <%= resource_table_name %>)
           %>
         </td>
       </tr>

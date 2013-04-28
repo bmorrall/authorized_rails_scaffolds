@@ -7,7 +7,6 @@ t_helper = AuthorizedRailsScaffolds::RailsErbScaffoldHelper.new(
 )
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
-var_name = t_helper.var_name # Non-namespaced variable name
 resource_var = t_helper.resource_var
 
 -%>
@@ -23,7 +22,7 @@ resource_var = t_helper.resource_var
   <div class="form-actions">
     <%%= f.button :submit, :class => 'btn-primary' %>
     <%%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                <%= resource_var %>.persisted? ? <%= t_helper.controller_show_route "@#{var_name}" %> : <%= t_helper.controller_index_path %>,
+                <%= resource_var %>.persisted? ? <%= t_helper.controller_show_route resource_var %> : <%= t_helper.controller_index_path %>,
                 :class => 'btn'
     %>
   </div>
