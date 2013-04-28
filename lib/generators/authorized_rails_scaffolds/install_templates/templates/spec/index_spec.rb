@@ -13,7 +13,6 @@ resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
-resource_test_var = t_helper.resource_test_var
 resource_table_name = t_helper.resource_table_name
 
 output_attributes = t_helper.output_attributes
@@ -48,11 +47,11 @@ describe "<%= resource_directory %>/index" do
       assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
 <%- end -%>
 <% [1,2].each_with_index do |id, model_index| -%>
-      <%= resource_test_var %>_<%= id %> = <%= resource_table_name %>_<%= id %>
+      <%= t_helper.resource_test_var(id) %> = <%= resource_table_name %>_<%= id %>
 <% end -%>
       assign(:<%= t_helper.resource_plural_name %>, [
 <% [1,2].each_with_index do |id, model_index| -%>
-        <%= resource_test_var %>_<%= id %><%= model_index == 1 ? '' : ',' %>
+        <%= t_helper.resource_test_var(id) %><%= model_index == 1 ? '' : ',' %>
 <% end -%>
       ])
 
@@ -80,9 +79,9 @@ describe "<%= resource_directory %>/index" do
 <% end -%>
 <% [1,2].each do |model_index| -%>
 <% if webrat? -%>
-        rendered.should have_selector("table>tbody>tr.<%= resource_table_name %>_#{<%= resource_test_var %>_<%= model_index %>.id}", :count => 1)
+        rendered.should have_selector("table>tbody>tr.<%= resource_table_name %>_#{<%= t_helper.resource_test_var(model_index) %>.id}", :count => 1)
 <% else -%>
-        assert_select "table>tbody>tr.<%= resource_table_name %>_#{<%= resource_test_var %>_<%= model_index %>.id}", :count => 1
+        assert_select "table>tbody>tr.<%= resource_table_name %>_#{<%= t_helper.resource_test_var(model_index) %>.id}", :count => 1
 <% end -%>
 <% end -%>
       end
@@ -91,7 +90,7 @@ describe "<%= resource_directory %>/index" do
         render
 <% if webrat? -%>
   <%- [1,2].each do |model_index| -%>
-        rendered.should have_selector("tr>td.id-column", :content => <%= resource_test_var %>_<%= model_index %>.id.to_s, :count => 1)
+        rendered.should have_selector("tr>td.id-column", :content => <%= t_helper.resource_test_var(model_index) %>.id.to_s, :count => 1)
   <%- end -%>
   <%- standard_attributes.each_with_index do |attribute, attribute_index| -%>
         rendered.should have_selector("tr>td", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2)
@@ -102,7 +101,7 @@ describe "<%= resource_directory %>/index" do
 <% else -%>
         # Run the generator again with the --webrat flag if you want to use webrat matchers
   <%- [1,2].each do |model_index| -%>
-        assert_select "tr>td.id-column", :text => <%= resource_test_var %>_<%= model_index %>.id.to_s, :count => 1
+        assert_select "tr>td.id-column", :text => <%= t_helper.resource_test_var(model_index) %>.id.to_s, :count => 1
   <%- end -%>
   <%- standard_attributes.each_with_index do |attribute, attribute_index| -%>
         assert_select "tr>td", :text => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2
@@ -142,9 +141,9 @@ describe "<%= resource_directory %>/index" do
           render
 <% [1,2].each do |model_index| -%>
   <%- if webrat? -%>
-          rendered.should have_selector("td>a[href]:not([data-method])", :href => <%= t_helper.controller_show_route "#{resource_test_var}_#{model_index}" %>, :count => 1)
+          rendered.should have_selector("td>a[href]:not([data-method])", :href => <%= t_helper.controller_show_route t_helper.resource_test_var(model_index) %>, :count => 1)
   <%- else -%>
-          assert_select "td>a[href=?]:not([data-method])", <%= t_helper.controller_show_route "#{resource_test_var}_#{model_index}" %>, :count => 1
+          assert_select "td>a[href=?]:not([data-method])", <%= t_helper.controller_show_route t_helper.resource_test_var(model_index) %>, :count => 1
   <%- end -%>
 <% end -%>
         end
@@ -156,9 +155,9 @@ describe "<%= resource_directory %>/index" do
             render
 <% [1,2].each do |model_index| -%>
   <%- if webrat? -%>
-            rendered.should_not have_selector("td>a[href][disabled=disabled]", :href => edit_<%= t_helper.controller_show_route "#{resource_test_var}_#{model_index}" %>, :count => 1)
+            rendered.should_not have_selector("td>a[href][disabled=disabled]", :href => edit_<%= t_helper.controller_show_route t_helper.resource_test_var(model_index) %>, :count => 1)
   <%- else -%>
-            assert_select "td>a[href=?][disabled=disabled]", edit_<%= t_helper.controller_show_route "#{resource_test_var}_#{model_index}" %>, :count => 1
+            assert_select "td>a[href=?][disabled=disabled]", edit_<%= t_helper.controller_show_route t_helper.resource_test_var(model_index) %>, :count => 1
   <%- end -%>
 <% end -%>
           end
@@ -169,9 +168,9 @@ describe "<%= resource_directory %>/index" do
             render
 <% [1,2].each do |model_index| -%>
   <%- if webrat? -%>
-            rendered.should have_selector("td>a[href]:not([disabled])", :href => edit_<%= t_helper.controller_show_route "#{resource_test_var}_#{model_index}" %>, :count => 1)
+            rendered.should have_selector("td>a[href]:not([disabled])", :href => edit_<%= t_helper.controller_show_route t_helper.resource_test_var(model_index) %>, :count => 1)
   <%- else -%>
-            assert_select "td>a[href=?]:not([disabled])", edit_<%= t_helper.controller_show_route "#{resource_test_var}_#{model_index}" %>, :count => 1
+            assert_select "td>a[href=?]:not([disabled])", edit_<%= t_helper.controller_show_route t_helper.resource_test_var(model_index) %>, :count => 1
   <%- end -%>
 <% end -%>
           end
@@ -184,9 +183,9 @@ describe "<%= resource_directory %>/index" do
             render
 <% [1,2].each do |model_index| -%>
   <%- if webrat? -%>
-            rendered.should_not have_selector("td>a[href][data-method=delete][disabled=disabled]", :href => <%= t_helper.controller_show_route "#{resource_test_var}_#{model_index}" %>, :count => 1)
+            rendered.should_not have_selector("td>a[href][data-method=delete][disabled=disabled]", :href => <%= t_helper.controller_show_route t_helper.resource_test_var(model_index) %>, :count => 1)
   <%- else -%>
-            assert_select "td>a[href=?][data-method=delete][disabled=disabled]", <%= t_helper.controller_show_route "#{resource_test_var}_#{model_index}" %>, :count => 1
+            assert_select "td>a[href=?][data-method=delete][disabled=disabled]", <%= t_helper.controller_show_route t_helper.resource_test_var(model_index) %>, :count => 1
   <%- end -%>
 <% end -%>
           end
@@ -197,9 +196,9 @@ describe "<%= resource_directory %>/index" do
             render
 <% [1,2].each do |model_index| -%>
   <%- if webrat? -%>
-            rendered.should have_selector("td>a[href][data-method=delete]:not([disabled])", :href => <%= t_helper.controller_show_route "#{resource_test_var}_#{model_index}" %>, :count => 1)
+            rendered.should have_selector("td>a[href][data-method=delete]:not([disabled])", :href => <%= t_helper.controller_show_route t_helper.resource_test_var(model_index) %>, :count => 1)
   <%- else -%>
-            assert_select "td>a[href=?][data-method=delete]:not([disabled])", <%= t_helper.controller_show_route "#{resource_test_var}_#{model_index}" %>, :count => 1
+            assert_select "td>a[href=?][data-method=delete]:not([disabled])", <%= t_helper.controller_show_route t_helper.resource_test_var(model_index) %>, :count => 1
   <%- end -%>
 <% end -%>
           end

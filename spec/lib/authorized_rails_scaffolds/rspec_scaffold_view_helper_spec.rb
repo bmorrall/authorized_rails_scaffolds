@@ -66,6 +66,10 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldViewHelper do
       subject = build_view_spec_helper :var_name => 'foo_bar'
       subject.resource_test_var.should eq('@foo_bar')
     end
+    it 'appends a number if included' do
+      subject = build_view_spec_helper :var_name => 'foo_bar'
+      subject.resource_test_var(2).should eq('@foo_bar_2')
+    end
   end
 
 end
