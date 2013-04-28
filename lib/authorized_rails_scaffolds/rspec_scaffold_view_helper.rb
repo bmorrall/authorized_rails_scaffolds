@@ -13,7 +13,7 @@ class AuthorizedRailsScaffolds::RSpecScaffoldViewHelper < AuthorizedRailsScaffol
   end
 
   def standard_attributes
-    @standard_attributes ||= @attributes.reject{|attribute| [:time, :date, :datetime].include? attribute.type }
+    @standard_attributes ||= @attributes.reject{|attribute| [:time, :date, :datetime, :references].include? attribute.type }
   end
 
   def datetime_attributes

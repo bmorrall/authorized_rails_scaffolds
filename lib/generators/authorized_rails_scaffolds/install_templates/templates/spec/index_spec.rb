@@ -17,6 +17,9 @@ resource_test_var = t_helper.resource_test_var
 resource_table_name = t_helper.resource_table_name
 
 output_attributes = t_helper.output_attributes
+datetime_attributes = t_helper.datetime_attributes
+references_attributes = t_helper.references_attributes
+standard_attributes = t_helper.standard_attributes
 
 -%>
 describe "<%= resource_directory %>/index" do
@@ -86,27 +89,31 @@ describe "<%= resource_directory %>/index" do
 
       it "contains a list of <%= t_helper.resource_plural_name %>" do
         render
-<% unless webrat? -%>
-        # Run the generator again with the --webrat flag if you want to use webrat matchers
-<% end -%>
-<% [1,2].each do |model_index| -%>
-  <%- if webrat? -%>
+<% if webrat? -%>
+  <%- [1,2].each do |model_index| -%>
         rendered.should have_selector("tr>td.id-column", :content => <%= resource_test_var %>_<%= model_index %>.id.to_s, :count => 1)
-  <%- else -%>
+  <%- end -%>
+  <%- standard_attributes.each_with_index do |attribute, attribute_index| -%>
+        rendered.should have_selector("tr>td", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2)
+  <%- end -%>
+  <%- datetime_attributes.each_with_index do |attribute, attribute_index| -%>
+        rendered.should have_selector("tr>td", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2)
+  <%- end -%>
+<% else -%>
+        # Run the generator again with the --webrat flag if you want to use webrat matchers
+  <%- [1,2].each do |model_index| -%>
         assert_select "tr>td.id-column", :text => <%= resource_test_var %>_<%= model_index %>.id.to_s, :count => 1
   <%- end -%>
-<% end -%>
-<% output_attributes.each_with_index do |attribute, attribute_index| -%>
-  <%- next if attribute.type == :references -%>
-  <%- if webrat? -%>
-        rendered.should have_selector("tr>td", :content => <%= factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2)
-  <%- else -%>
+  <%- standard_attributes.each_with_index do |attribute, attribute_index| -%>
+        assert_select "tr>td", :text => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2
+  <%- end -%>
+  <%- datetime_attributes.each_with_index do |attribute, attribute_index| -%>
         assert_select "tr>td", :text => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s, :count => 2
   <%- end -%>
 <% end -%>
       end
-<% output_attributes.each_with_index do |attribute, attribute_index| -%>
-  <%- next unless attribute.type == :references && !parent_model_tables.include?(attribute.name.to_s) -%>
+<% references_attributes.each_with_index do |attribute, attribute_index| -%>
+  <%- next if parent_model_tables.include?(attribute.name.to_s) -%>
 
       it "displays the <%= attribute.name %> belonging to <%= resource_table_name %>" do
         render
@@ -117,8 +124,8 @@ describe "<%= resource_directory %>/index" do
   <%- end -%>
       end
 <% end -%>
-<% output_attributes.each_with_index do |attribute, attribute_index| -%>
-  <%- next unless attribute.type == :references && parent_model_tables.include?(attribute.name.to_s) -%>
+<% references_attributes.each_with_index do |attribute, attribute_index| -%>
+  <%- next unless parent_model_tables.include?(attribute.name.to_s) -%>
 
       it "does not display the <%= attribute.name %> belonging to <%= resource_table_name %>" do
         render

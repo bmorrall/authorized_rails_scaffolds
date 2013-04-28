@@ -18,7 +18,9 @@ resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
 
 output_attributes = t_helper.output_attributes
+datetime_attributes = t_helper.datetime_attributes
 references_attributes = t_helper.references_attributes
+standard_attributes = t_helper.standard_attributes
 
 -%>
 describe "<%= resource_directory %>/show" do
@@ -56,7 +58,7 @@ describe "<%= resource_directory %>/show" do
 <% unless webrat? -%>
       # Run the generator again with the --webrat flag if you want to use webrat matchers
 <% end -%>
-<% for attribute in output_attributes -%>
+<%- for attribute in standard_attributes -%>
   <%- if webrat? -%>
       rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>)
       rendered.should have_selector("dl>dd", :content => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s)
@@ -64,7 +66,16 @@ describe "<%= resource_directory %>/show" do
       assert_select "dl>dt", :text => <%= "#{attribute.human_name}:".dump %>
       assert_select "dl>dd", :text => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s
   <%- end -%>
-<% end -%>
+<%- end -%>
+<%- for attribute in datetime_attributes -%>
+  <%- if webrat? -%>
+      rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>)
+      rendered.should have_selector("dl>dd", :content => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s)
+  <%- else -%>
+      assert_select "dl>dt", :text => <%= "#{attribute.human_name}:".dump %>
+      assert_select "dl>dd", :text => <%= t_helper.factory_attribute_string attribute.type, value_for(attribute) %>.to_s
+  <%- end -%>
+<%- end -%>
     end
 <% for attribute in references_attributes -%>
 

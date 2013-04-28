@@ -17,8 +17,9 @@ resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
 
 output_attributes = t_helper.output_attributes
-standard_attributes = t_helper.standard_attributes
 datetime_attributes = t_helper.datetime_attributes
+references_attributes = t_helper.references_attributes
+standard_attributes = t_helper.standard_attributes
 
 -%>
 describe "<%= resource_directory %>/edit" do
@@ -53,22 +54,20 @@ describe "<%= resource_directory %>/edit" do
 <% if webrat? -%>
       rendered.should have_selector("form", :action => <%= t_helper.controller_show_route resource_test_var %>, :method => "post") do |form|
 <% for attribute in standard_attributes -%>
-  <%- if attribute.type == :references -%>
-        form.should have_selector("select#<%= resource_table_name %>_<%= attribute.name %>_id", :name => "<%= resource_table_name %>[<%= attribute.name %>_id]")
-  <%- else -%>
         form.should have_selector("<%= attribute.input_type -%>#<%= resource_table_name %>_<%= attribute.name %>", :name => "<%= resource_table_name %>[<%= attribute.name %>]")
-  <%- end -%>
+<% end -%>
+<% for attribute in references_attributes -%>
+        form.should have_selector("select#<%= resource_table_name %>_<%= attribute.name %>_id", :name => "<%= resource_table_name %>[<%= attribute.name %>_id]")
 <% end -%>
       end
 <% else -%>
       # Run the generator again with the --webrat flag if you want to use webrat matchers
       assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route resource_test_var %>, "post" do
 <% for attribute in standard_attributes -%>
-  <%- if attribute.type == :references -%>
-        assert_select "select#<%= resource_table_name %>_<%= attribute.name %>_id[name=?]", "<%= resource_table_name %>[<%= attribute.name %>_id]"
-  <%- else -%>
         assert_select "<%= attribute.input_type -%>#<%= resource_table_name %>_<%= attribute.name %>[name=?]", "<%= resource_table_name %>[<%= attribute.name %>]"
-  <%- end -%>
+<% end -%>
+<% for attribute in references_attributes -%>
+        assert_select "select#<%= resource_table_name %>_<%= attribute.name %>_id[name=?]", "<%= resource_table_name %>[<%= attribute.name %>_id]"
 <% end -%>
       end
 <% end -%>
