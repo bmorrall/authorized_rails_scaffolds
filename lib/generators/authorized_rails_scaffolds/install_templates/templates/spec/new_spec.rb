@@ -10,6 +10,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 )
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
+resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
 resource_table_name = t_helper.resource_table_name
 
@@ -45,7 +46,7 @@ describe "<%= resource_directory %>/new" do
 <%- parent_model_tables.each do |parent_model| -%>
       assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
 <%- end -%>
-      assign(:<%= resource_table_name %>, <%= resource_test_var %> = <%= resource_table_name %>)
+      assign(<%= resource_symbol %>, <%= resource_test_var %> = <%= resource_table_name %>)
     end
 
     it "renders new <%= resource_table_name %> form" do

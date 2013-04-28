@@ -13,6 +13,7 @@ resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
+resource_symbol = t_helper.resource_symbol
 resource_table_name = t_helper.resource_table_name
 
 output_attributes = t_helper.output_attributes
@@ -32,7 +33,7 @@ describe "<%= resource_directory %>/index" do
 <%- end -%>
 <% [1,2].each_with_index do |id, model_index| -%>
   let(<%= t_helper.resource_test_sym(id) %>) do
-    FactoryGirl.build_stubbed(:<%= resource_table_name %><%= output_attributes.empty? ? ')' : ',' %>
+    FactoryGirl.build_stubbed(<%= resource_symbol %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
       :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= attribute.name %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>

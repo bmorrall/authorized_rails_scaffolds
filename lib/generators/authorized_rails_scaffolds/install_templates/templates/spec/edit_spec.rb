@@ -10,6 +10,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 )
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
+resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
 resource_table_name = t_helper.resource_table_name
 
@@ -32,7 +33,7 @@ describe "<%= resource_directory %>/edit" do
 <%- end -%>
 <%- end -%>
   let(<%= t_helper.resource_test_sym %>) do
-    FactoryGirl.build_stubbed(:<%= resource_table_name %><%= output_attributes.empty? ? ')' : ',' %>
+    FactoryGirl.build_stubbed(<%= resource_symbol %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
       :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= attribute.name %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
@@ -45,7 +46,7 @@ describe "<%= resource_directory %>/edit" do
 <%- parent_model_tables.each do |parent_model| -%>
       assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
 <%- end -%>
-      assign(:<%= resource_table_name %>, <%= resource_test_var %> = <%= resource_table_name %>)
+      assign(<%= resource_symbol %>, <%= resource_test_var %> = <%= resource_table_name %>)
     end
 
     it "renders the edit <%= resource_table_name %> form" do

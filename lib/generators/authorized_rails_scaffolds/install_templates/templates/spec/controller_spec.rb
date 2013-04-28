@@ -41,6 +41,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper.new(
 
 local_class_name = t_helper.local_class_name # Non-Namespaced class name
 resource_var = t_helper.resource_var
+resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
 resource_table_name = t_helper.resource_table_name
 
@@ -52,13 +53,13 @@ describe <%= t_helper.controller_class_name %> do
   # This should return the minimal set of attributes required to create a valid
   # <%= local_class_name %>.
   def valid_create_attributes
-    FactoryGirl.attributes_for(:<%= resource_table_name %>)
+    FactoryGirl.attributes_for(<%= resource_symbol %>)
   end
 
   # This should return the minimal set of attributes required to update a valid
   # <%= local_class_name %>.
   def valid_update_attributes
-    FactoryGirl.attributes_for(:<%= resource_table_name %>)
+    FactoryGirl.attributes_for(<%= resource_symbol %>)
   end
 
 <%- if parent_model_tables.any? -%>
@@ -154,7 +155,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should render_template(:show) }
           it { should render_with_layout(:application) }
           it "assigns the requested <%= resource_table_name %> as <%= resource_var %>" do
-            assigns(:<%= resource_table_name %>).should eq(<%= resource_test_var %>)
+            assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
           end
         end
       end
@@ -196,7 +197,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should render_template(:new) }
           it { should render_with_layout(:application) }
           it "assigns a new <%= resource_table_name %> as <%= resource_var %>" do
-            assigns(:<%= resource_table_name %>).should be_a_new(<%= local_class_name %>)
+            assigns(<%= resource_symbol %>).should be_a_new(<%= local_class_name %>)
           end
         end
       end
@@ -241,7 +242,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should render_template(:edit) }
           it { should render_with_layout(:application) }
           it "assigns the requested <%= resource_table_name %> as <%= resource_var %>" do
-            assigns(:<%= resource_table_name %>).should eq(<%= resource_test_var %>)
+            assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
           end
         end
       end
@@ -257,7 +258,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'without a user session' do
         describe 'with valid params' do
           before(:each) do
-            post :create, {<%= t_helper.action_params_prefix %>:<%= resource_table_name %> => valid_create_attributes}
+            post :create, {<%= t_helper.action_params_prefix %><%= resource_symbol %> => valid_create_attributes}
           end
           it { should redirect_to(new_user_session_path) }
           it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -267,7 +268,7 @@ describe <%= t_helper.controller_class_name %> do
         login_unauthorized_user
         describe "with valid params" do
           before(:each) do
-            post :create, {<%= t_helper.action_params_prefix %>:<%= resource_table_name %> => valid_create_attributes}
+            post :create, {<%= t_helper.action_params_prefix %><%= resource_symbol %> => valid_create_attributes}
           end
           it { should redirect_to(<%= t_helper.controller_index_route %>) }
           it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -278,21 +279,21 @@ describe <%= t_helper.controller_class_name %> do
         describe "with valid params" do
           it "creates a new <%= local_class_name %>" do
             expect {
-              post :create, {<%= t_helper.action_params_prefix %>:<%= resource_table_name %> => valid_create_attributes}
+              post :create, {<%= t_helper.action_params_prefix %><%= resource_symbol %> => valid_create_attributes}
             }.to change(<%= local_class_name %>, :count).by(1)
           end
         end
         describe 'with valid params' do
           before(:each) do
-            post :create, {<%= t_helper.action_params_prefix %>:<%= resource_table_name %> => valid_create_attributes}
+            post :create, {<%= t_helper.action_params_prefix %><%= resource_symbol %> => valid_create_attributes}
           end
           it "assigns a newly created <%= resource_table_name %> as <%= resource_var %>" do
-            assigns(:<%= resource_table_name %>).should be_a(<%= local_class_name %>)
-            assigns(:<%= resource_table_name %>).should be_persisted
+            assigns(<%= resource_symbol %>).should be_a(<%= local_class_name %>)
+            assigns(<%= resource_symbol %>).should be_persisted
           end
 <% if parent_model_tables.any? -%>
           it "assigns the parent <%= parent_model_tables[-1].classify %> to <%= resource_table_name %>" do
-            assigns(:<%= resource_table_name %>).<%= parent_model_tables[-1] %>.should eq(@<%= parent_model_tables[-1] %>)
+            assigns(<%= resource_symbol %>).<%= parent_model_tables[-1] %>.should eq(@<%= parent_model_tables[-1] %>)
           end
 <% end -%>
           it "redirects to the created <%= resource_table_name %>" do
@@ -303,12 +304,12 @@ describe <%= t_helper.controller_class_name %> do
           before(:each) do
             # Trigger the behavior that occurs when invalid params are submitted
             <%= local_class_name %>.any_instance.stub(:save).and_return(false)
-            post :create, {<%= t_helper.action_params_prefix %>:<%= resource_table_name %> => <%= formatted_hash(example_invalid_attributes) %>}
+            post :create, {<%= t_helper.action_params_prefix %><%= resource_symbol %> => <%= formatted_hash(example_invalid_attributes) %>}
           end
           it { should render_template(:new) }
           it { should render_with_layout(:application) }
           it "assigns a newly created but unsaved <%= resource_table_name %> as <%= resource_var %>" do
-            assigns(:<%= resource_table_name %>).should be_a_new(<%= local_class_name %>)
+            assigns(<%= resource_symbol %>).should be_a_new(<%= local_class_name %>)
           end
         end
       end
@@ -325,7 +326,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with valid params' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, :<%= resource_table_name %> => valid_update_attributes}
+            put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, <%= resource_symbol %> => valid_update_attributes}
           end
           it { should redirect_to(new_user_session_path) }
           it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -336,7 +337,7 @@ describe <%= t_helper.controller_class_name %> do
         describe "with valid params" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, :<%= resource_table_name %> => valid_update_attributes}
+            put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, <%= resource_symbol %> => valid_update_attributes}
           end
           it { should redirect_to(<%= t_helper.controller_index_route %>) }
           it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -356,16 +357,16 @@ describe <%= t_helper.controller_class_name %> do
             <%- else -%>
             <%= local_class_name %>.any_instance.should_receive(:update_attributes).with(<%= formatted_hash(example_params_for_update) %>)
             <%- end -%>
-            put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, :<%= resource_table_name %> => <%= formatted_hash(example_params_for_update) %>}
+            put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, <%= resource_symbol %> => <%= formatted_hash(example_params_for_update) %>}
           end
         end
         describe "with valid params" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, :<%= resource_table_name %> => valid_update_attributes}
+            put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, <%= resource_symbol %> => valid_update_attributes}
           end
           it "assigns the requested <%= resource_table_name %> as <%= resource_var %>" do
-            assigns(:<%= resource_table_name %>).should eq(<%= resource_test_var %>)
+            assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
           end
           it "redirects to the <%= resource_table_name %>" do
             response.should redirect_to(<%= t_helper.controller_show_route resource_test_var %>)
@@ -376,12 +377,12 @@ describe <%= t_helper.controller_class_name %> do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             # Trigger the behavior that occurs when invalid params are submitted
             <%= local_class_name %>.any_instance.stub(:save).and_return(false)
-            put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, :<%= resource_table_name %> => <%= formatted_hash(example_invalid_attributes) %>}
+            put :update, {<%= t_helper.action_params_prefix %>:id => <%= resource_test_var %>.to_param, <%= resource_symbol %> => <%= formatted_hash(example_invalid_attributes) %>}
           end
           it { should render_template(:edit) }
           it { should render_with_layout(:application) }
           it "assigns the <%= resource_table_name %> as <%= resource_var %>" do
-            assigns(:<%= resource_table_name %>).should eq(<%= resource_test_var %>)
+            assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
           end
         end
       end
