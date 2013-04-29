@@ -11,7 +11,6 @@ module AuthorizedRailsScaffolds
 
       # Determine namespace prefix i.e awesome
       @namespace_prefix = options[:namespace_prefix] || options[:singular_table_name][0..-(@var_name.length + 2)]
-      @controller_prefix = options[:controller_prefix] || options[:class_name].split('::')[0..-2].join('::')
 
       # Determine Parent Prefix i.e. user_company
       parent_prefix = AuthorizedRailsScaffolds.config.parent_models.collect{ |x| x.underscore }.join('_')
