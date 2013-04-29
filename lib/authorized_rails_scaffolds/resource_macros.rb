@@ -26,6 +26,10 @@ module ResourceMacros
     @resource_plural_name ||= plural_var_name || (var_name || resource_table_name).pluralize
   end
 
+  def resource_plural_sym
+    ":#{resource_plural_name}"
+  end
+
   # Variable resource is assigned to in a singular context (i.e. @foo_bar)
   def resource_var
     @resource_var_name ||= "@#{var_name || resource_table_name}"
@@ -56,6 +60,10 @@ module ResourceMacros
   # Variable name used to save a parent_table_name
   def parent_variable(parent_table_name)
     "@#{parent_table_name}"
+  end
+  
+  def parent_sym(parent_table_name)
+    ":#{parent_table_name}"
   end
 
   ### Parent Modules ###

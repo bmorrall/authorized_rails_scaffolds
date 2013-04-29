@@ -2,7 +2,17 @@ module TestVarMacros
 
   # Variable to hold stubs of parent models
   def parent_test_var(parent_table)
-    "@#{parent_table}"
+    "@#{parent_test_property(parent_table)}"
+  end
+
+  def parent_test_sym(parent_table)
+    ":#{parent_test_property(parent_table)}"
+  end
+
+  def parent_test_property(parent_table, var_number = nil)
+    parent_property = parent_table
+    parent_property = "#{parent_property}_#{var_number}" unless var_number.nil?
+    parent_property
   end
 
   # Variable name stub resource is assigned to (i.e. @foo_bar)

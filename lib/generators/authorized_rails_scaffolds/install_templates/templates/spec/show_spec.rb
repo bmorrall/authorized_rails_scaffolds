@@ -27,9 +27,9 @@ describe "<%= resource_directory %>/show" do
 
 <% parent_model_tables.each_with_index do |parent_model, index| -%>
 <%- if index == 0 -%>
-  let(:<%= parent_model %>) { FactoryGirl.build_stubbed(:<%= parent_model %>) }
+  let(<%= t_helper.parent_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>) }
 <%- else -%>
-  let(:<%= parent_model %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
+  let(<%= t_helper.parent_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
 <%- end -%>
 <%- end -%>
   let(<%= t_helper.resource_test_sym %>) do
@@ -44,7 +44,7 @@ describe "<%= resource_directory %>/show" do
     before(:each) do
       # Add Properties for view scope
 <%- parent_model_tables.each do |parent_model| -%>
-      assign(:<%= parent_model %>, <%= t_helper.parent_test_var(parent_model) %> = <%= parent_model %>)
+      assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.parent_test_var(parent_model) %> = <%= parent_model %>)
 <%- end -%>
       assign(<%= resource_symbol %>, <%= resource_test_var %> = <%= resource_table_name %>)
 
