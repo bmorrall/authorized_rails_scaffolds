@@ -43,7 +43,7 @@ describe "<%= resource_directory %>/edit" do
     before(:each) do
       # Add Properties for view scope
 <%- parent_model_tables.each do |parent_model| -%>
-      assign(:<%= parent_model %>, @<%= parent_model %> = <%= parent_model %>)
+      assign(:<%= parent_model %>, <%= t_helper.parent_test_var(parent_model) %> = <%= parent_model %>)
 <%- end -%>
       assign(<%= resource_symbol %>, <%= resource_test_var %> = <%= resource_table_name %>)
     end

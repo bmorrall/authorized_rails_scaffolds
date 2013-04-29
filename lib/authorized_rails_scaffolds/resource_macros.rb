@@ -53,6 +53,11 @@ module ResourceMacros
     @parent_model_tables ||= parent_models.map { |model| model.underscore }
   end
 
+  # Variable name used to save a parent_table_name
+  def parent_variable(parent_table_name)
+    "@#{parent_table_name}"
+  end
+
   ### Parent Modules ###
 
   # The parent modules of a controller (i.e. ['Api', 'V1'])

@@ -23,6 +23,10 @@ module RouteExampleMacros
     @example_controller_path_extra_params ||= example_parent_values.any? ? ', ' + example_parent_values.map{ |parent_model_id, parent_value| ":#{parent_model_id} => \"#{parent_value}\"" }.join(', ') : ''
   end
 
+  def example_route_extra_params
+    @example_route_extra_params ||= parent_model_tables.collect{ |parent_table| ":#{parent_table}_id => #{parent_test_var(parent_table)}.to_param" }
+  end
+
   protected
 
   # Creates example values for parent id params (i.e. :user_id => 2)

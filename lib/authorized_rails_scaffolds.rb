@@ -23,8 +23,10 @@ module AuthorizedRailsScaffolds
 end
 
 require "authorized_rails_scaffolds/controller_macros"
+require "authorized_rails_scaffolds/factory_macros"
 require "authorized_rails_scaffolds/resource_macros"
 require "authorized_rails_scaffolds/route_example_macros"
+require "authorized_rails_scaffolds/test_var_macros"
 require "authorized_rails_scaffolds/helper"
 require "authorized_rails_scaffolds/rails_erb_scaffold_helper"
 require "authorized_rails_scaffolds/rails_scaffold_controller_helper"

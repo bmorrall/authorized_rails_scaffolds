@@ -1,5 +1,6 @@
 class AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper < AuthorizedRailsScaffolds::RSpecScaffoldHelper
   include ControllerMacros
+  include FactoryMacros
   include RouteExampleMacros
 
   def initialize(options = {})
@@ -9,33 +10,8 @@ class AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper < AuthorizedRailsS
     @controller_class_name = options[:controller_class_name]
   end
 
-  def create_resource_from_factory
-    extra_factory_params = build_extra_factory_params
-    "FactoryGirl.create(#{resource_symbol}#{extra_factory_params})"
-  end
-
-  def create_parent_resource_from_factory(model_name)
-    extra_factory_params = build_extra_factory_params(model_name)
-    "FactoryGirl.create(:#{model_name}#{extra_factory_params})"
-  end
-
-  protected
-
-  def build_extra_factory_params(model_name = nil)
-    if model_name.nil?
-      attribute = parent_model_tables.last
-    else
-      parent_index = parent_model_tables.index(model_name.to_s)
-      unless parent_index.nil? || parent_index == 0
-        attribute = parent_model_tables[parent_index - 1]
-      end
-    end
-
-    if attribute.nil?
-      return ''
-    else
-      return ", :#{attribute} => @#{attribute}"
-    end
+  def build_example_request_params(*extra_params)
+    [example_route_extra_params + extra_params].join(", ")
   end
 
 end
