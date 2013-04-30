@@ -32,6 +32,10 @@ describe "<%= resource_directory %>/edit" do
   let(<%= t_helper.references_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
 <%- end -%>
 <%- end -%>
+<% references_attributes.each do |parent_attribute| -%>
+  <%- next if parent_model_tables.include? parent_attribute.name -%>
+  let(<%= t_helper.references_test_sym(parent_attribute.name) %>) { FactoryGirl.build_stubbed(:<%= parent_attribute.name %>) }
+<% end -%>
   let(<%= t_helper.resource_test_sym %>) do
     FactoryGirl.build_stubbed(<%= resource_symbol %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
