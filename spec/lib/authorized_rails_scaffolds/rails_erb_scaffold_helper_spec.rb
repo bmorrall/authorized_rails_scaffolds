@@ -3,6 +3,47 @@ require 'spec_helper'
 describe AuthorizedRailsScaffolds::RailsErbScaffoldHelper do
   include RailsErbScaffoldHelperMacros
 
+  describe '#controller_show_route' do
+    it 'returns a single route to the resource' do
+      subject = build_rails_erb_scaffold_spec_helper :class_name => 'FooBar', :var_name => 'foo_bar'
+      subject.controller_show_route.should eq('foo_bar_path')
+    end
+    it 'returns appends the included value to the root' do
+      subject = build_rails_erb_scaffold_spec_helper :class_name => 'FooBar', :var_name => 'foo_bar'
+      subject.controller_show_route('@foo_bar').should eq('foo_bar_path(@foo_bar)')
+    end
+    context 'with a parent model' do
+      before(:each) do
+        AuthorizedRailsScaffolds.configure do |config|
+          config.parent_models = ['Parent']
+        end
+      end
+      context 'with no parent modules' do
+        before(:each) do
+          @subject = build_rails_erb_scaffold_spec_helper :class_name => 'FooBar', :var_name => 'foo_bar'
+        end
+        it 'returns a path within the parent models' do
+          @subject.controller_show_route.should eq('parent_foo_bar_path(@parent)')
+        end
+        it 'returns a path with the resource within the parent models' do
+          @subject.controller_show_route('@foo_bar').should eq('parent_foo_bar_path(@parent, @foo_bar)')
+        end
+      end
+      context 'with a parent modules' do
+        before(:each) do
+          @subject = build_rails_erb_scaffold_spec_helper :class_name => 'Awesome::FooBar', :var_name => 'foo_bar'
+        end
+        it 'returns a path within the module and with parent models' do
+          @subject.controller_show_route.should eq('awesome_parent_foo_bar_path(@parent)')
+        end
+        it 'returns a path with the resource within the module and with parent models' do
+          @subject.controller_show_route('@foo_bar').should eq('awesome_parent_foo_bar_path(@parent, @foo_bar)')
+        end
+      end
+    end
+    
+  end
+
   describe '#scoped_values_for_form' do
     context 'with no parent modules' do
       it 'returns the resource variable' do
