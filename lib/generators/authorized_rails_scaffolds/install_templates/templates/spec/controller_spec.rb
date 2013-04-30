@@ -64,7 +64,7 @@ describe <%= t_helper.controller_class_name %> do
 
 <%- if parent_model_tables.any? -%>
 <%- parent_model_tables.each do |parent_model| -%>
-  let(<%= t_helper.parent_test_sym(parent_model) %>) { <%= t_helper.create_parent_resource_from_factory parent_model %> }
+  let(<%= t_helper.references_test_sym(parent_model) %>) { <%= t_helper.create_parent_resource_from_factory parent_model %> }
 <%- end -%>
 
 <%- end -%>
@@ -291,7 +291,7 @@ describe <%= t_helper.controller_class_name %> do
           end
 <% if parent_model_tables.any? -%>
           it "assigns the parent <%= t_helper.parent_models[-1] %> to <%= resource_table_name %>" do
-            assigns(<%= resource_symbol %>).<%= parent_model_tables[-1] %>.should eq(<%= t_helper.parent_test_property(parent_model_tables[-1]) %>)
+            assigns(<%= resource_symbol %>).<%= parent_model_tables[-1] %>.should eq(<%= t_helper.references_test_property(parent_model_tables[-1]) %>)
           end
 <% end -%>
           it "redirects to the created <%= resource_table_name %>" do

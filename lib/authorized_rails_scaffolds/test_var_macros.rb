@@ -1,16 +1,20 @@
 module TestVarMacros
 
   # Variable to hold stubs of parent models
-  def parent_test_var(parent_table)
-    "@#{parent_test_property(parent_table)}"
+  def references_test_var(references_table)
+    "@#{references_test_property(references_table)}"
   end
 
-  def parent_test_sym(parent_table)
-    ":#{parent_test_property(parent_table)}"
+  def references_test_sym(references_table)
+    ":#{references_test_property(references_table)}"
   end
 
-  def parent_test_property(parent_table, var_number = nil)
-    parent_property = "stub_#{parent_table}"
+  def references_test_property(references_table, var_number = nil)
+    if parent_model_tables.include? references_table
+      parent_property = "parent_#{references_table}"
+    else
+      parent_property = "stub_#{references_table}"
+    end
     parent_property = "#{parent_property}_#{var_number}" unless var_number.nil?
     parent_property
   end
@@ -27,7 +31,7 @@ module TestVarMacros
 
   # Generator for properties used for testing
   def resource_test_property(var_number = nil)
-    resource_property = "stubbed_#{var_name}"
+    resource_property = "test_#{var_name}"
     resource_property = "#{resource_property}_#{var_number}" unless var_number.nil?
     resource_property
   end

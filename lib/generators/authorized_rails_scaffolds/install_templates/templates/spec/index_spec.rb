@@ -26,16 +26,16 @@ describe "<%= resource_directory %>/index" do
 
 <% parent_model_tables.each_with_index do |parent_model, index| -%>
 <%- if index == 0 -%>
-  let(<%= t_helper.parent_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>) }
+  let(<%= t_helper.references_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>) }
 <%- else -%>
-  let(<%= t_helper.parent_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
+  let(<%= t_helper.references_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
 <%- end -%>
 <%- end -%>
 <% [1,2].each_with_index do |id, model_index| -%>
   let(<%= t_helper.resource_test_sym(id) %>) do
     FactoryGirl.build_stubbed(<%= resource_symbol %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
-      :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= t_helper.parent_test_property(attribute.name) %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
+      :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= t_helper.references_test_property(attribute.name) %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
 <%= output_attributes.empty? ? "" : "    )\n" -%>
   end
@@ -45,7 +45,7 @@ describe "<%= resource_directory %>/index" do
     before(:each) do
       # Add Properties for view scope
 <%- parent_model_tables.each do |parent_model| -%>
-      assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.parent_test_property(parent_model) %>)
+      assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.references_test_property(parent_model) %>)
 <%- end -%>
       assign(<%= t_helper.resource_plural_sym %>, [
 <% [1,2].each_with_index do |id, model_index| -%>
@@ -115,9 +115,9 @@ describe "<%= resource_directory %>/index" do
       it "displays the <%= attribute.name %> belonging to <%= resource_table_name %>" do
         render
   <%- if webrat? -%>
-        rendered.should have_selector("tr>td", :content => <%= t_helper.parent_test_property(attribute.name) %>.to_s, :count => 2)
+        rendered.should have_selector("tr>td", :content => <%= t_helper.references_test_property(attribute.name) %>.to_s, :count => 2)
   <%- else -%>
-        assert_select "tr>td", :text => <%= t_helper.parent_test_property(attribute.name) %>.to_s, :count => 2
+        assert_select "tr>td", :text => <%= t_helper.references_test_property(attribute.name) %>.to_s, :count => 2
   <%- end -%>
       end
 <% end -%>
@@ -127,9 +127,9 @@ describe "<%= resource_directory %>/index" do
       it "does not display the <%= attribute.name %> belonging to <%= resource_table_name %>" do
         render
   <%- if webrat? -%>
-        rendered.should have_selector("tr>td", :content => <%= t_helper.parent_test_property(attribute.name) %>.to_s, :count => 0)
+        rendered.should have_selector("tr>td", :content => <%= t_helper.references_test_property(attribute.name) %>.to_s, :count => 0)
   <%- else -%>
-        assert_select "tr>td", :text => <%= t_helper.parent_test_property(attribute.name) %>.to_s, :count => 0
+        assert_select "tr>td", :text => <%= t_helper.references_test_property(attribute.name) %>.to_s, :count => 0
   <%- end -%>
       end
 <% end -%>

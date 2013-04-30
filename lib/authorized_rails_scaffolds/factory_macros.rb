@@ -58,7 +58,7 @@ module FactoryMacros
     if attribute.nil?
       return ''
     else
-      return ", :#{attribute} => #{parent_test_property(attribute)}"
+      return ", :#{attribute} => #{references_test_property(attribute)}"
     end
   end
 
