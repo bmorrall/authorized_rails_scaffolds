@@ -42,7 +42,8 @@ module AuthorizedRailsScaffolds
     end
 
     def controller_show_route(variable = nil)
-      variables = [parent_variables + [variable]]
+      variables = [] + parent_variables
+      variables += [variable] unless variable.nil?
       controller_routes = "#{member_route_prefix}_path"
       controller_routes += "(#{variables.join(', ')})" if variables.any?
       controller_routes
