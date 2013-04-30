@@ -14,8 +14,12 @@ class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::
     @modular_class_name
   end
 
+  def parent_variables
+    @parent_variables ||= parent_model_tables.collect{ |parent_table| parent_test_property(parent_table) }
+  end
+
   def references_show_route(attribute_name, variable = nil)
-    variable ||= "#{resource_test_var}.#{attribute_name}"
+    variable ||= "#{resource_test_property}.#{attribute_name}"
     super attribute_name, variable
   end
 

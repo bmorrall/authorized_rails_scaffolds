@@ -11,8 +11,8 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 
 resource_var = t_helper.resource_var
 resource_symbol = t_helper.resource_symbol
-resource_test_var = t_helper.resource_test_var
 resource_table_name = t_helper.resource_table_name
+resource_test_property = t_helper.resource_test_property
 
 resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
@@ -35,7 +35,7 @@ describe "<%= resource_directory %>/show" do
   let(<%= t_helper.resource_test_sym %>) do
     FactoryGirl.build_stubbed(:<%= t_helper.resource_table_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
-      :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= attribute.name %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
+      :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= t_helper.parent_test_property(attribute.name) %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
 <%= output_attributes.empty? ? "" : "    )\n" -%>
   end
@@ -44,9 +44,9 @@ describe "<%= resource_directory %>/show" do
     before(:each) do
       # Add Properties for view scope
 <%- parent_model_tables.each do |parent_model| -%>
-      assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.parent_test_var(parent_model) %> = <%= parent_model %>)
+      assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.parent_test_property(parent_model) %>)
 <%- end -%>
-      assign(<%= resource_symbol %>, <%= resource_test_var %> = <%= resource_table_name %>)
+      assign(<%= resource_symbol %>, <%= t_helper.resource_test_property %>)
 
       @ability = Object.new
       @ability.extend(CanCan::Ability)
@@ -81,17 +81,17 @@ describe "<%= resource_directory %>/show" do
 
     context "with a <%= attribute.name %> reference" do
       before(:each) do
-        <%= resource_test_var %>.<%= attribute.name %> = FactoryGirl.build_stubbed(:<%= attribute.name %>)
+        <%= resource_test_property %>.<%= attribute.name %> = FactoryGirl.build_stubbed(:<%= attribute.name %>)
       end
       context 'without read <%= attribute.name.classify %> permissions' do
         it "should not a render link to <%= attribute.name %>" do
           render
 <% if webrat? -%>
           rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>, :count => 0)
-          rendered.should have_selector("dl>dd>a[href]", :href => <%= t_helper.references_show_route attribute.name %>, :count => 0)
+          rendered.should have_selector("dl>dd>a[href]", :href => <%= t_helper.references_show_route(attribute.name) %>, :count => 0)
 <% else -%>
           assert_select "dl>dt", :text => <%= "#{attribute.human_name}:".dump %>, :count => 0
-          assert_select "dl>dd>a[href=?]", <%= t_helper.references_show_route attribute.name %>, :count => 0
+          assert_select "dl>dd>a[href=?]", <%= t_helper.references_show_route(attribute.name) %>, :count => 0
 <% end -%>
         end
       end
@@ -103,10 +103,10 @@ describe "<%= resource_directory %>/show" do
           render
 <% if webrat? -%>
           rendered.should have_selector("dl>dt", :content => <%= "#{attribute.human_name}:".dump %>)
-          rendered.should have_selector("dl>dd>a[href]", :href => <%= t_helper.references_show_route attribute.name %>, :count => 1)
+          rendered.should have_selector("dl>dd>a[href]", :href => <%= t_helper.references_show_route(attribute.name) %>, :count => 1)
 <% else -%>
           assert_select "dl>dt", :text => <%= "#{attribute.human_name}:".dump %>
-          assert_select "dl>dd>a[href=?]", <%= t_helper.references_show_route attribute.name %>, :count => 1
+          assert_select "dl>dd>a[href=?]", <%= t_helper.references_show_route(attribute.name) %>, :count => 1
 <% end -%>
         end
       end

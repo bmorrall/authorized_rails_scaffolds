@@ -10,7 +10,7 @@ module TestVarMacros
   end
 
   def parent_test_property(parent_table, var_number = nil)
-    parent_property = parent_table
+    parent_property = "stub_#{parent_table}"
     parent_property = "#{parent_property}_#{var_number}" unless var_number.nil?
     parent_property
   end
@@ -27,7 +27,7 @@ module TestVarMacros
 
   # Generator for properties used for testing
   def resource_test_property(var_number = nil)
-    resource_property = var_name
+    resource_property = "stubbed_#{var_name}"
     resource_property = "#{resource_property}_#{var_number}" unless var_number.nil?
     resource_property
   end

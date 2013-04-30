@@ -63,17 +63,15 @@ describe <%= t_helper.controller_class_name %> do
   end
 
 <%- if parent_model_tables.any? -%>
-  before(:each) do
-    <%- parent_model_tables.each do |parent_model| -%>
-    <%= t_helper.parent_test_var(parent_model) %> = <%= t_helper.create_parent_resource_from_factory parent_model %>
-    <%- end -%>
-  end
+<%- parent_model_tables.each do |parent_model| -%>
+  let(<%= t_helper.parent_test_sym(parent_model) %>) {<%= t_helper.create_parent_resource_from_factory parent_model %>}
+<%- end -%>
 
 <%- end -%>
 <% unless options[:singleton] -%>
   describe "GET index" do
     context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
-      <%- parent_model_tables.each do |parent_model| -%>
+      <%- t_helper.parent_models.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 

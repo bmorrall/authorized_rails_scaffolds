@@ -12,6 +12,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
 resource_table_name = t_helper.resource_table_name
+resource_test_property = t_helper.resource_test_property
 
 resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
@@ -34,7 +35,7 @@ describe "<%= resource_directory %>/edit" do
   let(<%= t_helper.resource_test_sym %>) do
     FactoryGirl.build_stubbed(<%= resource_symbol %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
-      :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= attribute.name %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
+      :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= t_helper.parent_test_property(attribute.name) %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
 <%= output_attributes.empty? ? "" : "    )\n" -%>
   end
@@ -43,16 +44,16 @@ describe "<%= resource_directory %>/edit" do
     before(:each) do
       # Add Properties for view scope
 <%- parent_model_tables.each do |parent_model| -%>
-      assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.parent_test_var(parent_model) %> = <%= parent_model %>)
+      assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.parent_test_property(parent_model) %>)
 <%- end -%>
-      assign(<%= resource_symbol %>, <%= resource_test_var %> = <%= resource_table_name %>)
+      assign(<%= resource_symbol %>, <%= t_helper.resource_test_property %>)
     end
 
     it "renders the edit <%= resource_table_name %> form" do
       render
 
 <% if webrat? -%>
-      rendered.should have_selector("form", :action => <%= t_helper.controller_show_route resource_test_var %>, :method => "post") do |form|
+      rendered.should have_selector("form", :action => <%= t_helper.controller_show_route resource_test_property %>, :method => "post") do |form|
 <% for attribute in standard_attributes -%>
         form.should have_selector("<%= attribute.input_type -%>#<%= resource_table_name %>_<%= attribute.name %>", :name => "<%= resource_table_name %>[<%= attribute.name %>]")
 <% end -%>
@@ -62,7 +63,7 @@ describe "<%= resource_directory %>/edit" do
       end
 <% else -%>
       # Run the generator again with the --webrat flag if you want to use webrat matchers
-      assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route resource_test_var %>, "post" do
+      assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route resource_test_property %>, "post" do
 <% for attribute in standard_attributes -%>
         assert_select "<%= attribute.input_type -%>#<%= resource_table_name %>_<%= attribute.name %>[name=?]", "<%= resource_table_name %>[<%= attribute.name %>]"
 <% end -%>
@@ -78,7 +79,7 @@ describe "<%= resource_directory %>/edit" do
       render
 
 <% if webrat? -%>
-      rendered.should have_selector("form", :action => <%= t_helper.controller_show_route resource_test_var %>, :method => "post") do |form|
+      rendered.should have_selector("form", :action => <%= t_helper.controller_show_route resource_test_property %>, :method => "post") do |form|
 <% for attribute in datetime_attributes -%>
   <%- if [:date, :datetime].include? attribute.type -%>
       form.should have_selector("select#<%= resource_table_name %>_<%= attribute.name %>", :name => "<%= resource_table_name %>[<%= attribute.name %>]")
@@ -93,7 +94,7 @@ describe "<%= resource_directory %>/edit" do
       end
 <% else -%>
       # Run the generator again with the --webrat flag if you want to use webrat matchers
-      assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route resource_test_var %>, "post" do
+      assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route resource_test_property %>, "post" do
 <% for attribute in datetime_attributes -%>
         # <%= attribute.name %> values
   <%- if [:date, :datetime].include? attribute.type -%>

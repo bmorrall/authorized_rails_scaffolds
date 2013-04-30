@@ -10,7 +10,6 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 )
 
 resource_symbol = t_helper.resource_symbol
-resource_test_var = t_helper.resource_test_var
 resource_table_name = t_helper.resource_table_name
 
 resource_directory = t_helper.resource_directory
@@ -31,10 +30,10 @@ describe "<%= resource_directory %>/new" do
   let(<%= t_helper.parent_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
 <%- end -%>
 <%- end -%>
-  let(:<%= t_helper.resource_table_name %>) do
+  let(<%= t_helper.resource_test_sym %>) do
     FactoryGirl.build(:<%= t_helper.resource_table_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
-      :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= attribute.name %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
+      :<%= attribute.name %> => <% if attribute.type == :references && parent_model_tables.include?(attribute.name) %><%= t_helper.parent_test_property(attribute.name) %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
 <%= output_attributes.empty? ? "" : "    )\n" -%>
   end
@@ -43,9 +42,9 @@ describe "<%= resource_directory %>/new" do
     before(:each) do
       # Add Properties for view scope
 <%- parent_model_tables.each do |parent_model| -%>
-      assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.parent_test_var(parent_model) %> = <%= parent_model %>)
+      assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.parent_test_property(parent_model) %>)
 <%- end -%>
-      assign(<%= resource_symbol %>, <%= resource_test_var %> = <%= resource_table_name %>)
+      assign(<%= resource_symbol %>, <%= t_helper.resource_test_property %>)
     end
 
     it "renders new <%= resource_table_name %> form" do
