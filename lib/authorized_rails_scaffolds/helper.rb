@@ -26,15 +26,20 @@ module AuthorizedRailsScaffolds
 
     # Route Prefix parts i.e. ['awesome', 'user', 'company']
     def route_prefix_values
-      @route_prefix_values ||= [parent_module_groups + parent_model_tables]
+      unless @route_prefix_values
+        @route_prefix_values = parent_module_groups || []
+        @route_prefix_values += parent_model_tables
+        @route_prefix_values = @route_prefix_values.reject{|x|x.blank?}
+      end
+      @route_prefix_values
     end
 
     def collection_route_prefix
-      @collection_route_prefix ||= [route_prefix_values + [resource_table_name.pluralize]].join('_')
+      @collection_route_prefix ||= [route_prefix_values + [resource_table_name.pluralize]].reject{|x|x.blank?}.join('_')
     end
 
     def member_route_prefix
-      @member_route_prefix ||= [route_prefix_values + [resource_table_name]].join('_')
+      @member_route_prefix ||= [route_prefix_values + [resource_table_name]].reject{|x|x.blank?}.join('_')
     end
 
     def parent_variables
