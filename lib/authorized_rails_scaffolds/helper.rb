@@ -7,7 +7,7 @@ module AuthorizedRailsScaffolds
       @var_name = options[:var_name] || options[:file_name] # Non-namespaced variable name
 
       # Pluralized non-namespaced variable name
-      @plural_var_name ||= options[:plural_var_name] || @var_name.pluralize
+      @plural_var_name ||= options[:plural_var_name]
 
       # Determine namespace prefix i.e awesome
       # options[:namespace_prefix]
@@ -35,11 +35,11 @@ module AuthorizedRailsScaffolds
     end
 
     def collection_route_prefix
-      @collection_route_prefix ||= [route_prefix_values + [resource_table_name.pluralize]].reject{|x|x.blank?}.join('_')
+      @collection_route_prefix ||= (route_prefix_values + [resource_table_name.pluralize]).join('_')
     end
 
     def member_route_prefix
-      @member_route_prefix ||= [route_prefix_values + [resource_table_name]].reject{|x|x.blank?}.join('_')
+      @member_route_prefix ||= (route_prefix_values + [resource_table_name]).join('_')
     end
 
     def parent_variables

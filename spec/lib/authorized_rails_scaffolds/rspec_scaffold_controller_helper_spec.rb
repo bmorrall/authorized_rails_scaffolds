@@ -56,7 +56,7 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper do
       end
       it 'returns a code fragment including the parent reference' do
         subject = build_controller_spec_helper :var_name => 'foo_bar'
-        subject.create_resource_from_factory.should eq('FactoryGirl.create(:foo_bar, :parent => @parent)')
+        subject.create_resource_from_factory.should eq('FactoryGirl.create(:foo_bar, :parent => parent_parent)')
       end
     end
     context 'with multiple parent models' do
@@ -67,7 +67,7 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper do
       end
       it 'returns a code fragment including the last parent fragment' do
         subject = build_controller_spec_helper :var_name => 'foo_bar'
-        subject.create_resource_from_factory.should eq('FactoryGirl.create(:foo_bar, :parent => @parent)')
+        subject.create_resource_from_factory.should eq('FactoryGirl.create(:foo_bar, :parent => parent_parent)')
       end
     end
   end
@@ -92,7 +92,7 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper do
       end
       it 'returns last parent fragment with a references to the grandparent' do
         subject = build_controller_spec_helper
-        subject.create_parent_resource_from_factory('parent').should eq('FactoryGirl.create(:parent, :grandparent => @grandparent)')
+        subject.create_parent_resource_from_factory('parent').should eq('FactoryGirl.create(:parent, :grandparent => parent_grandparent)')
       end
       it 'returns the grandparent element with no references to other classes' do
         subject = build_controller_spec_helper
@@ -132,23 +132,53 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper do
     end
   end
 
+  describe '#resource_table_name' do
+    it 'returns the var_name' do
+      subject = build_controller_spec_helper :var_name => 'foo_bar'
+      subject.resource_table_name.should eq('foo_bar')
+    end
+    it 'returns the converts class_name into underscored' do
+      subject = build_controller_spec_helper :class_name => 'FooBar'
+      subject.resource_table_name.should eq('foo_bar')
+    end
+  end
+
+  describe '#resource_symbol' do
+    it 'returns var_name preceeded by an :' do
+      subject = build_controller_spec_helper :var_name => 'foo_bar'
+      subject.resource_symbol.should eq(':foo_bar')
+    end
+    it 'falls back to a underscored class_name preceeded by an :' do
+      subject = build_controller_spec_helper :class_name => 'FooBar', :var_name => nil
+      subject.resource_symbol.should eq(':foo_bar')
+    end
+  end
+
   describe '#resource_var' do
     it 'returns var_name preceeded by an @' do
       subject = build_controller_spec_helper :var_name => 'foo_bar'
       subject.resource_var.should eq('@foo_bar')
     end
-    context 'with a parent module' do
-      it 'falls back to using class_name if var_name is not present' do
-        subject = build_controller_spec_helper :var_name => nil, :class_name => 'Example::FooBar'
-        subject.resource_var.should eq('@foo_bar')
-      end
+    it 'falls back to a underscored class_name preceeded by an :' do
+      subject = build_controller_spec_helper :class_name => 'FooBar', :var_name => nil
+      subject.resource_var.should eq('@foo_bar')
     end
+    # context 'with a parent module' do
+    #   it 'falls back to using class_name if var_name is not present' do
+    #     subject = build_controller_spec_helper :var_name => nil, :class_name => 'Example::FooBar'
+    #     subject.resource_var.should eq('@test_foo_bar')
+    #   end
+    # end
   end
 
   describe '#resource_test_var' do
     it 'returns var_name preceeded by an @' do
       subject = build_controller_spec_helper :var_name => 'foo_bar'
-      subject.resource_test_var.should eq('@foo_bar')
+      subject.resource_test_var.should eq('@test_foo_bar')
+    end
+    it 'falls back to a underscored class_name preceeded by an @' do
+      subject = build_controller_spec_helper :class_name => 'FooBar', :var_name => nil
+      subject.resource_test_var.should eq('@test_foo_bar')
     end
   end
 

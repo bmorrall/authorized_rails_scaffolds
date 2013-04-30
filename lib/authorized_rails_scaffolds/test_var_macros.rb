@@ -31,7 +31,7 @@ module TestVarMacros
 
   # Generator for properties used for testing
   def resource_test_property(var_number = nil)
-    resource_property = "test_#{var_name}"
+    resource_property = "test_#{resource_table_name}"
     resource_property = "#{resource_property}_#{var_number}" unless var_number.nil?
     resource_property
   end

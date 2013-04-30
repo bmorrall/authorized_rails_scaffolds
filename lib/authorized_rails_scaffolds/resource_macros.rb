@@ -8,12 +8,12 @@ module ResourceMacros
   # Class name of the resource being tested (i.e. 'FooBar')
   def resource_class
     # @local_class_name
-    @resource_class ||= modular_class_name.split('::')[-1]
+    @resource_class ||= (modular_class_name.nil? ? nil : modular_class_name.split('::')[-1]) || var_name.classify
   end
 
   # Table name of the Resource being tested (i.e. foo_bar)
   def resource_table_name
-    @resource_table_name ||= resource_class.underscore
+    @resource_table_name ||= (var_name || resource_class.underscore)
   end
 
   # Symbol used to represent resource (i.e. :foo_bar)
@@ -23,7 +23,7 @@ module ResourceMacros
 
   # Name for plural of a resource
   def resource_plural_name
-    @resource_plural_name ||= plural_var_name || (var_name || resource_table_name).pluralize
+    @resource_plural_name ||= (plural_var_name || resource_table_name.pluralize)
   end
 
   def resource_plural_sym
@@ -32,7 +32,7 @@ module ResourceMacros
 
   # Variable resource is assigned to in a singular context (i.e. @foo_bar)
   def resource_var
-    @resource_var_name ||= "@#{var_name || resource_table_name}"
+    @resource_var_name ||= "@#{resource_table_name}"
   end
 
   # Variable resource is assigned to in a plural context (i.e. @foo_bars)
@@ -42,7 +42,7 @@ module ResourceMacros
 
   # Directory of the current resource: i.e. awesome/foo_bars
   def resource_directory
-    @resource_directory = [parent_module_groups + [resource_table_name.pluralize]].join("/")
+    @resource_directory = ((parent_module_groups || []) + [resource_plural_name]).join("/")
   end
 
   ### Parent Models ###
@@ -70,7 +70,7 @@ module ResourceMacros
 
   # The parent modules of a controller (i.e. ['Api', 'V1'])
   def parent_modules
-    @parent_modules ||= modular_class_name.split('::')[0..-2]
+    @parent_modules ||= modular_class_name.nil? ? [] : modular_class_name.split('::')[0..-2]
   end
 
   # Array of symbols used for links to parents (i.e. ['api', 'v1'])

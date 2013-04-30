@@ -19,7 +19,7 @@ class AuthorizedRailsScaffolds::RailsErbScaffoldHelper < AuthorizedRailsScaffold
 
     # Add the models
     parent_model_tables.each do |parent_model|
-      form_argument_values << "@#{parent_model}"
+      form_argument_values << parent_variable(parent_model)
     end
 
     form_argument_values << variable
