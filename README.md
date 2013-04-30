@@ -22,7 +22,7 @@ Add this line to your application's Gemfile:
 
     gem 'authorized_rails_scaffolds', :group => :development
 
-Create a initializer at `config/nitializers/authorized_rails_scaffolds.rb` containing:
+Create a initializer at `config/initializers/authorized_rails_scaffolds.rb` containing:
 
     if Rails.env.development? 
     
