@@ -87,6 +87,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as an unauthorized user' do
         login_unauthorized_user
+
         describe 'with valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -98,6 +99,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as user with read ability' do
         login_user_with_ability :read, <%= resource_class %>
+
         describe 'with valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -133,6 +135,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as an unauthorized user' do
         login_unauthorized_user
+
         describe 'with valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -144,6 +147,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as user with read ability' do
         login_user_with_ability :read, <%= resource_class %>
+
         describe 'with valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -177,6 +181,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as an unauthorized user' do
         login_unauthorized_user
+
         describe 'with valid request' do
           before(:each) do
             get :new, {<%= t_helper.build_example_request_params %>}
@@ -187,6 +192,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as user with create ability' do
         login_user_with_ability :create, <%= resource_class %>
+
         describe 'with valid request' do
           before(:each) do
             get :new, {<%= t_helper.build_example_request_params %>}
@@ -220,6 +226,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as an unauthorized user' do
         login_unauthorized_user
+
         describe 'with valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -231,6 +238,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as user with update ability' do
         login_user_with_ability :update, <%= resource_class %>
+
         describe 'with valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -264,6 +272,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as an unauthorized user' do
         login_unauthorized_user
+
         describe "with valid params" do
           before(:each) do
             post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_update_attributes" %>}
@@ -274,6 +283,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as user with create ability' do
         login_user_with_ability :create, <%= resource_class %>
+
         describe "with valid params" do
           it "creates a new <%= resource_class %>" do
             expect {
@@ -332,6 +342,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as an unauthorized user' do
         login_unauthorized_user
+
         describe "with valid params" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -343,6 +354,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as user with update ability' do
         login_user_with_ability :update, <%= resource_class %>
+
         describe "with valid params" do
           it "updates the requested <%= resource_table_name %>" do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -405,6 +417,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as an unauthorized user' do
         login_unauthorized_user
+
         describe "with valid request" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
@@ -416,6 +429,7 @@ describe <%= t_helper.controller_class_name %> do
       end
       context 'as user with destroy ability' do
         login_user_with_ability :destroy, <%= resource_class %>
+
         it "destroys the requested <%= resource_table_name %>" do
           <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
           expect {
