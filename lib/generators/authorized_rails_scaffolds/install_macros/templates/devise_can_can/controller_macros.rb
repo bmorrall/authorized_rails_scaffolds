@@ -36,7 +36,7 @@ module DeviseCanCanControllerMacros
     unless @ability
       @ability = Object.new
       @ability.extend(CanCan::Ability)
-      @controller.stubs(:current_ability).returns(@ability)
+      @controller.stub(:current_ability).and_return(@ability)
     end
     @ability
   end
