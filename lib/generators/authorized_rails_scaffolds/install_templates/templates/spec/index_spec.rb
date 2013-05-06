@@ -45,6 +45,13 @@ describe "<%= resource_directory %>/index" do
   end
 <% end -%>
 
+  before(:each) do
+    # Stub ability for testing
+    @ability = Object.new
+    @ability.extend(CanCan::Ability)
+    controller.stub(:current_ability) { @ability }
+  end
+
   context<% if parent_model_tables.any? %> "within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
     before(:each) do
       # Add Properties for view scope
@@ -56,10 +63,6 @@ describe "<%= resource_directory %>/index" do
         <%= t_helper.resource_test_property(id) %><%= model_index == 1 ? '' : ',' %>
 <% end -%>
       ])
-
-      @ability = Object.new
-      @ability.extend(CanCan::Ability)
-      controller.stub(:current_ability) { @ability }
     end
 
     describe "page header" do
