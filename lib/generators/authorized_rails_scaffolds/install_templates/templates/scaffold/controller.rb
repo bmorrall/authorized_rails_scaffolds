@@ -41,6 +41,16 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   <%- end -%>
   load_and_authorize_resource :<%= t_helper.resource_table_name %><% if t_helper.parent_models.any? %>, :through => :<%= t_helper.parent_models.last.underscore %><% end %>
 
+  # before_filter do
+<%- t_helper.parent_model_tables.each do |model| -%>
+  #   <%% if <%= t_helper.parent_variable(model) %> %>
+  #     add_breadcrumb <%= t_helper.parent_sym(model) %>, <%= t_helper.reference_index_path(model) %>
+  #     add_breadcrumb <%= t_helper.parent_variable(model) %>.to_s, <%= t_helper.reference_path(model) %>
+  #   <%% end %>
+<%- end -%>
+  #   add_breadcrumb :index, <%= t_helper.controller_index_path %>
+  # end
+
   # GET <%= example_controller_path %>
   # GET <%= example_controller_path %>.json
   def index
@@ -57,6 +67,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # GET <%= example_controller_path %>/1.json
   def show
     # <%= resource_var %> = <%= orm_class.find(resource_class, "params[:id]") %>
+    # add_breadcrumb <%= resource_var %>.to_s, <%= t_helper.controller_show_route resource_var %>
 
     respond_to do |format|
       format.html # show.html.erb
@@ -68,6 +79,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # GET <%= example_controller_path %>/new.json
   def new
     # <%= resource_var %> = <%= orm_class.build(resource_class) %>
+    # add_breadcrumb :new, new_<%= t_helper.controller_show_route %>
 
     respond_to do |format|
       format.html # new.html.erb
@@ -78,12 +90,15 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # GET <%= example_controller_path %>/1/edit
   def edit
     # <%= resource_var %> = <%= orm_class.find(resource_class, "params[:id]") %>
+    # add_breadcrumb <%= resource_var %>.to_s, <%= t_helper.controller_show_route resource_var %>
+    # add_breadcrumb :edit, edit_<%= t_helper.controller_show_route resource_var %>
   end
 
   # POST <%= example_controller_path %>
   # POST <%= example_controller_path %>.json
   def create
     # <%= resource_var %> = <%= orm_class.build(resource_class, "params[#{resource_symbol}]") %>
+    # add_breadcrumb :new, new_<%= t_helper.controller_show_route %>
 
     respond_to do |format|
       if @<%= orm_instance.save %>
@@ -100,6 +115,8 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # PUT <%= example_controller_path %>/1.json
   def update
     # <%= resource_var %> = <%= orm_class.find(resource_class, "params[:id]") %>
+    # add_breadcrumb <%= resource_var %>.to_s, <%= t_helper.controller_show_route resource_var %>
+    # add_breadcrumb :edit, edit_<%= t_helper.controller_show_route resource_var %>
 
     respond_to do |format|
       if @<%= orm_instance.update_attributes("params[#{resource_symbol}]") %>
