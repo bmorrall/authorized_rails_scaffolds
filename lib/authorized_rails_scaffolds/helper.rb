@@ -1,6 +1,7 @@
 module AuthorizedRailsScaffolds
   class Helper
     include ParentMacros
+    include PathMacros
     include ResourceMacros
 
     def initialize(options = {})
@@ -32,6 +33,7 @@ module AuthorizedRailsScaffolds
       @plural_var_name
     end
 
+<<<<<<< HEAD
     def resource_human_name
       @resource_human_name ||= @human_name || resource_name.titleize.humanize
     end
@@ -104,5 +106,7 @@ module AuthorizedRailsScaffolds
       (route_prefix_values(use_shallow_route) + [resource_name]).join('_')
     end
 
+=======
+>>>>>>> Moved Paths into Path Macros
   end
 end
