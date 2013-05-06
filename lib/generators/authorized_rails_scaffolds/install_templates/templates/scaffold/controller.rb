@@ -45,6 +45,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # GET <%= example_controller_path %>.json
   def index
     # <%= resources_var %> = <%= orm_class.all(resource_class) %>
+    # <%= resources_var %> = <%= resources_var %>.page(params[:page] || 1)
 
     respond_to do |format|
       format.html # index.html.erb

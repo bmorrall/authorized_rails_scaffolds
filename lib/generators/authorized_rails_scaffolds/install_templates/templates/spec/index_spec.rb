@@ -58,11 +58,13 @@ describe "<%= resource_directory %>/index" do
 <%- parent_model_tables.each do |parent_model| -%>
       assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.references_test_property(parent_model) %>)
 <%- end -%>
-      assign(<%= t_helper.resource_plural_sym %>, [
+      <%= t_helper.resource_plural_name %>_array = [
 <% [1,2].each_with_index do |id, model_index| -%>
         <%= t_helper.resource_test_property(id) %><%= model_index == 1 ? '' : ',' %>
 <% end -%>
-      ])
+      ]
+      # <%= t_helper.resource_plural_name %>_array = Kaminari.paginate_array(<%= t_helper.resource_plural_name %>_array).page(1)
+      assign(<%= t_helper.resource_plural_sym %>, <%= t_helper.resource_plural_name %>_array)
     end
 
     describe "page header" do
