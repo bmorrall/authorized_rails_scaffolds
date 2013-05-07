@@ -1,5 +1,5 @@
 class AuthorizedRailsScaffolds::RSpecScaffoldViewHelper < AuthorizedRailsScaffolds::RSpecScaffoldHelper
-  include FactoryMacros
+  include AuthorizedRailsScaffolds::Macros::FactoryMacros
 
   def initialize(options = {})
     super options

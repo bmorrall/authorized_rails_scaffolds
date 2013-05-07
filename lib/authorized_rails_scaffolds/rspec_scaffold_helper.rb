@@ -1,5 +1,5 @@
 class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::Helper
-  include TestVarMacros
+  include AuthorizedRailsScaffolds::Macros::TestVarMacros
 
   def initialize(options = {})
     super options

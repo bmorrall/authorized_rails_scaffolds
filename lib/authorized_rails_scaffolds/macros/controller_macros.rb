@@ -3,7 +3,7 @@
 #
 # also makes use of @controller_class_name value
 #
-module ControllerMacros
+module AuthorizedRailsScaffolds::Macros::ControllerMacros
 
   # The namespaced class the Controller inherits from (i.e. Example::ApplicationController)
   def application_controller_class

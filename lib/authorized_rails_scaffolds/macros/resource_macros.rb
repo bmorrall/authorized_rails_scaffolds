@@ -1,9 +1,14 @@
 #
 # requires modular_class_name to be defined
 #
-module ResourceMacros
+module AuthorizedRailsScaffolds::Macros::ResourceMacros
 
   ### Base Resource ###
+
+  # Human name of the resource being tested (i.e. 'Foo bar')
+  def resource_human_name
+    @resource_human_name ||= @human_name || resource_name.titleize.humanize
+  end
 
   # Class name of the resource being tested (i.e. 'FooBar')
   def resource_class

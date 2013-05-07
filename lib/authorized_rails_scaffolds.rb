@@ -1,6 +1,8 @@
 require "authorized_rails_scaffolds/version"
 
 module AuthorizedRailsScaffolds
+
+  # Configuration Value Property
   class Configuration
     attr_accessor :parent_models
     attr_accessor :shallow_routes
@@ -10,6 +12,9 @@ module AuthorizedRailsScaffolds
       self.shallow_routes = false
     end
   end
+
+  # Mounting point for macros
+  module Macros; end
 
   def self.config
     @config ||= Configuration.new
@@ -27,7 +32,7 @@ end
 require "authorized_rails_scaffolds/macros/controller_macros"
 require "authorized_rails_scaffolds/macros/factory_macros"
 require "authorized_rails_scaffolds/macros/path_macros"
-require "authorized_rails_scaffolds/parent_macros"
+require "authorized_rails_scaffolds/macros/parent_macros"
 require "authorized_rails_scaffolds/macros/resource_macros"
 require "authorized_rails_scaffolds/macros/route_example_macros"
 require "authorized_rails_scaffolds/macros/test_var_macros"

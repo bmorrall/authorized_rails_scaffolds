@@ -1,4 +1,4 @@
-module RouteExampleMacros
+module AuthorizedRailsScaffolds::Macros::RouteExampleMacros
 
   # Example index route: i.e. /awesome/users/2/foo_bars
   def example_index_path

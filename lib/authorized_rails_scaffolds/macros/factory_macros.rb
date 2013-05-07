@@ -1,4 +1,4 @@
-module FactoryMacros
+module AuthorizedRailsScaffolds::Macros::FactoryMacros
 
   # Returns code that will generate attribute_value as an attribute_type
   def factory_attribute_value(attribute_type, attribute_value)

@@ -1,4 +1,4 @@
-module TestVarMacros
+module AuthorizedRailsScaffolds::Macros::TestVarMacros
 
   # Variable to hold stubs of parent models
   def references_test_var(references_table)
