@@ -4,4 +4,5 @@
 RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :controller
   config.include DeviseCanCanControllerMacros, :type => :controller
+  config.include DeviseCanCanRequestMacros, :type => :request
 end

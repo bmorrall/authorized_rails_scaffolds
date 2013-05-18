@@ -29,10 +29,17 @@ require "authorized_rails_scaffolds/resource_macros"
 require "authorized_rails_scaffolds/route_example_macros"
 require "authorized_rails_scaffolds/test_var_macros"
 require "authorized_rails_scaffolds/helper"
-require "authorized_rails_scaffolds/rails_erb_scaffold_helper"
+
+# Rails Helpers
 require "authorized_rails_scaffolds/rails_scaffold_controller_helper"
+
+# Erb Helpers
+require "authorized_rails_scaffolds/rails_erb_scaffold_helper"
+
+# RSpec Helpers
 require "authorized_rails_scaffolds/rspec_scaffold_helper"
 require "authorized_rails_scaffolds/rspec_scaffold_controller_helper"
 require "authorized_rails_scaffolds/rspec_scaffold_routing_helper"
 require "authorized_rails_scaffolds/rspec_scaffold_view_helper"
+require "authorized_rails_scaffolds/rspec_integration_helper"
 

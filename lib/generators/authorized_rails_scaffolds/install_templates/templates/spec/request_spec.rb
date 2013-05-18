@@ -1,15 +1,37 @@
 require 'spec_helper'
 
+<%-
+# class_name
+# table_name
+# index_helper
+
+t_helper = AuthorizedRailsScaffolds::RSpecIntegrationHelper.new(
+  :class_name => class_name,
+  :table_name => table_name
+)
+
+resource_plural_name = t_helper.resource_plural_name
+
+parent_model_tables = t_helper.parent_model_tables
+
+-%>
 describe "<%= class_name.pluralize %>" do
-  describe "GET /<%= table_name %>" do
-    it "works! (now write some real specs)" do
-<% if webrat? -%>
-      visit <%= index_helper %>_path
-<% else -%>
-      # Run the generator again with the --webrat flag if you want to use webrat methods/matchers
-      get <%= index_helper %>_path
-<% end -%>
-      response.status.should be(200)
+
+<%- if parent_model_tables.any? -%>
+<%- parent_model_tables.each do |parent_model| -%>
+  let(<%= t_helper.references_test_sym(parent_model) %>) { <%= t_helper.create_parent_resource_from_factory parent_model %> }
+<%- end -%>
+
+<%- end -%>
+  describe "GET <%= t_helper.example_controller_path %>" do
+    context "as a user" do
+      before(:each) { sign_in_user }
+      it "renders a list of <%= resource_plural_name %><%= t_helper.extra_comments %>" do
+        2.times { <%= t_helper.create_resource_from_factory %> }
+        get <%= t_helper.controller_index_route %>
+        response.status.should be(200)
+      end
     end
   end
+
 end

@@ -9,8 +9,9 @@ class AuthorizedRailsScaffolds::InstallMacrosGenerator < Rails::Generators::Base
     parts << options[:authentication].underscore unless options[:authentication].nil?
     parts << options[:authorization].underscore unless options[:authorization].nil?
     template_file = parts.any? ? parts.join('_') : nil
-    
+
     copy_file [template_file, 'controller_macros.rb'].join('/'), "spec/support/#{template_file}_controller_macros.rb"
+    copy_file [template_file, 'request_macros.rb'].join('/'), "spec/support/#{template_file}_request_macros.rb"
     readme [template_file, 'USAGE'].join('/')
   end
 
