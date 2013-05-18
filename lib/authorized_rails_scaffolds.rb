@@ -24,6 +24,7 @@ end
 
 require "authorized_rails_scaffolds/controller_macros"
 require "authorized_rails_scaffolds/factory_macros"
+require "authorized_rails_scaffolds/parent_macros"
 require "authorized_rails_scaffolds/resource_macros"
 require "authorized_rails_scaffolds/route_example_macros"
 require "authorized_rails_scaffolds/test_var_macros"
