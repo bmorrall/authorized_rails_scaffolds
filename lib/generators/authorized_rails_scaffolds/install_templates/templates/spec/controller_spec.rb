@@ -28,6 +28,7 @@ require 'spec_helper'
 #   controller_class_name
 #   singular_table_name
 #   file_name
+#   human_name
 #   attributes
 #
 
@@ -36,10 +37,12 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper.new(
   :controller_class_name => controller_class_name,
   :singular_table_name => singular_table_name,
   :file_name => file_name,
+  :human_name => human_name,
   :attributes => attributes
 )
 
 resource_class = t_helper.resource_class
+resource_human_name = t_helper.resource_human_name
 resource_var = t_helper.resource_var
 resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
@@ -304,6 +307,7 @@ describe <%= t_helper.controller_class_name %> do
             assigns(<%= resource_symbol %>).<%= parent_model_tables[-1] %>.should eq(<%= t_helper.references_test_property(parent_model_tables[-1]) %>)
           end
 <% end -%>
+          it { should set_the_flash[:notice].to('<%= resource_human_name %> was successfully created.') }
           it "redirects to the created <%= resource_table_name %>" do
             response.should redirect_to(<%= t_helper.controller_show_route "#{resource_class}.last" %>)
           end
@@ -378,6 +382,7 @@ describe <%= t_helper.controller_class_name %> do
           it "assigns the requested <%= resource_table_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
           end
+          it { should set_the_flash[:notice].to('<%= resource_human_name %> was successfully updated.') }
           it "redirects to the <%= resource_table_name %>" do
             response.should redirect_to(<%= t_helper.controller_show_route resource_test_var %>)
           end

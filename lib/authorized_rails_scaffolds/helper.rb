@@ -14,6 +14,8 @@ module AuthorizedRailsScaffolds
       # options[:namespace_prefix]
 
       @singular_table_name = options[:singular_table_name]
+
+      @human_name = options[:human_name]
     end
 
     # Non-namespaced variable name (i.e. foo_bar)
@@ -23,6 +25,10 @@ module AuthorizedRailsScaffolds
 
     def plural_var_name
       @plural_var_name
+    end
+
+    def resource_human_name
+      @resource_human_name ||= @human_name || resource_class.humanize
     end
 
     # Route Prefix parts i.e. ['awesome', 'user', 'company']

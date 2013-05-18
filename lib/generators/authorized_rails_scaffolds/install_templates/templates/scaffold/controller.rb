@@ -11,18 +11,21 @@ require_dependency "<%= namespaced_file_path %>/application_controller"
 #   controller_class_name
 #   singular_table_name
 #   file_name
+#   human_name
 #   orm_instance
 #   route_url
 #
 
 t_helper = AuthorizedRailsScaffolds::RailsScaffoldControllerHelper.new(
   :class_name => class_name,
+  :human_name => human_name,
   :controller_class_name => controller_class_name,
   :singular_table_name => singular_table_name,
   :file_name => file_name
 )
 
 resource_class = t_helper.resource_class # Non-Namespaced class name
+resource_human_name = t_helper.resource_human_name
 resource_symbol = t_helper.resource_symbol
 resource_table_name = t_helper.resource_table_name
 resource_plural_name = t_helper.resource_plural_name
@@ -88,7 +91,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       if @<%= orm_instance.save %>
-        format.html { redirect_to <%= t_helper.controller_show_route(resource_var) %>, <%= key_value :notice, "'#{human_name} was successfully created.'" %> }
+        format.html { redirect_to <%= t_helper.controller_show_route(resource_var) %>, <%= key_value :notice, "'#{resource_human_name} was successfully created.'" %> }
         format.json { render <%= key_value :json, "{ #{key_value(resource_table_name, resource_var)} }" %>, <%= key_value :status, ':created' %>, <%= key_value :location, t_helper.controller_show_route(resource_var) %> }
       else
         format.html { render <%= key_value :action, '"new"' %> }
@@ -104,7 +107,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       if @<%= orm_instance.update_attributes("params[#{resource_symbol}]") %>
-        format.html { redirect_to <%= t_helper.controller_show_route resource_var %>, <%= key_value :notice, "'#{human_name} was successfully updated.'" %> }
+        format.html { redirect_to <%= t_helper.controller_show_route resource_var %>, <%= key_value :notice, "'#{resource_human_name} was successfully updated.'" %> }
         format.json { head :no_content }
       else
         format.html { render <%= key_value :action, '"edit"' %> }
