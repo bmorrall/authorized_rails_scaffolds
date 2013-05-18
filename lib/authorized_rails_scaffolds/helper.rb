@@ -1,5 +1,6 @@
 module AuthorizedRailsScaffolds
   class Helper
+    include ParentMacros
     include ResourceMacros
 
     def initialize(options = {})
