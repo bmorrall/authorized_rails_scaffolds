@@ -29,6 +29,12 @@ describe "<%= class_name.pluralize %>" do
     FactoryGirl.attributes_for(<%= resource_symbol %>)
   end
 
+  # This should return the minimal set of attributes required to update a valid
+  # <%= resource_class %>.
+  def valid_update_attributes
+    FactoryGirl.attributes_for(<%= resource_symbol %>)
+  end
+
 <%- if parent_model_tables.any? -%>
 <%- parent_model_tables.each do |parent_model| -%>
   let(<%= t_helper.references_test_sym(parent_model) %>) { <%= t_helper.create_parent_resource_from_factory parent_model %> }
@@ -86,6 +92,32 @@ describe "<%= class_name.pluralize %>" do
         response.status.should redirect_to(<%= t_helper.controller_show_route "#{resource_class}.last" %>)
         follow_redirect!
         response.body.should include(<%= "'#{resource_human_name} was successfully created.'" %>)
+      end
+    end
+  end
+
+  describe "PUT <%= t_helper.example_controller_path %>/1" do
+    context "as a user" do
+      before(:each) { sign_in_user }
+      it "updates a <%= resource_human_name %> and redirects to the show url" do
+        <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
+        put <%= t_helper.controller_show_route resource_test_var %>, <%= resource_symbol %> => valid_update_attributes
+        response.status.should redirect_to(<%= t_helper.controller_show_route resource_test_var %>)
+        follow_redirect!
+        response.body.should include(<%= "'#{resource_human_name} was successfully updated.'" %>)
+      end
+    end
+  end
+
+  describe "DELETE <%= t_helper.example_controller_path %>/1" do
+    context "as a user" do
+      before(:each) { sign_in_user }
+      it "deletes a <%= resource_human_name %> and redirects to the index url" do
+        <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
+        delete <%= t_helper.controller_show_route resource_test_var %>
+        response.status.should redirect_to(<%= t_helper.controller_index_route %>)
+        follow_redirect!
+        response.body.should include(<%= "'#{resource_human_name} was successfully deleted.'" %>)
       end
     end
   end
