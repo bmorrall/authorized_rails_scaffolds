@@ -32,7 +32,7 @@ resource_table_name = t_helper.resource_table_name # Non-namespaced variable nam
     </tr>
   </thead>
   <tbody>
-    <%% <%= t_helper.resources_var %>.each do |<%= resource_table_name %>| %>
+    <%% <%= t_helper.resource_array_var %>.each do |<%= resource_table_name %>| %>
       <tr class="<%= resource_table_name %>_<%%= <%= resource_table_name %>.id %>">
         <td class="id-column"><%%= <%= resource_table_name %>.id %></td>
   <%- if attributes.any? -%>

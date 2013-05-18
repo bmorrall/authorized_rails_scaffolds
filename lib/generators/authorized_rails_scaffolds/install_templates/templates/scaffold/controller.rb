@@ -27,7 +27,7 @@ resource_symbol = t_helper.resource_symbol
 resource_table_name = t_helper.resource_table_name
 resource_plural_name = t_helper.resource_plural_name
 resource_var = t_helper.resource_var
-resources_var = t_helper.resources_var # Pluralized non-namespaced variable name
+resource_array_var = t_helper.resource_array_var # Pluralized non-namespaced variable name
 
 example_controller_path = t_helper.example_controller_path
 
@@ -45,12 +45,12 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # GET <%= example_controller_path %>
   # GET <%= example_controller_path %>.json
   def index
-    # <%= resources_var %> = <%= orm_class.all(resource_class) %>
-    # <%= resources_var %> = <%= resources_var %>.page(params[:page] || 1)
+    # <%= resource_array_var %> = <%= orm_class.all(resource_class) %>
+    # <%= resource_array_var %> = <%= resource_array_var %>.page(params[:page] || 1)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render <%= key_value :json, "{ #{key_value(resource_plural_name, resources_var)} }" %> }
+      format.json { render <%= key_value :json, "{ #{key_value(resource_plural_name, resource_array_var)} }" %> }
     end
   end
 

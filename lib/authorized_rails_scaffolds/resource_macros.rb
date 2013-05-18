@@ -32,7 +32,7 @@ module ResourceMacros
   end
 
   # Variable resource is assigned to in a plural context (i.e. @foo_bars)
-  def resources_var
+  def resource_array_var
     @resource_var_name ||= "@#{resource_plural_name}"
   end
 
