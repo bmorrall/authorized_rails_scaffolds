@@ -79,7 +79,7 @@ describe <%= t_helper.controller_class_name %> do
       <%- end -%>
 
       context 'without a user session' do
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             get :index, {<%= t_helper.build_example_request_params %>}
@@ -91,7 +91,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as an unauthorized user' do
         login_unauthorized_user
 
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             get :index, {<%= t_helper.build_example_request_params %>}
@@ -103,7 +103,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as user with read ability' do
         login_user_with_ability :read, <%= resource_class %>
 
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             get :index, {<%= t_helper.build_example_request_params %>}
@@ -127,7 +127,7 @@ describe <%= t_helper.controller_class_name %> do
       <%- end -%>
 
       context 'without a user session' do
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             get :show, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
@@ -139,7 +139,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as an unauthorized user' do
         login_unauthorized_user
 
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             get :show, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
@@ -151,7 +151,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as user with read ability' do
         login_user_with_ability :read, <%= resource_class %>
 
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             get :show, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
@@ -174,7 +174,7 @@ describe <%= t_helper.controller_class_name %> do
       <%- end -%>
 
       context 'without a user session' do
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             get :new, {<%= t_helper.build_example_request_params %>}
           end
@@ -185,7 +185,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as an unauthorized user' do
         login_unauthorized_user
 
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             get :new, {<%= t_helper.build_example_request_params %>}
           end
@@ -196,7 +196,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as user with create ability' do
         login_user_with_ability :create, <%= resource_class %>
 
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             get :new, {<%= t_helper.build_example_request_params %>}
           end
@@ -218,7 +218,7 @@ describe <%= t_helper.controller_class_name %> do
       <%- end -%>
 
       context 'without a user session' do
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             get :edit, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
@@ -230,7 +230,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as an unauthorized user' do
         login_unauthorized_user
 
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             get :edit, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
@@ -242,7 +242,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as user with update ability' do
         login_user_with_ability :update, <%= resource_class %>
 
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             get :edit, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
@@ -265,7 +265,7 @@ describe <%= t_helper.controller_class_name %> do
       <%- end -%>
 
       context 'without a user session' do
-        describe 'with valid params' do
+        describe 'with a valid request' do
           before(:each) do
             post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
           end
@@ -276,7 +276,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as an unauthorized user' do
         login_unauthorized_user
 
-        describe "with valid params" do
+        describe "with a valid request" do
           before(:each) do
             post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
           end
@@ -294,7 +294,7 @@ describe <%= t_helper.controller_class_name %> do
             }.to change(<%= resource_class %>, :count).by(1)
           end
         end
-        describe 'with valid params' do
+        describe 'with a valid request' do
           before(:each) do
             post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
           end
@@ -312,7 +312,7 @@ describe <%= t_helper.controller_class_name %> do
             response.should redirect_to(<%= t_helper.controller_show_route "#{resource_class}.last" %>)
           end
         end
-        describe "with invalid params" do
+        describe "with an invalid request" do
           before(:each) do
             # Trigger the behavior that occurs when invalid params are submitted
             <%= resource_class %>.any_instance.stub(:save).and_return(false)
@@ -335,7 +335,7 @@ describe <%= t_helper.controller_class_name %> do
       <%- end -%>
 
       context 'without a user session' do
-        describe 'with valid params' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             put :update, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => valid_update_attributes" %>}
@@ -347,7 +347,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as an unauthorized user' do
         login_unauthorized_user
 
-        describe "with valid params" do
+        describe "with a valid request" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             put :update, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => valid_update_attributes" %>}
@@ -374,7 +374,7 @@ describe <%= t_helper.controller_class_name %> do
             put :update, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => #{formatted_hash(example_params_for_update)}" %>}
           end
         end
-        describe "with valid params" do
+        describe "with a valid request" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             put :update, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => valid_update_attributes" %>}
@@ -387,7 +387,7 @@ describe <%= t_helper.controller_class_name %> do
             response.should redirect_to(<%= t_helper.controller_show_route resource_test_var %>)
           end
         end
-        describe "with invalid params" do
+        describe "with an invalid request" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             # Trigger the behavior that occurs when invalid params are submitted
@@ -411,7 +411,7 @@ describe <%= t_helper.controller_class_name %> do
       <%- end -%>
 
       context 'without a user session' do
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
@@ -423,7 +423,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as an unauthorized user' do
         login_unauthorized_user
 
-        describe "with valid request" do
+        describe "with a valid request" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
@@ -441,7 +441,7 @@ describe <%= t_helper.controller_class_name %> do
             delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
           }.to change(<%= resource_class %>, :count).by(-1)
         end
-        describe 'with valid request' do
+        describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
