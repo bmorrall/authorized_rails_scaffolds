@@ -11,8 +11,11 @@ t_helper = AuthorizedRailsScaffolds::RSpecIntegrationHelper.new(
 )
 
 resource_plural_name = t_helper.resource_plural_name
+resource_table_name = t_helper.resource_table_name
+resource_test_var = t_helper.resource_test_var
 
 parent_model_tables = t_helper.parent_model_tables
+
 
 -%>
 describe "<%= class_name.pluralize %>" do
@@ -29,6 +32,17 @@ describe "<%= class_name.pluralize %>" do
       it "renders a list of <%= resource_plural_name %><%= t_helper.extra_comments %>" do
         2.times { <%= t_helper.create_resource_from_factory %> }
         get <%= t_helper.controller_index_route %>
+        response.status.should be(200)
+      end
+    end
+  end
+
+  describe "GET <%= t_helper.example_controller_path %>/1" do
+    context "as a user" do
+      before(:each) { sign_in_user }
+      it "renders a <%= resource_table_name %><%= t_helper.extra_comments %>" do
+        <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
+        get <%= t_helper.controller_show_route resource_test_var %>
         response.status.should be(200)
       end
     end
