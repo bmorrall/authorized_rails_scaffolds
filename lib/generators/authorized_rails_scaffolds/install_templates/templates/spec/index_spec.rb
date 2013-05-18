@@ -64,7 +64,7 @@ describe "<%= resource_directory %>/index" do
 <% end -%>
       ]
       # <%= t_helper.resource_plural_name %>_array = Kaminari.paginate_array(<%= t_helper.resource_plural_name %>_array).page(1)
-      assign(<%= t_helper.resource_plural_sym %>, <%= t_helper.resource_plural_name %>_array)
+      assign(<%= t_helper.resource_array_sym %>, <%= t_helper.resource_plural_name %>_array)
     end
 
     describe "page header" do
