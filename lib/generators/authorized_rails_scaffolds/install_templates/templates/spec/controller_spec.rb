@@ -446,6 +446,7 @@ describe <%= t_helper.controller_class_name %> do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
           end
+          it { should set_the_flash[:notice].to('<%= resource_human_name %> was successfully deleted.') }
           it "redirects to the <%= resource_table_name %> list" do
             response.should redirect_to(<%= t_helper.controller_index_route %>)
           end

@@ -123,7 +123,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     @<%= orm_instance.destroy %>
 
     respond_to do |format|
-      format.html { redirect_to <%= t_helper.controller_index_route %> }
+      format.html { redirect_to <%= t_helper.controller_index_route %>, <%= key_value :notice, "'#{resource_human_name} was successfully deleted.'" %> }
       format.json { head :no_content }
     end
   end
