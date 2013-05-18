@@ -48,4 +48,25 @@ describe "<%= class_name.pluralize %>" do
     end
   end
 
+  describe "GET <%= t_helper.example_controller_path %>/new" do
+    context "as a user" do
+      before(:each) { sign_in_user }
+      it "renders a form for a new <%= resource_table_name %><%= t_helper.extra_comments %>" do
+        get new_<%= t_helper.controller_show_route %>
+        response.status.should be(200)
+      end
+    end
+  end
+
+  describe "GET <%= t_helper.example_controller_path %>/1/edit" do
+    context "as a user" do
+      before(:each) { sign_in_user }
+      it "renders the edit form for a <%= resource_table_name %>" do
+        <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
+        get edit_<%= t_helper.controller_show_route resource_test_var %>
+        response.status.should be(200)
+      end
+    end
+  end
+
 end
