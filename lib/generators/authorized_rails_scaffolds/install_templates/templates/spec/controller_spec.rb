@@ -267,7 +267,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'without a user session' do
         describe 'with valid params' do
           before(:each) do
-            post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_update_attributes" %>}
+            post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
           end
           it { should redirect_to(new_user_session_path) }
           it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -278,7 +278,7 @@ describe <%= t_helper.controller_class_name %> do
 
         describe "with valid params" do
           before(:each) do
-            post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_update_attributes" %>}
+            post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
           end
           it { should redirect_to(<%= t_helper.controller_index_route %>) }
           it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -290,13 +290,13 @@ describe <%= t_helper.controller_class_name %> do
         describe "with valid params" do
           it "creates a new <%= resource_class %>" do
             expect {
-              post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_update_attributes" %>}
+              post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
             }.to change(<%= resource_class %>, :count).by(1)
           end
         end
         describe 'with valid params' do
           before(:each) do
-            post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_update_attributes" %>}
+            post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
           end
           it "assigns a newly created <%= resource_table_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should be_a(<%= resource_class %>)
