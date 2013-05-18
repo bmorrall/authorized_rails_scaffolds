@@ -25,6 +25,7 @@ t_helper = AuthorizedRailsScaffolds::RailsScaffoldControllerHelper.new(
 resource_class = t_helper.resource_class # Non-Namespaced class name
 resource_symbol = t_helper.resource_symbol
 resource_table_name = t_helper.resource_table_name
+resource_plural_name = t_helper.resource_plural_name
 resource_var = t_helper.resource_var
 resources_var = t_helper.resources_var # Pluralized non-namespaced variable name
 
@@ -49,7 +50,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render <%= key_value :json, resources_var %> }
+      format.json { render <%= key_value :json, "{ #{key_value(resource_plural_name, resources_var)} }" %> }
     end
   end
 
@@ -60,7 +61,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render <%= key_value :json, resource_var %> }
+      format.json { render <%= key_value :json, "{ #{key_value(resource_table_name, resource_var)} }" %> }
     end
   end
 
@@ -71,7 +72,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render <%= key_value :json, resource_table_name %> }
+      format.json { render <%= key_value :json, "{ #{key_value(resource_table_name, resource_var)} }" %> }
     end
   end
 
@@ -88,10 +89,10 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     respond_to do |format|
       if @<%= orm_instance.save %>
         format.html { redirect_to <%= t_helper.controller_show_route(resource_var) %>, <%= key_value :notice, "'#{human_name} was successfully created.'" %> }
-        format.json { render <%= key_value :json, resource_var %>, <%= key_value :status, ':created' %>, <%= key_value :location, t_helper.controller_show_route(resource_var) %> }
+        format.json { render <%= key_value :json, "{ #{key_value(resource_table_name, resource_var)} }" %>, <%= key_value :status, ':created' %>, <%= key_value :location, t_helper.controller_show_route(resource_var) %> }
       else
         format.html { render <%= key_value :action, '"new"' %> }
-        format.json { render <%= key_value :json, "@#{orm_instance.errors}" %>, <%= key_value :status, ':unprocessable_entity' %> }
+        format.json { render <%= key_value :json, "{ " + key_value('errors', "@#{orm_instance.errors}") + " }" %>, <%= key_value :status, ':unprocessable_entity' %> }
       end
     end
   end
@@ -107,7 +108,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
         format.json { head :no_content }
       else
         format.html { render <%= key_value :action, '"edit"' %> }
-        format.json { render <%= key_value :json, "@#{orm_instance.errors}" %>, <%= key_value :status, ':unprocessable_entity' %> }
+        format.json { render <%= key_value :json, "{ " + key_value('errors', "@#{orm_instance.errors}") + " }" %>, <%= key_value :status, ':unprocessable_entity' %> }
       end
     end
   end
@@ -129,9 +130,15 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   # Capture any access violations, ensure User isn't unnessisarily redirected to root
   rescue_from CanCan::AccessDenied do |exception|
     if params[:action] == 'index'
-      redirect_to root_url, :alert => exception.message
+      respond_to do |format|
+        format.html { redirect_to root_url, :alert => exception.message }
+        format.json { head :no_content, :status => :forbidden }
+      end
     else
-      redirect_to <%= t_helper.controller_index_route %>, :alert => exception.message
+      respond_to do |format|
+        format.html { redirect_to <%= t_helper.controller_index_route %>, :alert => exception.message }
+        format.json { head :no_content, :status => :forbidden }
+      end
     end
   end
 
