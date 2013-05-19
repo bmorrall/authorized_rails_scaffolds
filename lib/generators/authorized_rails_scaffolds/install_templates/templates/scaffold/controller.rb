@@ -152,7 +152,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.html do
-        if params[:action] == 'index'
+        if params[:action] == 'index'<%= t_helper.parent_model_names.collect { |parent_model| " or #{t_helper.parent_variable(parent_model)}.nil?" }.join('') %>
           redirect_to root_url, :alert => exception.message
         else
           redirect_to <%= t_helper.controller_index_route %>, :alert => exception.message
