@@ -52,7 +52,7 @@ describe "<%= class_name.pluralize %>" do
     end
   end
 
-  describe "GET <%= t_helper.example_index_path %>/1" do
+  describe "GET <%= t_helper.example_show_path %>" do
     context "as a user" do
       before(:each) { sign_in_user }
       it "renders a <%= resource_human_name %><%= t_helper.extra_comments %>" do
@@ -73,7 +73,7 @@ describe "<%= class_name.pluralize %>" do
     end
   end
 
-  describe "GET <%= t_helper.example_index_path %>/1/edit" do
+  describe "GET <%= t_helper.example_show_path %>/edit" do
     context "as a user" do
       before(:each) { sign_in_user }
       it "renders the edit form for a <%= resource_human_name %>" do
@@ -96,7 +96,7 @@ describe "<%= class_name.pluralize %>" do
     end
   end
 
-  describe "PUT <%= t_helper.example_index_path %>/1" do
+  describe "PUT <%= t_helper.example_show_path %>" do
     context "as a user" do
       before(:each) { sign_in_user }
       it "updates a <%= resource_human_name %> and redirects to the show url" do
@@ -109,7 +109,7 @@ describe "<%= class_name.pluralize %>" do
     end
   end
 
-  describe "DELETE <%= t_helper.example_index_path %>/1" do
+  describe "DELETE <%= t_helper.example_show_path %>" do
     context "as a user" do
       before(:each) { sign_in_user }
       it "deletes a <%= resource_human_name %> and redirects to the index url" do

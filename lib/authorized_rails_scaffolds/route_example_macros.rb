@@ -18,6 +18,10 @@ module RouteExampleMacros
     "/#{@example_index_path}"
   end
 
+  def example_show_path
+    "#{example_index_path}/1"
+  end
+
   # Extra params for an example controller path: i.e. ', :user_id => 2'
   def example_index_path_extra_params
     @example_index_path_extra_params ||= example_parent_values.any? ? ', ' + example_parent_values.map{ |parent_model_id, parent_value| ":#{parent_model_id} => \"#{parent_value}\"" }.join(', ') : ''

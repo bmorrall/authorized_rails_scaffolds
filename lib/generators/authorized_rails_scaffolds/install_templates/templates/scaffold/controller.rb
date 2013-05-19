@@ -57,8 +57,8 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     end
   end
 
-  # GET <%= example_index_path %>/1
-  # GET <%= example_index_path %>/1.json
+  # GET <%= example_show_path %>
+  # GET <%= example_show_path %>.json
   def show
     # <%= resource_var %> = <%= orm_class.find(resource_class, "params[:id]") %>
 
@@ -79,7 +79,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     end
   end
 
-  # GET <%= example_index_path %>/1/edit
+  # GET <%= example_show_path %>/edit
   def edit
     # <%= resource_var %> = <%= orm_class.find(resource_class, "params[:id]") %>
   end
@@ -100,8 +100,8 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     end
   end
 
-  # PUT <%= example_index_path %>/1
-  # PUT <%= example_index_path %>/1.json
+  # PUT <%= example_show_path %>
+  # PUT <%= example_show_path %>.json
   def update
     # <%= resource_var %> = <%= orm_class.find(resource_class, "params[:id]") %>
 
@@ -116,8 +116,8 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     end
   end
 
-  # DELETE <%= example_index_path %>/1
-  # DELETE <%= example_index_path %>/1.json
+  # DELETE <%= example_show_path %>
+  # DELETE <%= example_show_path %>.json
   def destroy
     # <%= resource_var %> = <%= orm_class.find(resource_class, "params[:id]") %>
     @<%= orm_instance.destroy %>
