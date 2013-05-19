@@ -17,7 +17,7 @@ resource_table_name = t_helper.resource_table_name # Non-namespaced variable nam
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>&nbsp;</th>
+      <th class="id-column">&nbsp;</th>
   <%- attributes.each do |attribute| -%>
     <%- if attribute.type == :references -%>
       <%% unless @<%= attribute.name %> %>
