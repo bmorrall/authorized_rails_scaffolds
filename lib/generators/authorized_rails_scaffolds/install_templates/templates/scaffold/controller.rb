@@ -46,6 +46,23 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   <%- end -%>
   <%= t_helper.load_and_authorize_resource %>
 
+<%- if t_helper.shallow_routes? -%>
+  before_filter do
+<%- reverse_parent_models = t_helper.parent_model_names.reverse -%>
+<%- reverse_parent_models.each_with_index do |parent_model, parent_index| -%>
+  <%- if parent_index == 0 -%>
+    if <%= resource_var %> && <%= resource_var %>.persisted?
+      <%= t_helper.parent_variable(parent_model) %> = <%= resource_var %>.<%= parent_model %> if <%= t_helper.parent_variable(parent_model) %>.nil?
+    end
+  <%- else -%>
+    if <%= t_helper.parent_variable(reverse_parent_models[parent_index-1]) %> && <%= t_helper.parent_variable(parent_model) %>.nil?
+      <%= t_helper.parent_variable(parent_model) %> = <%= t_helper.parent_variable(reverse_parent_models[parent_index-1]) %>.<%= parent_model %>
+    end
+  <%- end -%>
+<%- end -%>
+  end
+
+<%- end -%>
   # GET <%= example_index_path %>
   # GET <%= example_index_path %>.json
   def index
