@@ -62,7 +62,7 @@ describe "<%= resource_directory %>/index" do
 <% [1,2].each_with_index do |id, model_index| -%>
         <%= t_helper.resource_test_name(id) %><%= model_index == 1 ? '' : ',' %>
 <% end -%>
-      ]
+      ])
       # <%= t_helper.resource_array_name %>_array = Kaminari.paginate_array(<%= t_helper.resource_array_name %>_array).page(1)
       assign(<%= t_helper.resource_array_sym %>, <%= t_helper.resource_array_name %>_array)
     end
