@@ -63,8 +63,8 @@ describe "<%= resource_directory %>/index" do
         <%= t_helper.resource_test_property(id) %><%= model_index == 1 ? '' : ',' %>
 <% end -%>
       ]
-      # <%= t_helper.resource_plural_name %>_array = Kaminari.paginate_array(<%= t_helper.resource_plural_name %>_array).page(1)
-      assign(<%= t_helper.resource_array_sym %>, <%= t_helper.resource_plural_name %>_array)
+      # <%= t_helper.resource_array_name %>_array = Kaminari.paginate_array(<%= t_helper.resource_array_name %>_array).page(1)
+      assign(<%= t_helper.resource_array_sym %>, <%= t_helper.resource_array_name %>_array)
     end
 
     describe "page header" do
@@ -78,7 +78,7 @@ describe "<%= resource_directory %>/index" do
       end
     end
 
-    describe "<%= t_helper.resource_plural_name %> table" do
+    describe "<%= t_helper.resource_array_name %> table" do
       it 'includes a row for each <%= resource_table_name %>' do
         render
 <% unless webrat? -%>
@@ -93,7 +93,7 @@ describe "<%= resource_directory %>/index" do
 <% end -%>
       end
 
-      it "contains a list of <%= t_helper.resource_plural_name %>" do
+      it "contains a list of <%= t_helper.resource_array_name %>" do
         render
 <% if webrat? -%>
   <%- [1,2].each do |model_index| -%>

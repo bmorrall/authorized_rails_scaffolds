@@ -111,7 +111,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should respond_with(:success) }
           it { should render_template(:index) }
           it { should render_with_layout(:application) }
-          it "assigns all <%= t_helper.resource_plural_name %> as <%= t_helper.resource_array_var %>" do
+          it "assigns all <%= t_helper.resource_array_name %> as <%= t_helper.resource_array_var %>" do
             assigns(<%= t_helper.resource_array_sym %>).should eq([<%= resource_test_var %>])
           end
         end

@@ -21,28 +21,28 @@ module ResourceMacros
     ":#{resource_table_name}"
   end
 
-  # Name for plural of a resource
-  def resource_plural_name
-    @resource_plural_name ||= (plural_var_name || resource_table_name.pluralize)
-  end
-
   # Variable resource is assigned to in a singular context (i.e. @foo_bar)
   def resource_var
     @resource_var_name ||= "@#{resource_table_name}"
   end
 
+  # Name for plural of a resource
+  def resource_array_name
+    @resource_array_name ||= (plural_var_name || resource_table_name.pluralize)
+  end
+
   # Variable resource is assigned to in a plural context (i.e. @foo_bars)
   def resource_array_var
-    @resource_var_name ||= "@#{resource_plural_name}"
+    @resource_var_name ||= "@#{resource_array_name}"
   end
 
   def resource_array_sym
-    @resource_array_sym ||= ":#{resource_plural_name}"
+    @resource_array_sym ||= ":#{resource_array_name}"
   end
 
   # Directory of the current resource: i.e. awesome/foo_bars
   def resource_directory
-    @resource_directory = ((parent_module_groups || []) + [resource_plural_name]).join("/")
+    @resource_directory = ((parent_module_groups || []) + [resource_array_name]).join("/")
   end
 
 end

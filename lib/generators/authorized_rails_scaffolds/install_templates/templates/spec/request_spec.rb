@@ -13,7 +13,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecIntegrationHelper.new(
 
 resource_class = t_helper.resource_class
 resource_human_name = t_helper.resource_human_name
-resource_plural_name = t_helper.resource_plural_name
+resource_array_name = t_helper.resource_array_name
 resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
 
@@ -44,7 +44,7 @@ describe "<%= class_name.pluralize %>" do
   describe "GET <%= t_helper.example_controller_path %>" do
     context "as a user" do
       before(:each) { sign_in_user }
-      it "renders a list of <%= resource_plural_name %><%= t_helper.extra_comments %>" do
+      it "renders a list of <%= resource_array_name %><%= t_helper.extra_comments %>" do
         2.times { <%= t_helper.create_resource_from_factory %> }
         get <%= t_helper.controller_index_route %>
         response.status.should be(200)

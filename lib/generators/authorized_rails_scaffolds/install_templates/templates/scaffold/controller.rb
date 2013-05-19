@@ -28,7 +28,7 @@ resource_class = t_helper.resource_class # Non-Namespaced class name
 resource_human_name = t_helper.resource_human_name
 resource_symbol = t_helper.resource_symbol
 resource_table_name = t_helper.resource_table_name
-resource_plural_name = t_helper.resource_plural_name
+resource_array_name = t_helper.resource_array_name
 resource_var = t_helper.resource_var
 resource_array_var = t_helper.resource_array_var # Pluralized non-namespaced variable name
 
@@ -53,7 +53,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render <%= key_value :json, "{ #{key_value(resource_plural_name, resource_array_var)} }" %> }
+      format.json { render <%= key_value :json, "{ #{key_value(resource_array_name, resource_array_var)} }" %> }
     end
   end
 
