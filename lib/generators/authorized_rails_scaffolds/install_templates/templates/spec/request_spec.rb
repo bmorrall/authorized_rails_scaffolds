@@ -67,7 +67,7 @@ describe "<%= class_name.pluralize %>" do
     context "as a user" do
       before(:each) { sign_in_user }
       it "renders a form for a new <%= resource_human_name %><%= t_helper.extra_comments %>" do
-        get new_<%= t_helper.controller_show_route %>
+        get <%= t_helper.controller_new_route %>
         response.status.should be(200)
       end
     end

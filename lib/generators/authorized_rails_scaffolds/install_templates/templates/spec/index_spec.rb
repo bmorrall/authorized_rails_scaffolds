@@ -218,9 +218,9 @@ describe "<%= resource_directory %>/index" do
         it "does not render a link to new_<%= ns_file_name %>_path" do
           render
 <% if webrat? -%>
-          rendered.should_not have_selector("a[href=?]", :href => new_<%= t_helper.controller_show_route %>, :count => 1)
+          rendered.should_not have_selector("a[href=?]", :href => <%= t_helper.controller_new_route %>, :count => 1)
 <% else -%>
-          assert_select "a[href=?]", new_<%= t_helper.controller_show_route %>, :count => 0
+          assert_select "a[href=?]", <%= t_helper.controller_new_route %>, :count => 0
 <% end -%>
         end
       end
@@ -229,9 +229,9 @@ describe "<%= resource_directory %>/index" do
           @ability.can :create, <%= resource_class %>
           render
 <% if webrat? -%>
-          rendered.should have_selector("a[href=?]", new_<%= t_helper.controller_show_route %>, :count => 1)
+          rendered.should have_selector("a[href=?]", <%= t_helper.controller_new_route %>, :count => 1)
 <% else -%>
-          assert_select "a[href=?]", new_<%= t_helper.controller_show_route %>, :count => 1
+          assert_select "a[href=?]", <%= t_helper.controller_new_route %>, :count => 1
 <% end -%>
         end
       end

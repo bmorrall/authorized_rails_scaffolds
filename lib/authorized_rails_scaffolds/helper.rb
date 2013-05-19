@@ -65,6 +65,10 @@ module AuthorizedRailsScaffolds
       "edit_#{controller_show_route(variable)}"
     end
 
+    def controller_new_route
+      "new_#{controller_show_route}"
+    end
+
     def controller_index_path
       variables = parent_variables
       controller_index_path = "#{collection_route_prefix}_path"

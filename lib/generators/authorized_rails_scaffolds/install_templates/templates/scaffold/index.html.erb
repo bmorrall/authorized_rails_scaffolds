@@ -71,6 +71,6 @@ resource_name = t_helper.resource_name # Non-namespaced variable name
 
 <%% if can?(:create, <%= resource_class %>) %>
   <%%= link_to t('.new', :default => t("helpers.links.new")),
-            new_<%= t_helper.controller_show_route %>,
+            <%= t_helper.controller_new_route %>,
             :class => 'btn btn-primary' %>
 <%% end %>
