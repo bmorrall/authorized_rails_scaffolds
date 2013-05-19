@@ -11,7 +11,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 
 resource_var = t_helper.resource_var
 resource_symbol = t_helper.resource_symbol
-resource_table_name = t_helper.resource_table_name
+resource_name = t_helper.resource_name
 resource_test_property = t_helper.resource_test_property
 
 resource_directory = t_helper.resource_directory
@@ -37,7 +37,7 @@ describe "<%= resource_directory %>/show" do
   let(<%= t_helper.references_test_sym(parent_attribute.name) %>) { FactoryGirl.build_stubbed(:<%= parent_attribute.name %>) }
 <% end -%>
   let(<%= t_helper.resource_test_sym %>) do
-    FactoryGirl.build_stubbed(:<%= t_helper.resource_table_name %><%= output_attributes.empty? ? ')' : ',' %>
+    FactoryGirl.build_stubbed(:<%= t_helper.resource_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
       :<%= attribute.name %> => <% if attribute.type == :references %><%= t_helper.references_test_property(attribute.name) %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>

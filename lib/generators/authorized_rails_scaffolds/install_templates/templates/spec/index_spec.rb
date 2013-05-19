@@ -14,7 +14,7 @@ parent_model_tables = t_helper.parent_model_tables
 
 resource_class = t_helper.resource_class # Non-Namespaced class name
 resource_symbol = t_helper.resource_symbol
-resource_table_name = t_helper.resource_table_name
+resource_name = t_helper.resource_name
 
 output_attributes = t_helper.output_attributes
 datetime_attributes = t_helper.datetime_attributes
@@ -71,24 +71,24 @@ describe "<%= resource_directory %>/index" do
       it 'includes a h1 title' do
         render
 <% if webrat? -%>
-        rendered.should have_selector(".page-header>h1", :content => <%= resource_table_name.humanize.pluralize.dump %>, :count => 1)
+        rendered.should have_selector(".page-header>h1", :content => <%= resource_name.humanize.pluralize.dump %>, :count => 1)
 <% else -%>
-        assert_select ".page-header>h1", :text => <%= resource_table_name.humanize.pluralize.dump %>, :count => 1
+        assert_select ".page-header>h1", :text => <%= resource_name.humanize.pluralize.dump %>, :count => 1
 <% end -%>
       end
     end
 
     describe "<%= t_helper.resource_array_name %> table" do
-      it 'includes a row for each <%= resource_table_name %>' do
+      it 'includes a row for each <%= resource_name %>' do
         render
 <% unless webrat? -%>
         # Run the generator again with the --webrat flag if you want to use webrat matchers
 <% end -%>
 <% [1,2].each do |model_index| -%>
 <% if webrat? -%>
-        rendered.should have_selector("table>tbody>tr.<%= resource_table_name %>_#{<%= t_helper.resource_test_property(model_index) %>.id}", :count => 1)
+        rendered.should have_selector("table>tbody>tr.<%= resource_name %>_#{<%= t_helper.resource_test_property(model_index) %>.id}", :count => 1)
 <% else -%>
-        assert_select "table>tbody>tr.<%= resource_table_name %>_#{<%= t_helper.resource_test_property(model_index) %>.id}", :count => 1
+        assert_select "table>tbody>tr.<%= resource_name %>_#{<%= t_helper.resource_test_property(model_index) %>.id}", :count => 1
 <% end -%>
 <% end -%>
       end
@@ -121,7 +121,7 @@ describe "<%= resource_directory %>/index" do
 <% references_attributes.each_with_index do |attribute, attribute_index| -%>
   <%- next if parent_model_tables.include?(attribute.name.to_s) -%>
 
-      it "displays the <%= attribute.name %> belonging to <%= resource_table_name %>" do
+      it "displays the <%= attribute.name %> belonging to <%= resource_name %>" do
         render
   <%- if webrat? -%>
         rendered.should have_selector("tr>td", :content => <%= t_helper.references_test_property(attribute.name) %>.to_s, :count => 2)
@@ -133,7 +133,7 @@ describe "<%= resource_directory %>/index" do
 <% references_attributes.each_with_index do |attribute, attribute_index| -%>
   <%- next unless parent_model_tables.include?(attribute.name.to_s) -%>
 
-      it "does not display the <%= attribute.name %> belonging to <%= resource_table_name %>" do
+      it "does not display the <%= attribute.name %> belonging to <%= resource_name %>" do
         render
   <%- if webrat? -%>
         rendered.should have_selector("tr>td", :content => <%= t_helper.references_test_property(attribute.name) %>.to_s, :count => 0)
@@ -143,7 +143,7 @@ describe "<%= resource_directory %>/index" do
       end
 <% end -%>
 
-      describe 'show <%= resource_table_name %> link' do
+      describe 'show <%= resource_name %> link' do
         it "renders a link to <%= ns_file_name %>_path" do
           render
 <% [1,2].each do |model_index| -%>
@@ -156,7 +156,7 @@ describe "<%= resource_directory %>/index" do
         end
       end
 
-      describe 'edit <%= resource_table_name %> link' do
+      describe 'edit <%= resource_name %> link' do
         context 'without update permissions' do
           it "renders a disabled link to edit_<%= ns_file_name %>_path" do
             render
@@ -184,7 +184,7 @@ describe "<%= resource_directory %>/index" do
         end
       end
 
-      describe 'destroy <%= resource_table_name %> link' do
+      describe 'destroy <%= resource_name %> link' do
         context 'without destroy permissions' do
           it "renders a disabled link to <%= ns_file_name %>_path" do
             render
@@ -213,7 +213,7 @@ describe "<%= resource_directory %>/index" do
       end
     end
 
-    describe 'new <%= resource_table_name %> link' do
+    describe 'new <%= resource_name %> link' do
       context 'without create permissions' do
         it "does not render a link to new_<%= ns_file_name %>_path" do
           render

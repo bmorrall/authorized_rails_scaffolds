@@ -132,14 +132,14 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper do
     end
   end
 
-  describe '#resource_table_name' do
+  describe '#resource_name' do
     it 'returns the var_name' do
       subject = build_controller_spec_helper :var_name => 'foo_bar'
-      subject.resource_table_name.should eq('foo_bar')
+      subject.resource_name.should eq('foo_bar')
     end
     it 'returns the converts class_name into underscored' do
       subject = build_controller_spec_helper :class_name => 'FooBar'
-      subject.resource_table_name.should eq('foo_bar')
+      subject.resource_name.should eq('foo_bar')
     end
   end
 

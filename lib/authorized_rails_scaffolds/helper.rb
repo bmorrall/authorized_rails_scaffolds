@@ -42,11 +42,11 @@ module AuthorizedRailsScaffolds
     end
 
     def collection_route_prefix
-      @collection_route_prefix ||= (route_prefix_values + [resource_table_name.pluralize]).join('_')
+      @collection_route_prefix ||= (route_prefix_values + [resource_name.pluralize]).join('_')
     end
 
     def member_route_prefix
-      @member_route_prefix ||= (route_prefix_values + [resource_table_name]).join('_')
+      @member_route_prefix ||= (route_prefix_values + [resource_name]).join('_')
     end
 
     def parent_variables

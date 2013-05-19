@@ -10,7 +10,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 )
 
 resource_symbol = t_helper.resource_symbol
-resource_table_name = t_helper.resource_table_name
+resource_name = t_helper.resource_name
 
 resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
@@ -35,7 +35,7 @@ describe "<%= resource_directory %>/new" do
   let(<%= t_helper.references_test_sym(parent_attribute.name) %>) { FactoryGirl.build_stubbed(:<%= parent_attribute.name %>) }
 <% end -%>
   let(<%= t_helper.resource_test_sym %>) do
-    FactoryGirl.build(:<%= t_helper.resource_table_name %><%= output_attributes.empty? ? ')' : ',' %>
+    FactoryGirl.build(:<%= t_helper.resource_name %><%= output_attributes.empty? ? ')' : ',' %>
 <% output_attributes.each_with_index do |attribute, attribute_index| -%>
       :<%= attribute.name %> => <% if attribute.type == :references %><%= t_helper.references_test_property(attribute.name) %><% else %><%= t_helper.factory_attribute_value attribute.type, value_for(attribute) %><% end %><%= attribute_index == output_attributes.length - 1 ? '' : ','%>
 <% end -%>
@@ -58,26 +58,26 @@ describe "<%= resource_directory %>/new" do
       assign(<%= resource_symbol %>, <%= t_helper.resource_test_property %>)
     end
 
-    it "renders new <%= resource_table_name %> form" do
+    it "renders new <%= resource_name %> form" do
       render
 
 <% if webrat? -%>
       rendered.should have_selector("form", :action => <%= t_helper.controller_index_path %>, :method => "post") do |form|
 <% for attribute in standard_attributes -%>
-        form.should have_selector("<%= attribute.input_type -%>#<%= resource_table_name %>_<%= attribute.name %>", :name => "<%= resource_table_name %>[<%= attribute.name %>]")
+        form.should have_selector("<%= attribute.input_type -%>#<%= resource_name %>_<%= attribute.name %>", :name => "<%= resource_name %>[<%= attribute.name %>]")
 <% end -%>
 <% for attribute in references_attributes -%>
-        form.should have_selector("select#<%= resource_table_name %>_<%= attribute.name %>_id", :name => "<%= resource_table_name %>[<%= attribute.name %>_id]")
+        form.should have_selector("select#<%= resource_name %>_<%= attribute.name %>_id", :name => "<%= resource_name %>[<%= attribute.name %>_id]")
 <% end -%>
       end
 <% else -%>
       # Run the generator again with the --webrat flag if you want to use webrat matchers
       assert_select "form[action=?][method=?]", <%= t_helper.controller_index_path %>, "post" do
 <% for attribute in standard_attributes -%>
-        assert_select "<%= attribute.input_type -%>#<%= resource_table_name %>_<%= attribute.name %>[name=?]", "<%= resource_table_name %>[<%= attribute.name %>]"
+        assert_select "<%= attribute.input_type -%>#<%= resource_name %>_<%= attribute.name %>[name=?]", "<%= resource_name %>[<%= attribute.name %>]"
 <% end -%>
 <% for attribute in references_attributes -%>
-        assert_select "select#<%= resource_table_name %>_<%= attribute.name %>_id[name=?]", "<%= resource_table_name %>[<%= attribute.name %>_id]"
+        assert_select "select#<%= resource_name %>_<%= attribute.name %>_id[name=?]", "<%= resource_name %>[<%= attribute.name %>_id]"
 <% end -%>
       end
 <% end -%>
@@ -91,13 +91,13 @@ describe "<%= resource_directory %>/new" do
       rendered.should have_selector("form", :action => <%= t_helper.controller_index_path %>, :method => "post") do |form|
   <%- for attribute in datetime_attributes -%>
     <%- if [:date, :datetime].include? attribute.type -%>
-        form.should have_selector("select#<%= resource_table_name %>_<%= attribute.name %>", :name => "<%= resource_table_name %>[<%= attribute.name %>]")
-        form.should have_selector("select#<%= resource_table_name %>_<%= attribute.name %>", :name => "<%= resource_table_name %>[<%= attribute.name %>]")
-        form.should have_selector("select#<%= resource_table_name %>_<%= attribute.name %>", :name => "<%= resource_table_name %>[<%= attribute.name %>]")
+        form.should have_selector("select#<%= resource_name %>_<%= attribute.name %>", :name => "<%= resource_name %>[<%= attribute.name %>]")
+        form.should have_selector("select#<%= resource_name %>_<%= attribute.name %>", :name => "<%= resource_name %>[<%= attribute.name %>]")
+        form.should have_selector("select#<%= resource_name %>_<%= attribute.name %>", :name => "<%= resource_name %>[<%= attribute.name %>]")
     <%- end -%>
     <%- if [:time, :datetime].include? attribute.type -%>
-        form.should have_selector("select#<%= resource_table_name %>_<%= attribute.name %>", :name => "<%= resource_table_name %>[<%= attribute.name %>]")
-        form.should have_selector("select#<%= resource_table_name %>_<%= attribute.name %>", :name => "<%= resource_table_name %>[<%= attribute.name %>]")
+        form.should have_selector("select#<%= resource_name %>_<%= attribute.name %>", :name => "<%= resource_name %>[<%= attribute.name %>]")
+        form.should have_selector("select#<%= resource_name %>_<%= attribute.name %>", :name => "<%= resource_name %>[<%= attribute.name %>]")
     <%- end -%>
   <% end -%>
       end
@@ -107,21 +107,21 @@ describe "<%= resource_directory %>/new" do
   <%- for attribute in datetime_attributes -%>
         # <%= attribute.name %> values
     <%- if [:date, :datetime].include? attribute.type -%>
-        assert_select "select#<%= resource_table_name %>_<%= attribute.name %>_1i[name=?]", "<%= resource_table_name %>[<%= attribute.name %>(1i)]" do
+        assert_select "select#<%= resource_name %>_<%= attribute.name %>_1i[name=?]", "<%= resource_name %>[<%= attribute.name %>(1i)]" do
           assert_select "option[selected=selected]", :text => "<%= t_helper.date_select_year_value attribute.default %>", :count => 1
         end
-        assert_select "select#<%= resource_table_name %>_<%= attribute.name %>_2i[name=?]", "<%= resource_table_name %>[<%= attribute.name %>(2i)]" do
+        assert_select "select#<%= resource_name %>_<%= attribute.name %>_2i[name=?]", "<%= resource_name %>[<%= attribute.name %>(2i)]" do
           assert_select "option[selected=selected][value=?]", "<%= t_helper.date_select_month_value attribute.default %>", :text => "<%= t_helper.date_select_month_text attribute.default %>", :count => 1
         end
-        assert_select "select#<%= resource_table_name %>_<%= attribute.name %>_3i[name=?]", "<%= resource_table_name %>[<%= attribute.name %>(3i)]" do
+        assert_select "select#<%= resource_name %>_<%= attribute.name %>_3i[name=?]", "<%= resource_name %>[<%= attribute.name %>(3i)]" do
           assert_select "option[selected=selected]", :text => "<%= t_helper.date_select_day_value attribute.default %>", :count => 1
         end
     <%- end -%>
     <%- if [:time, :datetime].include? attribute.type -%>
-        assert_select "select#<%= resource_table_name %>_<%= attribute.name %>_4i[name=?]", "<%= resource_table_name %>[<%= attribute.name %>(4i)]" do
+        assert_select "select#<%= resource_name %>_<%= attribute.name %>_4i[name=?]", "<%= resource_name %>[<%= attribute.name %>(4i)]" do
           assert_select "option[selected=selected]", :text => "<%= t_helper.date_select_hour_value attribute.default %>", :count => 1
         end
-        assert_select "select#<%= resource_table_name %>_<%= attribute.name %>_5i[name=?]", "<%= resource_table_name %>[<%= attribute.name %>(5i)]" do
+        assert_select "select#<%= resource_name %>_<%= attribute.name %>_5i[name=?]", "<%= resource_name %>[<%= attribute.name %>(5i)]" do
           assert_select "option[selected=selected]", :text => "<%= t_helper.date_select_minute_value attribute.default %>", :count => 1
         end
     <%- end -%>

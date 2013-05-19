@@ -46,7 +46,7 @@ resource_human_name = t_helper.resource_human_name
 resource_var = t_helper.resource_var
 resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
-resource_table_name = t_helper.resource_table_name
+resource_name = t_helper.resource_name
 
 parent_model_tables = t_helper.parent_model_tables
 
@@ -159,7 +159,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should respond_with(:success) }
           it { should render_template(:show) }
           it { should render_with_layout(:application) }
-          it "assigns the requested <%= resource_table_name %> as <%= resource_var %>" do
+          it "assigns the requested <%= resource_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
           end
         end
@@ -203,7 +203,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should respond_with(:success) }
           it { should render_template(:new) }
           it { should render_with_layout(:application) }
-          it "assigns a new <%= resource_table_name %> as <%= resource_var %>" do
+          it "assigns a new <%= resource_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should be_a_new(<%= resource_class %>)
           end
         end
@@ -250,7 +250,7 @@ describe <%= t_helper.controller_class_name %> do
           it { should respond_with(:success) }
           it { should render_template(:edit) }
           it { should render_with_layout(:application) }
-          it "assigns the requested <%= resource_table_name %> as <%= resource_var %>" do
+          it "assigns the requested <%= resource_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
           end
         end
@@ -298,17 +298,17 @@ describe <%= t_helper.controller_class_name %> do
           before(:each) do
             post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
           end
-          it "assigns a newly created <%= resource_table_name %> as <%= resource_var %>" do
+          it "assigns a newly created <%= resource_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should be_a(<%= resource_class %>)
             assigns(<%= resource_symbol %>).should be_persisted
           end
 <% if parent_model_tables.any? -%>
-          it "assigns the parent <%= t_helper.parent_models[-1] %> to <%= resource_table_name %>" do
+          it "assigns the parent <%= t_helper.parent_models[-1] %> to <%= resource_name %>" do
             assigns(<%= resource_symbol %>).<%= parent_model_tables[-1] %>.should eq(<%= t_helper.references_test_property(parent_model_tables[-1]) %>)
           end
 <% end -%>
           it { should set_the_flash[:notice].to('<%= resource_human_name %> was successfully created.') }
-          it "redirects to the created <%= resource_table_name %>" do
+          it "redirects to the created <%= resource_name %>" do
             response.should redirect_to(<%= t_helper.controller_show_route "#{resource_class}.last" %>)
           end
         end
@@ -320,7 +320,7 @@ describe <%= t_helper.controller_class_name %> do
           end
           it { should render_template(:new) }
           it { should render_with_layout(:application) }
-          it "assigns a newly created but unsaved <%= resource_table_name %> as <%= resource_var %>" do
+          it "assigns a newly created but unsaved <%= resource_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should be_a_new(<%= resource_class %>)
           end
         end
@@ -360,9 +360,9 @@ describe <%= t_helper.controller_class_name %> do
         login_user_with_ability :update, <%= resource_class %>
 
         describe "with valid params" do
-          it "updates the requested <%= resource_table_name %>" do
+          it "updates the requested <%= resource_name %>" do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            # Assuming there are no other <%= resource_table_name %> in the database, this
+            # Assuming there are no other <%= resource_name %> in the database, this
             # specifies that the <%= resource_class %> created on the previous line
             # receives the :update_attributes message with whatever params are
             # submitted in the request.
@@ -379,11 +379,11 @@ describe <%= t_helper.controller_class_name %> do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             put :update, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => valid_update_attributes" %>}
           end
-          it "assigns the requested <%= resource_table_name %> as <%= resource_var %>" do
+          it "assigns the requested <%= resource_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
           end
           it { should set_the_flash[:notice].to('<%= resource_human_name %> was successfully updated.') }
-          it "redirects to the <%= resource_table_name %>" do
+          it "redirects to the <%= resource_name %>" do
             response.should redirect_to(<%= t_helper.controller_show_route resource_test_var %>)
           end
         end
@@ -396,7 +396,7 @@ describe <%= t_helper.controller_class_name %> do
           end
           it { should render_template(:edit) }
           it { should render_with_layout(:application) }
-          it "assigns the <%= resource_table_name %> as <%= resource_var %>" do
+          it "assigns the <%= resource_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
           end
         end
@@ -435,7 +435,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'as user with destroy ability' do
         login_user_with_ability :destroy, <%= resource_class %>
 
-        it "destroys the requested <%= resource_table_name %>" do
+        it "destroys the requested <%= resource_name %>" do
           <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
           expect {
             delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
@@ -447,7 +447,7 @@ describe <%= t_helper.controller_class_name %> do
             delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
           end
           it { should set_the_flash[:notice].to('<%= resource_human_name %> was successfully deleted.') }
-          it "redirects to the <%= resource_table_name %> list" do
+          it "redirects to the <%= resource_name %> list" do
             response.should redirect_to(<%= t_helper.controller_index_route %>)
           end
         end

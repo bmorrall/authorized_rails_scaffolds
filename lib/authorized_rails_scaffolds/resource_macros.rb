@@ -12,23 +12,23 @@ module ResourceMacros
   end
 
   # Table name of the Resource being tested (i.e. foo_bar)
-  def resource_table_name
-    @resource_table_name ||= (var_name || resource_class.underscore)
+  def resource_name
+    @resource_name ||= (var_name || resource_class.underscore)
   end
 
   # Symbol used to represent resource (i.e. :foo_bar)
   def resource_symbol
-    ":#{resource_table_name}"
+    ":#{resource_name}"
   end
 
   # Variable resource is assigned to in a singular context (i.e. @foo_bar)
   def resource_var
-    @resource_var_name ||= "@#{resource_table_name}"
+    @resource_var_name ||= "@#{resource_name}"
   end
 
   # Name for plural of a resource
   def resource_array_name
-    @resource_array_name ||= (plural_var_name || resource_table_name.pluralize)
+    @resource_array_name ||= (plural_var_name || resource_name.pluralize)
   end
 
   # Variable resource is assigned to in a plural context (i.e. @foo_bars)
