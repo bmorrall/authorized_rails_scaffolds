@@ -82,7 +82,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            get :index, {<%= t_helper.build_example_request_params %>}
+            get :index, {<%= t_helper.build_example_index_params %>}
           end
           it { should redirect_to(new_user_session_path) }
           it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -94,7 +94,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            get :index, {<%= t_helper.build_example_request_params %>}
+            get :index, {<%= t_helper.build_example_index_params %>}
           end
           it { should redirect_to(root_url) }
           it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -106,7 +106,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            get :index, {<%= t_helper.build_example_request_params %>}
+            get :index, {<%= t_helper.build_example_index_params %>}
           end
           it { should respond_with(:success) }
           it { should render_template(:index) }
@@ -130,7 +130,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            get :show, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
+            get :show, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param" %>}
           end
           it { should redirect_to(new_user_session_path) }
           it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -142,7 +142,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            get :show, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
+            get :show, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param" %>}
           end
           it { should redirect_to(<%= t_helper.controller_index_route %>) }
           it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -154,7 +154,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            get :show, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
+            get :show, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param" %>}
           end
           it { should respond_with(:success) }
           it { should render_template(:show) }
@@ -176,7 +176,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'without a user session' do
         describe 'with a valid request' do
           before(:each) do
-            get :new, {<%= t_helper.build_example_request_params %>}
+            get :new, {<%= t_helper.build_example_index_params %>}
           end
           it { should redirect_to(new_user_session_path) }
           it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -187,7 +187,7 @@ describe <%= t_helper.controller_class_name %> do
 
         describe 'with a valid request' do
           before(:each) do
-            get :new, {<%= t_helper.build_example_request_params %>}
+            get :new, {<%= t_helper.build_example_index_params %>}
           end
           it { should redirect_to(<%= t_helper.controller_index_route %>) }
           it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -198,7 +198,7 @@ describe <%= t_helper.controller_class_name %> do
 
         describe 'with a valid request' do
           before(:each) do
-            get :new, {<%= t_helper.build_example_request_params %>}
+            get :new, {<%= t_helper.build_example_index_params %>}
           end
           it { should respond_with(:success) }
           it { should render_template(:new) }
@@ -221,7 +221,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            get :edit, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
+            get :edit, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param" %>}
           end
           it { should redirect_to(new_user_session_path) }
           it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -233,7 +233,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            get :edit, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
+            get :edit, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param" %>}
           end
           it { should redirect_to(<%= t_helper.controller_index_route %>) }
           it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -245,7 +245,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            get :edit, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
+            get :edit, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param" %>}
           end
           it { should respond_with(:success) }
           it { should render_template(:edit) }
@@ -267,7 +267,7 @@ describe <%= t_helper.controller_class_name %> do
       context 'without a user session' do
         describe 'with a valid request' do
           before(:each) do
-            post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
+            post :create, {<%= t_helper.build_example_index_params "#{resource_symbol} => valid_create_attributes" %>}
           end
           it { should redirect_to(new_user_session_path) }
           it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -278,7 +278,7 @@ describe <%= t_helper.controller_class_name %> do
 
         describe "with a valid request" do
           before(:each) do
-            post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
+            post :create, {<%= t_helper.build_example_index_params "#{resource_symbol} => valid_create_attributes" %>}
           end
           it { should redirect_to(<%= t_helper.controller_index_route %>) }
           it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -290,13 +290,13 @@ describe <%= t_helper.controller_class_name %> do
         describe "with valid params" do
           it "creates a new <%= resource_class %>" do
             expect {
-              post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
+              post :create, {<%= t_helper.build_example_index_params "#{resource_symbol} => valid_create_attributes" %>}
             }.to change(<%= resource_class %>, :count).by(1)
           end
         end
         describe 'with a valid request' do
           before(:each) do
-            post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => valid_create_attributes" %>}
+            post :create, {<%= t_helper.build_example_index_params "#{resource_symbol} => valid_create_attributes" %>}
           end
           it "assigns a newly created <%= resource_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should be_a(<%= resource_class %>)
@@ -316,7 +316,7 @@ describe <%= t_helper.controller_class_name %> do
           before(:each) do
             # Trigger the behavior that occurs when invalid params are submitted
             <%= resource_class %>.any_instance.stub(:save).and_return(false)
-            post :create, {<%= t_helper.build_example_request_params "#{resource_symbol} => #{formatted_hash(example_invalid_attributes)}" %>}
+            post :create, {<%= t_helper.build_example_index_params "#{resource_symbol} => #{formatted_hash(example_invalid_attributes)}" %>}
           end
           it { should render_template(:new) }
           it { should render_with_layout(:application) }
@@ -338,7 +338,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            put :update, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => valid_update_attributes" %>}
+            put :update, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => valid_update_attributes" %>}
           end
           it { should redirect_to(new_user_session_path) }
           it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -350,7 +350,7 @@ describe <%= t_helper.controller_class_name %> do
         describe "with a valid request" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            put :update, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => valid_update_attributes" %>}
+            put :update, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => valid_update_attributes" %>}
           end
           it { should redirect_to(<%= t_helper.controller_index_route %>) }
           it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -371,13 +371,13 @@ describe <%= t_helper.controller_class_name %> do
             <%- else -%>
             <%= resource_class %>.any_instance.should_receive(:update_attributes).with(<%= formatted_hash(example_params_for_update) %>)
             <%- end -%>
-            put :update, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => #{formatted_hash(example_params_for_update)}" %>}
+            put :update, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => #{formatted_hash(example_params_for_update)}" %>}
           end
         end
         describe "with a valid request" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            put :update, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => valid_update_attributes" %>}
+            put :update, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => valid_update_attributes" %>}
           end
           it "assigns the requested <%= resource_name %> as <%= resource_var %>" do
             assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
@@ -392,7 +392,7 @@ describe <%= t_helper.controller_class_name %> do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
             # Trigger the behavior that occurs when invalid params are submitted
             <%= resource_class %>.any_instance.stub(:save).and_return(false)
-            put :update, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => #{formatted_hash(example_invalid_attributes)}" %>}
+            put :update, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param", "#{resource_symbol} => #{formatted_hash(example_invalid_attributes)}" %>}
           end
           it { should render_template(:edit) }
           it { should render_with_layout(:application) }
@@ -414,7 +414,7 @@ describe <%= t_helper.controller_class_name %> do
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
+            delete :destroy, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param" %>}
           end
           it { should redirect_to(new_user_session_path) }
           it { should set_the_flash[:alert].to("You need to sign in or sign up before continuing.") }
@@ -426,7 +426,7 @@ describe <%= t_helper.controller_class_name %> do
         describe "with a valid request" do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
+            delete :destroy, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param" %>}
           end
           it { should redirect_to(<%= t_helper.controller_index_route %>) }
           it { should set_the_flash[:alert].to("You are not authorized to access this page.") }
@@ -438,13 +438,13 @@ describe <%= t_helper.controller_class_name %> do
         it "destroys the requested <%= resource_name %>" do
           <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
           expect {
-            delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
+            delete :destroy, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param" %>}
           }.to change(<%= resource_class %>, :count).by(-1)
         end
         describe 'with a valid request' do
           before(:each) do
             <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-            delete :destroy, {<%= t_helper.build_example_request_params ":id => #{resource_test_var}.to_param" %>}
+            delete :destroy, {<%= t_helper.build_example_show_params ":id => #{resource_test_var}.to_param" %>}
           end
           it { should set_the_flash[:notice].to('<%= resource_human_name %> was successfully deleted.') }
           it "redirects to the <%= resource_name %> list" do

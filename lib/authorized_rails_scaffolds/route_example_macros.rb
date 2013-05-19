@@ -45,8 +45,9 @@ module RouteExampleMacros
     @example_show_path_extra_params ||= example_parent_values(shallow_routes?).map{ |parent_model_id, parent_value| ", :#{parent_model_id} => \"#{parent_value}\"" }.join('')
   end
 
-  def example_route_extra_params
+  def example_route_extra_params(use_shallow_route=false)
     @example_route_extra_params ||= parent_model_names.collect{ |parent_table| ":#{parent_table}_id => #{references_test_name(parent_table)}.to_param" }
+    use_shallow_route ? @example_route_extra_params[0..-2] : @example_route_extra_params
   end
 
   protected

@@ -10,8 +10,12 @@ class AuthorizedRailsScaffolds::RSpecScaffoldControllerHelper < AuthorizedRailsS
     @controller_class_name = options[:controller_class_name]
   end
 
-  def build_example_request_params(*extra_params)
+  def build_example_index_params(*extra_params)
     [example_route_extra_params + extra_params].join(", ")
+  end
+
+  def build_example_show_params(*extra_params)
+    [example_route_extra_params(shallow_routes?) + extra_params].join(", ")
   end
 
 end
