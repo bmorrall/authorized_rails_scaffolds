@@ -4,7 +4,7 @@ describe AuthorizedRailsScaffolds::RailsScaffoldControllerHelper do
   include RailsScaffoldControllerHelperMacros
 
   describe 'template variables' do
-    context 'within nested modules' do
+    context 'within nested module' do
       let(:subject) do
         build_rails_controller_spec_helper :class_name => 'Example::FooBar'
       end

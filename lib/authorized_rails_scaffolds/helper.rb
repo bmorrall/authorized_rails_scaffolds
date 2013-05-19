@@ -5,7 +5,12 @@ module AuthorizedRailsScaffolds
 
     def initialize(options = {})
       # @local_class_name = options[:local_class_name]
-      @var_name = options[:var_name] || options[:file_name] # Non-namespaced variable name
+
+      # Fix for potentially plural file_name value
+      file_name = options[:file_name]
+      file_name = file_name.singularize unless file_name.nil?
+
+      @var_name = options[:var_name] || file_name # Non-namespaced variable name
 
       # Pluralized non-namespaced variable name
       @plural_var_name ||= options[:plural_var_name]

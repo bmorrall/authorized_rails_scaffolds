@@ -9,7 +9,7 @@ class AuthorizedRailsScaffolds::RailsHelperHelper < AuthorizedRailsScaffolds::He
   # Class name with parent modules included (i.e. Example::FooBar)
   # Name of class assumed by default generators, used as a base for determining modules and class
   def modular_class_name
-    @modular_class_name
+    @modular_class_name.singularize
   end
 
   # returns values that should be parsed by a form in order for post and put actions to work
