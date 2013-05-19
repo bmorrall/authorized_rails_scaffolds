@@ -19,12 +19,30 @@ module RouteExampleMacros
   end
 
   def example_show_path
-    "#{example_index_path}/1"
+    unless @example_show_path
+      example_show_path_parts = []
+
+      parent_names = shallow_routes? ? parent_model_names[0..-2] : parent_model_names
+      parent_names.each do |parent_model|
+        # users, 2
+        parent_value = example_parent_values["#{parent_model}_id"]
+        example_show_path_parts << parent_model.pluralize
+        example_show_path_parts << parent_value
+      end
+
+      # Example index route: i.e. /awesome/users/2/foo_bars
+      @example_show_path = [parent_module_groups + example_show_path_parts + [resource_array_name]].join("/")
+    end
+    "/#{@example_show_path}"
   end
 
   # Extra params for an example controller path: i.e. ', :user_id => 2'
   def example_index_path_extra_params
-    @example_index_path_extra_params ||= example_parent_values.any? ? ', ' + example_parent_values.map{ |parent_model_id, parent_value| ":#{parent_model_id} => \"#{parent_value}\"" }.join(', ') : ''
+    @example_index_path_extra_params ||= example_parent_values.map{ |parent_model_id, parent_value| ", :#{parent_model_id} => \"#{parent_value}\"" }.join('')
+  end
+
+  def example_show_path_extra_params
+    @example_show_path_extra_params ||= example_parent_values(shallow_routes?).map{ |parent_model_id, parent_value| ", :#{parent_model_id} => \"#{parent_value}\"" }.join('')
   end
 
   def example_route_extra_params
@@ -34,14 +52,14 @@ module RouteExampleMacros
   protected
 
   # Creates example values for parent id params (i.e. :user_id => 2)
-  def example_parent_values
+  def example_parent_values(use_shallow_route=false)
     unless @example_parent_values
       @example_parent_values = {}
       parent_model_names.each_with_index do |parent_model, index|
         @example_parent_values["#{parent_model}_id"] = index + 2
       end
     end
-    @example_parent_values
+    use_shallow_route ? @example_parent_values[0..-2] : @example_parent_values
   end
 
 end
