@@ -41,18 +41,18 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldRoutingHelper do
     end
   end
 
-  describe '#example_controller_path' do
+  describe '#example_index_path' do
     it 'underscores the class_name value' do
       subject = build_routing_spec_helper :class_name => 'FooBar'
-      subject.example_controller_path.should eq('/foo_bars')
+      subject.example_index_path.should eq('/foo_bars')
     end
     it 'adds parent_models to the file path' do
       subject = build_routing_spec_helper :class_name => 'Example::FooBar'
-      subject.example_controller_path.should eq('/example/foo_bars')
+      subject.example_index_path.should eq('/example/foo_bars')
     end
     it 'adds multiple parent_models to the file path' do
       subject = build_routing_spec_helper :class_name => 'Example::V1::FooBar'
-      subject.example_controller_path.should eq('/example/v1/foo_bars')
+      subject.example_index_path.should eq('/example/v1/foo_bars')
     end
     context 'with a parent model' do
       before(:each) do
@@ -62,15 +62,15 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldRoutingHelper do
       end
       it 'adds the parent model before the class name' do
         subject = build_routing_spec_helper :class_name => 'FooBar'
-        subject.example_controller_path.should eq('/parents/2/foo_bars')
+        subject.example_index_path.should eq('/parents/2/foo_bars')
       end
       it 'adds the parent model after the parent module' do
         subject = build_routing_spec_helper :class_name => 'Example::FooBar'
-        subject.example_controller_path.should eq('/example/parents/2/foo_bars')
+        subject.example_index_path.should eq('/example/parents/2/foo_bars')
       end
       it 'adds the parent model after multiple parent module' do
         subject = build_routing_spec_helper :class_name => 'Example::V1::FooBar'
-        subject.example_controller_path.should eq('/example/v1/parents/2/foo_bars')
+        subject.example_index_path.should eq('/example/v1/parents/2/foo_bars')
       end
     end
     context 'with multiple parent models' do
@@ -80,25 +80,25 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldRoutingHelper do
         end
         it 'adds the parent models before the class name' do
           subject = build_routing_spec_helper :class_name => 'FooBar'
-          subject.example_controller_path.should eq('/grandparents/2/parents/3/foo_bars')
+          subject.example_index_path.should eq('/grandparents/2/parents/3/foo_bars')
         end
         it 'adds the parent models after the parent module' do
           subject = build_routing_spec_helper :class_name => 'Example::FooBar'
-          subject.example_controller_path.should eq('/example/grandparents/2/parents/3/foo_bars')
+          subject.example_index_path.should eq('/example/grandparents/2/parents/3/foo_bars')
         end
       end
     end
   end
 
-  describe '#example_controller_path_extra_params' do
+  describe '#example_index_path_extra_params' do
     context 'with no parent models' do
       it 'returns an empty string with no parent module' do
         subject = build_routing_spec_helper :class_name => 'FooBar'
-        subject.example_controller_path_extra_params.should eq('')
+        subject.example_index_path_extra_params.should eq('')
       end
       it 'returns an empty string with a parent module' do
         subject = build_routing_spec_helper :class_name => 'Example::FooBar'
-        subject.example_controller_path_extra_params.should eq('')
+        subject.example_index_path_extra_params.should eq('')
       end
     end
     context 'with a parent model' do
@@ -109,7 +109,7 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldRoutingHelper do
       end
       it 'adds the parent model with a value assigned to it' do
         subject = build_routing_spec_helper :class_name => 'FooBar'
-        subject.example_controller_path_extra_params.should eq(', :parent_id => "2"')
+        subject.example_index_path_extra_params.should eq(', :parent_id => "2"')
       end
     end
     context 'with multiple parent models' do
@@ -120,7 +120,7 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldRoutingHelper do
       end
       it 'adds the parent models with their values' do
         subject = build_routing_spec_helper :class_name => 'FooBar'
-        subject.example_controller_path_extra_params.should eq(', :grandparent_id => "2", :parent_id => "3"')
+        subject.example_index_path_extra_params.should eq(', :grandparent_id => "2", :parent_id => "3"')
       end
     end
   end

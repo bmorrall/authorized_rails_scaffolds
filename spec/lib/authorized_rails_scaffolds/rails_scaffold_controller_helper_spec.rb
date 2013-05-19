@@ -16,7 +16,7 @@ describe AuthorizedRailsScaffolds::RailsScaffoldControllerHelper do
       it { subject.resource_var.should eq('@foo_bar') }
       it { subject.resource_array_var.should eq('@foo_bars') }
 
-      it { subject.example_controller_path.should eq("/example/foo_bars") }
+      it { subject.example_index_path.should eq("/example/foo_bars") }
     end
     context 'within nested modules and parent parent models' do
       let(:subject) do
@@ -41,7 +41,7 @@ describe AuthorizedRailsScaffolds::RailsScaffoldControllerHelper do
       it { subject.resource_array_name.should eq('foo_bars') }
       it { subject.resource_array_var.should eq('@foo_bars') }
 
-      it { subject.example_controller_path.should eq("/example/parents/2/foo_bars") }
+      it { subject.example_index_path.should eq("/example/parents/2/foo_bars") }
     end
   end
 
