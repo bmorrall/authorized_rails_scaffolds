@@ -136,6 +136,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   protected
 <%- if t_helper.shallow_routes? -%>
 
+  # Loads parent resources from <%= resource_var %> if not included in route
   def load_shallow_resources
 <%- reverse_parent_models = t_helper.parent_model_names.reverse -%>
 <%- reverse_parent_models.each_with_index do |parent_model, parent_index| -%>
