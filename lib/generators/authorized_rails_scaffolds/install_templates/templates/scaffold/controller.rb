@@ -46,20 +46,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   <%- end -%>
   <%= t_helper.load_resource %>
 <%- if t_helper.shallow_routes? -%>
-  before_filter do
-<%- reverse_parent_models = t_helper.parent_model_names.reverse -%>
-<%- reverse_parent_models.each_with_index do |parent_model, parent_index| -%>
-  <%- if parent_index == 0 -%>
-    if <%= resource_var %> && <%= resource_var %>.persisted?
-      <%= t_helper.parent_variable(parent_model) %> = <%= resource_var %>.<%= parent_model %> if <%= t_helper.parent_variable(parent_model) %>.nil?
-    end
-  <%- else -%>
-    if <%= t_helper.parent_variable(reverse_parent_models[parent_index-1]) %> && <%= t_helper.parent_variable(parent_model) %>.nil?
-      <%= t_helper.parent_variable(parent_model) %> = <%= t_helper.parent_variable(reverse_parent_models[parent_index-1]) %>.<%= parent_model %>
-    end
-  <%- end -%>
-<%- end -%>
-  end
+  before_filter :load_shallow_resources
 <%- end -%>
   authorize_resource <%= resource_symbol %>
 
@@ -147,6 +134,23 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   end
 
   protected
+<%- if t_helper.shallow_routes? -%>
+
+  def load_shallow_resources
+<%- reverse_parent_models = t_helper.parent_model_names.reverse -%>
+<%- reverse_parent_models.each_with_index do |parent_model, parent_index| -%>
+  <%- if parent_index == 0 -%>
+    if <%= resource_var %> && <%= resource_var %>.persisted?
+      <%= t_helper.parent_variable(parent_model) %> = <%= resource_var %>.<%= parent_model %> if <%= t_helper.parent_variable(parent_model) %>.nil?
+    end
+  <%- else -%>
+    if <%= t_helper.parent_variable(reverse_parent_models[parent_index-1]) %> && <%= t_helper.parent_variable(parent_model) %>.nil?
+      <%= t_helper.parent_variable(parent_model) %> = <%= t_helper.parent_variable(reverse_parent_models[parent_index-1]) %>.<%= parent_model %>
+    end
+  <%- end -%>
+<%- end -%>
+  end
+<%- end -%>
 
   # Capture any access violations, ensure User isn't unnessisarily redirected to root
   rescue_from CanCan::AccessDenied do |exception|
