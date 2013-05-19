@@ -24,7 +24,7 @@ module RouteExampleMacros
   end
 
   def example_route_extra_params
-    @example_route_extra_params ||= parent_model_tables.collect{ |parent_table| ":#{parent_table}_id => #{references_test_property(parent_table)}.to_param" }
+    @example_route_extra_params ||= parent_model_tables.collect{ |parent_table| ":#{parent_table}_id => #{references_test_name(parent_table)}.to_param" }
   end
 
   protected

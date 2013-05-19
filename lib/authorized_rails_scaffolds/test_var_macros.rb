@@ -2,14 +2,14 @@ module TestVarMacros
 
   # Variable to hold stubs of parent models
   def references_test_var(references_table)
-    "@#{references_test_property(references_table)}"
+    "@#{references_test_name(references_table)}"
   end
 
   def references_test_sym(references_table)
-    ":#{references_test_property(references_table)}"
+    ":#{references_test_name(references_table)}"
   end
 
-  def references_test_property(references_table, var_number = nil)
+  def references_test_name(references_table, var_number = nil)
     if parent_model_tables.include? references_table
       parent_property = "parent_#{references_table}"
     else

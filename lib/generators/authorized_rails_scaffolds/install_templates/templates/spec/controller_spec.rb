@@ -304,7 +304,7 @@ describe <%= t_helper.controller_class_name %> do
           end
 <% if parent_model_tables.any? -%>
           it "assigns the parent <%= t_helper.parent_models[-1] %> to <%= resource_name %>" do
-            assigns(<%= resource_symbol %>).<%= parent_model_tables[-1] %>.should eq(<%= t_helper.references_test_property(parent_model_tables[-1]) %>)
+            assigns(<%= resource_symbol %>).<%= parent_model_tables[-1] %>.should eq(<%= t_helper.references_test_name(parent_model_tables[-1]) %>)
           end
 <% end -%>
           it { should set_the_flash[:notice].to('<%= resource_human_name %> was successfully created.') }
