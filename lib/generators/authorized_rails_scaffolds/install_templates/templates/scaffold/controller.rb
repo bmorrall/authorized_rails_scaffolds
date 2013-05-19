@@ -44,8 +44,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   <%- t_helper.parent_model_names.each_with_index do |model_name, model_index| -%>
   <%= t_helper.load_and_authorize_parent model_name %>
   <%- end -%>
-  <%= t_helper.load_and_authorize_resource %>
-
+  <%= t_helper.load_resource %>
 <%- if t_helper.shallow_routes? -%>
   before_filter do
 <%- reverse_parent_models = t_helper.parent_model_names.reverse -%>
@@ -61,8 +60,9 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
   <%- end -%>
 <%- end -%>
   end
-
 <%- end -%>
+  authorize_resource <%= resource_symbol %>
+
   # GET <%= example_index_path %>
   # GET <%= example_index_path %>.json
   def index

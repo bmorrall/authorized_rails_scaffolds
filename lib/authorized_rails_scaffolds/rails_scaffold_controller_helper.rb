@@ -28,8 +28,8 @@ class AuthorizedRailsScaffolds::RailsScaffoldControllerHelper < AuthorizedRailsS
     load_resource_code
   end
 
-  def load_and_authorize_resource
-    load_resource_code = "load_and_authorize_resource #{resource_symbol}"
+  def load_resource
+    load_resource_code = "load_resource #{resource_symbol}"
 
     if parent_models.any?
       load_resource_code += ", :through => #{parent_sym(parent_model_names.last)}"
