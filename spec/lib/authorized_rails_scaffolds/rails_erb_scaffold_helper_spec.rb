@@ -6,7 +6,7 @@ describe AuthorizedRailsScaffolds::RailsErbScaffoldHelper do
   describe '#controller_show_route' do
     it 'returns a single route to the resource' do
       subject = build_rails_erb_scaffold_spec_helper :class_name => 'FooBar', :var_name => 'foo_bar'
-      subject.controller_show_route.should eq('foo_bar_path')
+      subject.controller_new_route.should eq('new_foo_bar_path')
     end
     it 'returns appends the included value to the root' do
       subject = build_rails_erb_scaffold_spec_helper :class_name => 'FooBar', :var_name => 'foo_bar'
@@ -23,7 +23,7 @@ describe AuthorizedRailsScaffolds::RailsErbScaffoldHelper do
           @subject = build_rails_erb_scaffold_spec_helper :class_name => 'FooBar', :var_name => 'foo_bar'
         end
         it 'returns a path within the parent models' do
-          @subject.controller_show_route.should eq('parent_foo_bar_path(@parent)')
+          @subject.controller_new_route.should eq('new_parent_foo_bar_path(@parent)')
         end
         it 'returns a path with the resource within the parent models' do
           @subject.controller_show_route('@foo_bar').should eq('parent_foo_bar_path(@parent, @foo_bar)')
@@ -34,7 +34,7 @@ describe AuthorizedRailsScaffolds::RailsErbScaffoldHelper do
           @subject = build_rails_erb_scaffold_spec_helper :class_name => 'Awesome::FooBar', :var_name => 'foo_bar'
         end
         it 'returns a path within the module and with parent models' do
-          @subject.controller_show_route.should eq('awesome_parent_foo_bar_path(@parent)')
+          @subject.controller_new_route.should eq('new_awesome_parent_foo_bar_path(@parent)')
         end
         it 'returns a path with the resource within the module and with parent models' do
           @subject.controller_show_route('@foo_bar').should eq('awesome_parent_foo_bar_path(@parent, @foo_bar)')

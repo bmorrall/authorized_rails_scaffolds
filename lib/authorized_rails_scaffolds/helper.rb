@@ -37,35 +37,19 @@ module AuthorizedRailsScaffolds
     end
 
     def shallow_routes?
-      !!AuthorizedRailsScaffold.config.shallow_routes
+      !!AuthorizedRailsScaffolds.config.shallow_routes
     end
 
-    # Route Prefix parts i.e. ['awesome', 'user', 'company']
-    def route_prefix_values
-      unless @route_prefix_values
-        @route_prefix_values = parent_module_groups || []
-        @route_prefix_values += parent_model_names
-        @route_prefix_values = @route_prefix_values.reject{|x|x.blank?}
-      end
-      @route_prefix_values
-    end
-
-    def collection_route_prefix
-      @collection_route_prefix ||= (route_prefix_values + [resource_array_name]).join('_')
-    end
-
-    def member_route_prefix
-      @member_route_prefix ||= (route_prefix_values + [resource_name]).join('_')
-    end
-
-    def parent_variables
+    def parent_variables(use_shallow_route=false)
       @parent_variables ||= parent_model_names.collect{ |parent_table| parent_variable(parent_table) }
+      use_shallow_route ? @parent_variables[0..-2] : @parent_variables
     end
 
     def controller_show_route(variable)
-      variables = [] + parent_variables
+      variables = []
+      variables += parent_variables(shallow_routes?)
       variables += [variable] unless variable.nil?
-      controller_routes = "#{member_route_prefix}_path"
+      controller_routes = "#{member_route_prefix(shallow_routes?)}_path"
       controller_routes += "(#{variables.join(', ')})" if variables.any?
       controller_routes
     end
@@ -103,6 +87,22 @@ module AuthorizedRailsScaffolds
       references_show_route
     end
 
+    protected
+
+    # Route Prefix parts i.e. ['awesome', 'user', 'company']
+    def route_prefix_values(use_shallow_route=false)
+      route_prefix_values = parent_module_groups || []
+      route_prefix_values += use_shallow_route ? parent_model_names[0..-2] : parent_model_names
+      route_prefix_values = route_prefix_values.reject{|x|x.blank?}
+    end
+
+    def collection_route_prefix
+      @collection_route_prefix ||= (route_prefix_values + [resource_array_name]).join('_')
+    end
+
+    def member_route_prefix(use_shallow_route=false)
+      (route_prefix_values(use_shallow_route) + [resource_name]).join('_')
+    end
+
   end
-  
 end

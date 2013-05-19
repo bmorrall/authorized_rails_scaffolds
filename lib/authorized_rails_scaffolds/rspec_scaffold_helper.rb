@@ -14,8 +14,9 @@ class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::
     @modular_class_name
   end
 
-  def parent_variables
+  def parent_variables(use_shallow_route=false)
     @parent_variables ||= parent_model_names.collect{ |parent_table| references_test_name(parent_table) }
+    use_shallow_route ? @parent_variables[0..-2] : @parent_variables
   end
 
   def references_show_route(attribute_name, variable = nil)
