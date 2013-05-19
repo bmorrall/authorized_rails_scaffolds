@@ -6,10 +6,11 @@ t_helper = AuthorizedRailsScaffolds::RailsErbScaffoldHelper.new(
   :file_name => file_name
 )
 
+resource_name = t_helper.resource_name
 resource_var = t_helper.resource_var
 
 -%>
-<%%= simple_form_for(<%= t_helper.scoped_values_for_form %>, :html => { class: 'form-horizontal' }) do |f| %>
+<%%= simple_form_for(<%= resource_name %>_form_values(<%= resource_var %>), :html => { class: 'form-horizontal' }) do |f| %>
   <%%= f.error_notification %>
 
   <div class="form-inputs">

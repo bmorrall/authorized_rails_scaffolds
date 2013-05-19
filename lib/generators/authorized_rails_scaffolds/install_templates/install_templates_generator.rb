@@ -20,6 +20,9 @@ class AuthorizedRailsScaffolds::InstallTemplatesGenerator < Rails::Generators::B
     # Model Spec Templates
     copy_rspec_model_template 'model_spec.rb'
 
+    # Helper Spec Template
+    copy_rails_helper_controller 'helper.rb'
+
     # Request Spec Templates
     copy_rspec_integration_template 'request_spec.rb'
 
@@ -34,6 +37,10 @@ class AuthorizedRailsScaffolds::InstallTemplatesGenerator < Rails::Generators::B
   end
 
   protected
+
+  def copy_rails_helper_controller(template_name)
+    copy_file "scaffold/#{template_name}", "lib/templates/rails/helper/#{template_name}"
+  end
 
   def copy_erb_scaffold_template(template_name)
     copy_file "scaffold/#{template_name}", "lib/templates/erb/scaffold/#{template_name}"

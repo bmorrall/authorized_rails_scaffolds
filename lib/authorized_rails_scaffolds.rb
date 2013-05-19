@@ -32,6 +32,7 @@ require "authorized_rails_scaffolds/helper"
 
 # Rails Helpers
 require "authorized_rails_scaffolds/rails_scaffold_controller_helper"
+require "authorized_rails_scaffolds/rails_helper_helper"
 
 # Erb Helpers
 require "authorized_rails_scaffolds/rails_erb_scaffold_helper"
