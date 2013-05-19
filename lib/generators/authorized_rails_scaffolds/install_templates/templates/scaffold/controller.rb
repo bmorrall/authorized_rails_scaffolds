@@ -41,9 +41,9 @@ orm_instance = Rails::Generators::ActiveModel.new resource_name
 <% module_namespacing do -%>
 class <%= t_helper.controller_class_name %> < <%= t_helper.application_controller_class %>
   <%- t_helper.parent_model_names.each_with_index do |model_name, model_index| -%>
-  load_and_authorize_resource <%= t_helper.parent_sym model_name %><% if model_index > 0 %>, :through => <%= t_helper.parent_sym t_helper.parent_model_names[model_index - 1] %><% end %>
+  <%= t_helper.load_and_authorize_parent model_name %>
   <%- end -%>
-  load_and_authorize_resource <%= resource_symbol %><% if t_helper.parent_models.any? %>, :through => <%= t_helper.parent_sym t_helper.parent_model_names.last %><% end %>
+  <%= t_helper.load_and_authorize_resource %>
 
   # GET <%= example_controller_path %>
   # GET <%= example_controller_path %>.json

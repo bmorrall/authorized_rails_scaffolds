@@ -17,4 +17,25 @@ class AuthorizedRailsScaffolds::RailsScaffoldControllerHelper < AuthorizedRailsS
     @modular_class_name
   end
 
+  def load_and_authorize_parent(model_name)
+    load_resource_code = "load_and_authorize_resource #{parent_sym(model_name)}"
+
+    parent_model = model_parent_name(model_name)
+    unless parent_model.nil?
+      load_resource_code += ", :through => #{parent_sym(parent_model)}"
+    end
+
+    load_resource_code
+  end
+
+  def load_and_authorize_resource
+    load_resource_code = "load_and_authorize_resource #{resource_symbol}"
+
+    if parent_models.any?
+      load_resource_code += ", :through => #{parent_sym(parent_model_names.last)}"
+    end
+
+    load_resource_code
+  end
+
 end

@@ -33,4 +33,19 @@ module ParentMacros
     @parent_module_groups ||= parent_modules.map { |parent_module| parent_module.underscore }
   end
 
+  # Returns the parent model required to create the model
+  def model_parent_name(model_name)
+    if model_name == resource_name
+      return parent_model_names.any? ? parent_model_names.last : nil
+    else
+      parent_index = parent_model_names.index(model_name.to_s)
+      if parent_index.nil? || parent_index == 0
+        return nil
+      else
+        return parent_model_names[parent_index - 1]
+      end
+    end
+    
+  end
+
 end
