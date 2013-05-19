@@ -35,7 +35,7 @@ module AuthorizedRailsScaffolds
     def route_prefix_values
       unless @route_prefix_values
         @route_prefix_values = parent_module_groups || []
-        @route_prefix_values += parent_model_tables
+        @route_prefix_values += parent_model_names
         @route_prefix_values = @route_prefix_values.reject{|x|x.blank?}
       end
       @route_prefix_values
@@ -50,7 +50,7 @@ module AuthorizedRailsScaffolds
     end
 
     def parent_variables
-      @parent_variables ||= parent_model_tables.collect{ |parent_table| parent_variable(parent_table) }
+      @parent_variables ||= parent_model_names.collect{ |parent_table| parent_variable(parent_table) }
     end
 
     def controller_show_route(variable = nil)

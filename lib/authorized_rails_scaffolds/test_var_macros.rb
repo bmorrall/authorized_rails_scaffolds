@@ -10,7 +10,7 @@ module TestVarMacros
   end
 
   def references_test_name(references_table, var_number = nil)
-    if parent_model_tables.include? references_table
+    if parent_model_names.include? references_table
       parent_property = "parent_#{references_table}"
     else
       parent_property = "stub_#{references_table}"

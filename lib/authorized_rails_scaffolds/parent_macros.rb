@@ -8,8 +8,8 @@ module ParentMacros
   end
 
   # Table names of parent models (i.e. ['user', 'category'])
-  def parent_model_tables
-    @parent_model_tables ||= parent_models.map { |model| model.underscore }
+  def parent_model_names
+    @parent_model_names ||= parent_models.map { |model| model.underscore }
   end
 
   # Variable name used to save a parent_table_name

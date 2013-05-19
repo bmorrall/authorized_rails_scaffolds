@@ -4,11 +4,11 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldViewHelper do
   include RSpecScaffoldViewHelperMacros
   pending
 
-  describe '#parent_model_tables' do
+  describe '#parent_model_names' do
     context 'with no parent_models' do
       it 'returns an empty array' do
         subject = build_view_spec_helper
-        subject.parent_model_tables.should eq([])
+        subject.parent_model_names.should eq([])
       end
     end
     context 'with a parent model' do
@@ -19,7 +19,7 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldViewHelper do
       end
       it 'returns an array containing the models table name' do
         subject = build_view_spec_helper
-        subject.parent_model_tables.should eq(['parent'])
+        subject.parent_model_names.should eq(['parent'])
       end
     end
     context 'with multiple parent models' do
@@ -30,7 +30,7 @@ describe AuthorizedRailsScaffolds::RSpecScaffoldViewHelper do
       end
       it 'returns an array containing all model table names' do
         subject = build_view_spec_helper
-        subject.parent_model_tables.should eq(['grandparent', 'parent'])
+        subject.parent_model_names.should eq(['grandparent', 'parent'])
       end
     end
   end

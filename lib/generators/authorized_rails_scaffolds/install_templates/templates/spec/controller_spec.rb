@@ -48,7 +48,7 @@ resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
 resource_name = t_helper.resource_name
 
-parent_model_tables = t_helper.parent_model_tables
+parent_model_names = t_helper.parent_model_names
 
 -%>
 describe <%= t_helper.controller_class_name %> do
@@ -65,15 +65,15 @@ describe <%= t_helper.controller_class_name %> do
     FactoryGirl.attributes_for(<%= resource_symbol %>)
   end
 
-<%- if parent_model_tables.any? -%>
-<%- parent_model_tables.each do |parent_model| -%>
+<%- if parent_model_names.any? -%>
+<%- parent_model_names.each do |parent_model| -%>
   let(<%= t_helper.references_test_sym(parent_model) %>) { <%= t_helper.create_parent_resource_from_factory parent_model %> }
 <%- end -%>
 
 <%- end -%>
 <% unless options[:singleton] -%>
   describe "GET index" do
-    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
+    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
       <%- t_helper.parent_models.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
@@ -121,8 +121,8 @@ describe <%= t_helper.controller_class_name %> do
 
 <% end -%>
   describe "GET show" do
-    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
-      <%- parent_model_tables.each do |parent_model| -%>
+    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+      <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
@@ -168,8 +168,8 @@ describe <%= t_helper.controller_class_name %> do
   end
 
   describe "GET new" do
-    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
-      <%- parent_model_tables.each do |parent_model| -%>
+    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+      <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
@@ -212,8 +212,8 @@ describe <%= t_helper.controller_class_name %> do
   end
 
   describe "GET edit" do
-    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
-      <%- parent_model_tables.each do |parent_model| -%>
+    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+      <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
@@ -259,8 +259,8 @@ describe <%= t_helper.controller_class_name %> do
   end
 
   describe "POST create" do
-    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
-      <%- parent_model_tables.each do |parent_model| -%>
+    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+      <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
@@ -302,9 +302,9 @@ describe <%= t_helper.controller_class_name %> do
             assigns(<%= resource_symbol %>).should be_a(<%= resource_class %>)
             assigns(<%= resource_symbol %>).should be_persisted
           end
-<% if parent_model_tables.any? -%>
+<% if parent_model_names.any? -%>
           it "assigns the parent <%= t_helper.parent_models[-1] %> to <%= resource_name %>" do
-            assigns(<%= resource_symbol %>).<%= parent_model_tables[-1] %>.should eq(<%= t_helper.references_test_name(parent_model_tables[-1]) %>)
+            assigns(<%= resource_symbol %>).<%= parent_model_names[-1] %>.should eq(<%= t_helper.references_test_name(parent_model_names[-1]) %>)
           end
 <% end -%>
           it { should set_the_flash[:notice].to('<%= resource_human_name %> was successfully created.') }
@@ -329,8 +329,8 @@ describe <%= t_helper.controller_class_name %> do
   end
 
   describe "PUT update" do
-    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
-      <%- parent_model_tables.each do |parent_model| -%>
+    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+      <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 
@@ -405,8 +405,8 @@ describe <%= t_helper.controller_class_name %> do
   end
 
   describe "DELETE destroy" do
-    context <% if parent_model_tables.any? %>"within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
-      <%- parent_model_tables.each do |parent_model| -%>
+    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+      <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
 

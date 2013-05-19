@@ -5,7 +5,7 @@ module RouteExampleMacros
     unless @example_controller_path
       example_controller_path_parts = []
 
-      parent_model_tables.each do |parent_model|
+      parent_model_names.each do |parent_model|
         # users, 2
         parent_value = example_parent_values["#{parent_model}_id"]
         example_controller_path_parts << parent_model.pluralize
@@ -24,7 +24,7 @@ module RouteExampleMacros
   end
 
   def example_route_extra_params
-    @example_route_extra_params ||= parent_model_tables.collect{ |parent_table| ":#{parent_table}_id => #{references_test_name(parent_table)}.to_param" }
+    @example_route_extra_params ||= parent_model_names.collect{ |parent_table| ":#{parent_table}_id => #{references_test_name(parent_table)}.to_param" }
   end
 
   protected
@@ -33,7 +33,7 @@ module RouteExampleMacros
   def example_parent_values
     unless @example_parent_values
       @example_parent_values = {}
-      parent_model_tables.each_with_index do |parent_model, index|
+      parent_model_names.each_with_index do |parent_model, index|
         @example_parent_values["#{parent_model}_id"] = index + 2
       end
     end

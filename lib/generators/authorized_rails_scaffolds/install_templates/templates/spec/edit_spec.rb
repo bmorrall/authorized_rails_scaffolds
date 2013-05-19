@@ -15,7 +15,7 @@ resource_name = t_helper.resource_name
 resource_test_name = t_helper.resource_test_name
 
 resource_directory = t_helper.resource_directory
-parent_model_tables = t_helper.parent_model_tables
+parent_model_names = t_helper.parent_model_names
 
 output_attributes = t_helper.output_attributes
 datetime_attributes = t_helper.datetime_attributes
@@ -25,15 +25,15 @@ standard_attributes = t_helper.standard_attributes
 -%>
 describe "<%= resource_directory %>/edit" do
 
-<% parent_model_tables.each_with_index do |parent_model, index| -%>
+<% parent_model_names.each_with_index do |parent_model, index| -%>
 <%- if index == 0 -%>
   let(<%= t_helper.references_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>) }
 <%- else -%>
-  let(<%= t_helper.references_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_tables[index - 1] %> => <%= parent_model_tables[index - 1] %>) }
+  let(<%= t_helper.references_test_sym(parent_model) %>) { FactoryGirl.build_stubbed(:<%= parent_model %>, :<%= parent_model_names[index - 1] %> => <%= parent_model_names[index - 1] %>) }
 <%- end -%>
 <%- end -%>
 <% references_attributes.each do |parent_attribute| -%>
-  <%- next if parent_model_tables.include? parent_attribute.name -%>
+  <%- next if parent_model_names.include? parent_attribute.name -%>
   let(<%= t_helper.references_test_sym(parent_attribute.name) %>) { FactoryGirl.build_stubbed(:<%= parent_attribute.name %>) }
 <% end -%>
   let(<%= t_helper.resource_test_sym %>) do
@@ -51,10 +51,10 @@ describe "<%= resource_directory %>/edit" do
     controller.stub(:current_ability) { @ability }
   end
 
-  context<% if parent_model_tables.any? %> "within <%= parent_model_tables.join('/') %> nesting"<% end %> do<%- unless parent_model_tables.any? -%> # Within default nesting<% end %>
+  context<% if parent_model_names.any? %> "within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
     before(:each) do
       # Add Properties for view scope
-<%- parent_model_tables.each do |parent_model| -%>
+<%- parent_model_names.each do |parent_model| -%>
       assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.references_test_name(parent_model) %>)
 <%- end -%>
       assign(<%= resource_symbol %>, <%= t_helper.resource_test_name %>)

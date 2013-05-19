@@ -47,11 +47,11 @@ module FactoryMacros
 
   def build_extra_factory_params(parent_table_name = nil)
     if parent_table_name.nil?
-      attribute = parent_model_tables.last
+      attribute = parent_model_names.last
     else
-      parent_index = parent_model_tables.index(parent_table_name.to_s)
+      parent_index = parent_model_names.index(parent_table_name.to_s)
       unless parent_index.nil? || parent_index == 0
-        attribute = parent_model_tables[parent_index - 1]
+        attribute = parent_model_names[parent_index - 1]
       end
     end
 

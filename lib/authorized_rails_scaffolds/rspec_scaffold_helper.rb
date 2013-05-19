@@ -15,7 +15,7 @@ class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::
   end
 
   def parent_variables
-    @parent_variables ||= parent_model_tables.collect{ |parent_table| references_test_name(parent_table) }
+    @parent_variables ||= parent_model_names.collect{ |parent_table| references_test_name(parent_table) }
   end
 
   def references_show_route(attribute_name, variable = nil)

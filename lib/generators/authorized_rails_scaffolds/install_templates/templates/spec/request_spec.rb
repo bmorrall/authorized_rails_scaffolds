@@ -17,7 +17,7 @@ resource_array_name = t_helper.resource_array_name
 resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
 
-parent_model_tables = t_helper.parent_model_tables
+parent_model_names = t_helper.parent_model_names
 
 
 -%>
@@ -35,8 +35,8 @@ describe "<%= class_name.pluralize %>" do
     FactoryGirl.attributes_for(<%= resource_symbol %>)
   end
 
-<%- if parent_model_tables.any? -%>
-<%- parent_model_tables.each do |parent_model| -%>
+<%- if parent_model_names.any? -%>
+<%- parent_model_names.each do |parent_model| -%>
   let(<%= t_helper.references_test_sym(parent_model) %>) { <%= t_helper.create_parent_resource_from_factory parent_model %> }
 <%- end -%>
 
