@@ -12,6 +12,7 @@ resource_name = t_helper.resource_name
 -%>
 module <%= class_name %>Helper
 
+  # Returns the form arguments required to create or update the <%= resource_name %>
   def <%= resource_name %>_form_values(<%= resource_name %>)
     <%= t_helper.scoped_values_for_form resource_name %>
   end
