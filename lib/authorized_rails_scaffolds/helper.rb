@@ -62,7 +62,7 @@ module AuthorizedRailsScaffolds
       @parent_variables ||= parent_model_names.collect{ |parent_table| parent_variable(parent_table) }
     end
 
-    def controller_show_route(variable = nil)
+    def controller_show_route(variable)
       variables = [] + parent_variables
       variables += [variable] unless variable.nil?
       controller_routes = "#{member_route_prefix}_path"
@@ -70,12 +70,14 @@ module AuthorizedRailsScaffolds
       controller_routes
     end
 
-    def controller_edit_route(variable = nil)
+    def controller_edit_route(variable)
       "edit_#{controller_show_route(variable)}"
     end
 
     def controller_new_route
-      "new_#{controller_show_route}"
+      controller_routes = "#{member_route_prefix}_path"
+      controller_routes += "(#{parent_variables.join(', ')})" if parent_variables.any?
+      "new_#{controller_routes}"
     end
 
     def controller_index_path
