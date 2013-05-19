@@ -35,6 +35,10 @@ class AuthorizedRailsScaffolds::RailsScaffoldControllerHelper < AuthorizedRailsS
       load_resource_code += ", :through => #{parent_sym(parent_model_names.last)}"
     end
 
+    if shallow_routes?
+      load_resource_code += ", :shallow => true"
+    end
+
     load_resource_code
   end
 
