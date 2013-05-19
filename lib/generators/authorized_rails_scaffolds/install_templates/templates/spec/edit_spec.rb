@@ -12,7 +12,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 resource_symbol = t_helper.resource_symbol
 resource_test_var = t_helper.resource_test_var
 resource_name = t_helper.resource_name
-resource_test_property = t_helper.resource_test_property
+resource_test_name = t_helper.resource_test_name
 
 resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
@@ -57,14 +57,14 @@ describe "<%= resource_directory %>/edit" do
 <%- parent_model_tables.each do |parent_model| -%>
       assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.references_test_name(parent_model) %>)
 <%- end -%>
-      assign(<%= resource_symbol %>, <%= t_helper.resource_test_property %>)
+      assign(<%= resource_symbol %>, <%= t_helper.resource_test_name %>)
     end
 
     it "renders the edit <%= resource_name %> form" do
       render
 
 <% if webrat? -%>
-      rendered.should have_selector("form", :action => <%= t_helper.controller_show_route resource_test_property %>, :method => "post") do |form|
+      rendered.should have_selector("form", :action => <%= t_helper.controller_show_route resource_test_name %>, :method => "post") do |form|
 <% for attribute in standard_attributes -%>
         form.should have_selector("<%= attribute.input_type -%>#<%= resource_name %>_<%= attribute.name %>", :name => "<%= resource_name %>[<%= attribute.name %>]")
 <% end -%>
@@ -74,7 +74,7 @@ describe "<%= resource_directory %>/edit" do
       end
 <% else -%>
       # Run the generator again with the --webrat flag if you want to use webrat matchers
-      assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route resource_test_property %>, "post" do
+      assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route resource_test_name %>, "post" do
 <% for attribute in standard_attributes -%>
         assert_select "<%= attribute.input_type -%>#<%= resource_name %>_<%= attribute.name %>[name=?]", "<%= resource_name %>[<%= attribute.name %>]"
 <% end -%>
@@ -90,7 +90,7 @@ describe "<%= resource_directory %>/edit" do
       render
 
 <% if webrat? -%>
-      rendered.should have_selector("form", :action => <%= t_helper.controller_show_route resource_test_property %>, :method => "post") do |form|
+      rendered.should have_selector("form", :action => <%= t_helper.controller_show_route resource_test_name %>, :method => "post") do |form|
 <% for attribute in datetime_attributes -%>
   <%- if [:date, :datetime].include? attribute.type -%>
       form.should have_selector("select#<%= resource_name %>_<%= attribute.name %>", :name => "<%= resource_name %>[<%= attribute.name %>]")
@@ -105,7 +105,7 @@ describe "<%= resource_directory %>/edit" do
       end
 <% else -%>
       # Run the generator again with the --webrat flag if you want to use webrat matchers
-      assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route resource_test_property %>, "post" do
+      assert_select "form[action=?][method=?]", <%= t_helper.controller_show_route resource_test_name %>, "post" do
 <% for attribute in datetime_attributes -%>
         # <%= attribute.name %> values
   <%- if [:date, :datetime].include? attribute.type -%>

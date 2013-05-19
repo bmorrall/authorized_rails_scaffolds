@@ -55,7 +55,7 @@ describe "<%= resource_directory %>/new" do
 <%- parent_model_tables.each do |parent_model| -%>
       assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.references_test_name(parent_model) %>)
 <%- end -%>
-      assign(<%= resource_symbol %>, <%= t_helper.resource_test_property %>)
+      assign(<%= resource_symbol %>, <%= t_helper.resource_test_name %>)
     end
 
     it "renders new <%= resource_name %> form" do

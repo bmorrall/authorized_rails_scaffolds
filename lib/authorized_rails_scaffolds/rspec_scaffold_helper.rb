@@ -19,7 +19,7 @@ class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::
   end
 
   def references_show_route(attribute_name, variable = nil)
-    variable ||= "#{resource_test_property}.#{attribute_name}"
+    variable ||= "#{resource_test_name}.#{attribute_name}"
     super attribute_name, variable
   end
 

@@ -12,7 +12,7 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldViewHelper.new(
 resource_var = t_helper.resource_var
 resource_symbol = t_helper.resource_symbol
 resource_name = t_helper.resource_name
-resource_test_property = t_helper.resource_test_property
+resource_test_name = t_helper.resource_test_name
 
 resource_directory = t_helper.resource_directory
 parent_model_tables = t_helper.parent_model_tables
@@ -57,7 +57,7 @@ describe "<%= resource_directory %>/show" do
 <%- parent_model_tables.each do |parent_model| -%>
       assign(<%= t_helper.parent_sym(parent_model) %>, <%= t_helper.references_test_name(parent_model) %>)
 <%- end -%>
-      assign(<%= resource_symbol %>, <%= t_helper.resource_test_property %>)
+      assign(<%= resource_symbol %>, <%= t_helper.resource_test_name %>)
     end
 
     it "renders attributes in a <dl> as a <dt> and <dd> pair" do
@@ -88,7 +88,7 @@ describe "<%= resource_directory %>/show" do
 
     context "with a <%= attribute.name %> reference" do
       before(:each) do
-        <%= resource_test_property %>.<%= attribute.name %> = FactoryGirl.build_stubbed(:<%= attribute.name %>)
+        <%= resource_test_name %>.<%= attribute.name %> = FactoryGirl.build_stubbed(:<%= attribute.name %>)
       end
       context 'without read <%= attribute.name.classify %> permissions' do
         it "should not a render link to <%= attribute.name %>" do
