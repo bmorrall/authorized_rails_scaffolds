@@ -33,7 +33,7 @@ module RouteExampleMacros
       # Example index route: i.e. /awesome/users/2/foo_bars
       @example_show_path = [parent_module_groups + example_show_path_parts + [resource_array_name]].join("/")
     end
-    "/#{@example_show_path}"
+    "/#{@example_show_path}/1"
   end
 
   # Extra params for an example controller path: i.e. ', :user_id => 2'
