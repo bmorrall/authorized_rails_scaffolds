@@ -162,9 +162,9 @@ describe "<%= resource_directory %>/index" do
             render
 <% [1,2].each do |model_index| -%>
   <%- if webrat? -%>
-            rendered.should_not have_selector("td>a[href][disabled=disabled]", :href => edit_<%= t_helper.controller_show_route t_helper.resource_test_name(model_index) %>, :count => 1)
+            rendered.should_not have_selector("td>a[href][disabled=disabled]", :href => <%= t_helper.controller_edit_route t_helper.resource_test_name(model_index) %>, :count => 1)
   <%- else -%>
-            assert_select "td>a[href=?][disabled=disabled]", edit_<%= t_helper.controller_show_route t_helper.resource_test_name(model_index) %>, :count => 1
+            assert_select "td>a[href=?][disabled=disabled]", <%= t_helper.controller_edit_route t_helper.resource_test_name(model_index) %>, :count => 1
   <%- end -%>
 <% end -%>
           end
@@ -175,9 +175,9 @@ describe "<%= resource_directory %>/index" do
             render
 <% [1,2].each do |model_index| -%>
   <%- if webrat? -%>
-            rendered.should have_selector("td>a[href]:not([disabled])", :href => edit_<%= t_helper.controller_show_route t_helper.resource_test_name(model_index) %>, :count => 1)
+            rendered.should have_selector("td>a[href]:not([disabled])", :href => <%= t_helper.controller_edit_route t_helper.resource_test_name(model_index) %>, :count => 1)
   <%- else -%>
-            assert_select "td>a[href=?]:not([disabled])", edit_<%= t_helper.controller_show_route t_helper.resource_test_name(model_index) %>, :count => 1
+            assert_select "td>a[href=?]:not([disabled])", <%= t_helper.controller_edit_route t_helper.resource_test_name(model_index) %>, :count => 1
   <%- end -%>
 <% end -%>
           end

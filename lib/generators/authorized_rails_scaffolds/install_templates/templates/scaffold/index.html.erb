@@ -52,7 +52,7 @@ resource_name = t_helper.resource_name # Non-namespaced variable name
         <td><%%=l <%= resource_name %>.created_at, :format => :long %></td>
         <td class="table-actions">
           <%%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_<%= t_helper.controller_show_route resource_name %>,
+                      <%= t_helper.controller_edit_route resource_name %>,
                       :class => 'btn btn-mini',
                       :disabled => !can?(:update, <%= resource_name %>)
           %>

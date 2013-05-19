@@ -46,7 +46,7 @@ resource_var = t_helper.resource_var
               <%= t_helper.controller_index_path %>, :class => 'btn'  %>
   <%% if can? :update, <%= resource_var %> %>
     <%%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_<%= t_helper.controller_show_route resource_var %>,
+              <%= t_helper.controller_edit_route resource_var %>,
               :class => 'btn'
     %>
   <%% end %>

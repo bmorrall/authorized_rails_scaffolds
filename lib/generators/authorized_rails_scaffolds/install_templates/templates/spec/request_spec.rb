@@ -78,7 +78,7 @@ describe "<%= class_name.pluralize %>" do
       before(:each) { sign_in_user }
       it "renders the edit form for a <%= resource_human_name %>" do
         <%= resource_test_var %> = <%= t_helper.create_resource_from_factory %>
-        get edit_<%= t_helper.controller_show_route resource_test_var %>
+        get <%= t_helper.controller_edit_route resource_test_var %>
         response.status.should be(200)
       end
     end
