@@ -28,7 +28,7 @@ module AuthorizedRailsScaffolds
     end
 
     def resource_human_name
-      @resource_human_name ||= @human_name || resource_class.humanize
+      @resource_human_name ||= @human_name || resource_name.titleize.humanize
     end
 
     # Route Prefix parts i.e. ['awesome', 'user', 'company']
