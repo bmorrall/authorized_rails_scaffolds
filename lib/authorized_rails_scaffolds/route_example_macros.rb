@@ -13,7 +13,7 @@ module RouteExampleMacros
       end
 
       # Example index route: i.e. /awesome/users/2/foo_bars
-      @example_controller_path = [parent_module_groups + example_controller_path_parts + [resource_name.pluralize]].join("/")
+      @example_controller_path = [parent_module_groups + example_controller_path_parts + [resource_array_name]].join("/")
     end
     "/#{@example_controller_path}"
   end
