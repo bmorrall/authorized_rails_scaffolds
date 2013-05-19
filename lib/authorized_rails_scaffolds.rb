@@ -3,9 +3,11 @@ require "authorized_rails_scaffolds/version"
 module AuthorizedRailsScaffolds
   class Configuration
     attr_accessor :parent_models
+    attr_accessor :shallow_routes
 
     def initialize
       self.parent_models = []
+      self.shallow_routes = false
     end
   end
 

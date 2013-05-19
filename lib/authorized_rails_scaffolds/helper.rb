@@ -36,6 +36,10 @@ module AuthorizedRailsScaffolds
       @resource_human_name ||= @human_name || resource_name.titleize.humanize
     end
 
+    def shallow_routes?
+      !!AuthorizedRailsScaffold.config.shallow_routes
+    end
+
     # Route Prefix parts i.e. ['awesome', 'user', 'company']
     def route_prefix_values
       unless @route_prefix_values
