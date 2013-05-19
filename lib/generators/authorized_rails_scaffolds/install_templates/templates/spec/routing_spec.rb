@@ -23,7 +23,9 @@ t_helper = AuthorizedRailsScaffolds::RSpecScaffoldRoutingHelper.new(
 
 # request_path = t_helper.request_path
 resource_directory = t_helper.resource_directory
+
 example_index_path = t_helper.example_index_path
+example_show_path = t_helper.example_show_path
 example_index_path_extra_params = t_helper.example_index_path_extra_params
 
 -%>

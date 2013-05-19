@@ -33,6 +33,7 @@ resource_var = t_helper.resource_var
 resource_array_var = t_helper.resource_array_var # Pluralized non-namespaced variable name
 
 example_index_path = t_helper.example_index_path
+example_show_path = t_helper.example_show_path
 
 # Override default orm instance
 orm_instance = Rails::Generators::ActiveModel.new resource_name
