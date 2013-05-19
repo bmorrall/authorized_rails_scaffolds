@@ -23,14 +23,22 @@ describe AuthorizedRailsScaffolds::RailsScaffoldControllerHelper do
         AuthorizedRailsScaffolds.configure do |config|
           config.parent_models = ['Parent']
         end
-        build_rails_controller_spec_helper :class_name => 'Example::FooBar'
+        AuthorizedRailsScaffolds::RailsScaffoldControllerHelper.new(
+          :class_name => 'Example::FooBar',
+          :human_name => 'Foo bar',
+          :controller_class_name => 'Example::FooBars',
+          :singular_table_name => 'example_foo_bar',
+          :file_name => 'foo_bar'
+        )
       end
       it { subject.resource_class.should eq('FooBar') }
       it { subject.resource_human_name.should eq('Foo bar') }
-      it { subject.resource_symbol.should eq(':foo_bar') }
+
       it { subject.resource_name.should eq('foo_bar') }
-      it { subject.resource_array_name.should eq('foo_bars') }
       it { subject.resource_var.should eq('@foo_bar') }
+      it { subject.resource_symbol.should eq(':foo_bar') }
+
+      it { subject.resource_array_name.should eq('foo_bars') }
       it { subject.resource_array_var.should eq('@foo_bars') }
 
       it { subject.example_controller_path.should eq("/example/parents/2/foo_bars") }
