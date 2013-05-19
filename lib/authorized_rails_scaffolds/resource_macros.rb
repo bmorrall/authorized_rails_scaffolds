@@ -18,12 +18,12 @@ module ResourceMacros
 
   # Symbol used to represent resource (i.e. :foo_bar)
   def resource_symbol
-    ":#{resource_name}"
+    @resource_symbol ||= ":#{resource_name}"
   end
 
   # Variable resource is assigned to in a singular context (i.e. @foo_bar)
   def resource_var
-    @resource_var_name ||= "@#{resource_name}"
+    @resource_var ||= "@#{resource_name}"
   end
 
   # Name for plural of a resource
@@ -33,7 +33,7 @@ module ResourceMacros
 
   # Variable resource is assigned to in a plural context (i.e. @foo_bars)
   def resource_array_var
-    @resource_var_name ||= "@#{resource_array_name}"
+    @resource_array_var ||= "@#{resource_array_name}"
   end
 
   def resource_array_sym
