@@ -54,13 +54,12 @@ module RouteExampleMacros
 
   # Creates example values for parent id params (i.e. :user_id => 2)
   def example_parent_values(use_shallow_route=false)
-    unless @example_parent_values
-      @example_parent_values = {}
-      parent_model_names.each_with_index do |parent_model, index|
-        @example_parent_values["#{parent_model}_id"] = index + 2
-      end
+    example_parent_values = {}
+    parent_models = use_shallow_route ? parent_model_names[0..-2] : parent_model_names
+    parent_models.each_with_index do |parent_model, index|
+      example_parent_values["#{parent_model}_id"] = index + 2
     end
-    use_shallow_route ? @example_parent_values[0..-2] : @example_parent_values
+    example_parent_values
   end
 
 end
