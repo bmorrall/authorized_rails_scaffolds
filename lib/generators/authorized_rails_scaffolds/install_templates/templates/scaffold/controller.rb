@@ -150,16 +150,15 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
   # Capture any access violations, ensure User isn't unnessisarily redirected to root
   rescue_from CanCan::AccessDenied do |exception|
-    if params[:action] == 'index'
-      respond_to do |format|
-        format.html { redirect_to root_url, :alert => exception.message }
-        format.json { head :no_content, :status => :forbidden }
+    respond_to do |format|
+      format.html do
+        if params[:action] == 'index'
+          redirect_to root_url, :alert => exception.message
+        else
+          redirect_to <%= t_helper.controller_index_route %>, :alert => exception.message
+        end
       end
-    else
-      respond_to do |format|
-        format.html { redirect_to <%= t_helper.controller_index_route %>, :alert => exception.message }
-        format.json { head :no_content, :status => :forbidden }
-      end
+      format.json { head :no_content, :status => :forbidden }
     end
   end
 
