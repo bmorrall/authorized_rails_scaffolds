@@ -13,7 +13,7 @@ class AuthorizedRailsScaffolds::RailsHelperHelper < AuthorizedRailsScaffolds::He
   end
 
   # returns values that should be parsed by a form in order for post and put actions to work
-  def scoped_values_for_form(variable = nil)
+  def scoped_values_for_form(variable, use_shallow_route=false)
     variable ||= resource_var
 
     form_argument_values = []
@@ -24,7 +24,8 @@ class AuthorizedRailsScaffolds::RailsHelperHelper < AuthorizedRailsScaffolds::He
     end
 
     # Add the models
-    parent_model_names.each do |parent_model|
+    parent_models = use_shallow_route ? parent_model_names[0..-2] : parent_model_names
+    parent_models.each do |parent_model|
       form_argument_values << parent_variable(parent_model)
     end
 
