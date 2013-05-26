@@ -100,7 +100,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
         format.json { render <%= key_value :json, "{ #{key_value(resource_name, resource_var)} }" %>, <%= key_value :status, ':created' %>, <%= key_value :location, t_helper.controller_show_route(resource_var) %> }
       else
         format.html { render <%= key_value :action, '"new"' %> }
-        format.json { render <%= key_value :json, "{ " + key_value('errors', "@#{orm_instance.errors}") + " }" %>, <%= key_value :status, ':unprocessable_entity' %> }
+        format.json { render_json_error :unprocessable_entity, <%= key_value('errors', "@#{orm_instance.errors}") %> }
       end
     end
   end
@@ -116,7 +116,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
         format.json { head :no_content }
       else
         format.html { render <%= key_value :action, '"edit"' %> }
-        format.json { render <%= key_value :json, "{ " + key_value('errors', "@#{orm_instance.errors}") + " }" %>, <%= key_value :status, ':unprocessable_entity' %> }
+        format.json { render_json_error :unprocessable_entity, <%= key_value('errors', "@#{orm_instance.errors}") %> }
       end
     end
   end
@@ -163,8 +163,15 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
           redirect_to <%= t_helper.controller_index_route %>, :alert => exception.message
         end
       end
-      format.json { head :no_content, :status => :forbidden }
+      format.json { render_json_error :forbidden, <%= key_value('error', 'exception.message') %> }
     end
+  end
+
+  def render_json_error(status_code, values = {})
+    json_values = {
+      <%= key_value('status', 'Rack::Utils.status_code(status_code)') %>
+    }.merge(values)
+    render <%= key_value('status', 'status_code') %>, <%= key_value('json', 'json_values') %>
   end
 
 end
