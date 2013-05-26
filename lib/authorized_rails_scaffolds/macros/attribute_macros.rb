@@ -4,7 +4,19 @@
 module AuthorizedRailsScaffolds::Macros::AttributeMacros
 
   def output_attributes
-    @output_attributes ||= attributes.reject{|attribute| [:timestamp].include? attribute.type }
+    unless @output_attributes
+      @output_attributes = []
+
+      # First attribute
+      @output_attributes << attributes.first unless attributes.empty?
+
+      # Reference Attribtues
+      @output_attributes += attributes[1..-1].reject{|attribute| ![:references].include? attribute.type }
+
+      # Standard Attributes
+      @output_attributes += attributes[1..-1].reject{|attribute| [:references].include? attribute.type }
+    end
+    @output_attributes
   end
 
   def references_attributes
