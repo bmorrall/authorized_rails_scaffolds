@@ -1,24 +1,13 @@
 class AuthorizedRailsScaffolds::RSpecScaffoldViewHelper < AuthorizedRailsScaffolds::RSpecScaffoldHelper
+  include AuthorizedRailsScaffolds::Macros::AttributeMacros
   include AuthorizedRailsScaffolds::Macros::FactoryMacros
 
   def initialize(options = {})
     super options
   end
 
-  def output_attributes
-    @output_attributes ||= @attributes.reject{|attribute| [:timestamp].include? attribute.type }
-  end
-
-  def references_attributes
-    @references_attributes ||= @attributes.reject{|attribute| ![:references].include? attribute.type }
-  end
-
-  def standard_attributes
-    @standard_attributes ||= @attributes.reject{|attribute| [:time, :date, :datetime, :references].include? attribute.type }
-  end
-
-  def datetime_attributes
-    @datetime_attributes ||= @attributes.reject{|attribute| ![:time, :date, :datetime].include? attribute.type }
+  def attributes
+    @attributes
   end
 
   def date_select_year_value(date_string)

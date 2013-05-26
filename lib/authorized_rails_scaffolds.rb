@@ -29,6 +29,7 @@ module AuthorizedRailsScaffolds
 
 end
 
+require "authorized_rails_scaffolds/macros/attribute_macros"
 require "authorized_rails_scaffolds/macros/controller_macros"
 require "authorized_rails_scaffolds/macros/factory_macros"
 require "authorized_rails_scaffolds/macros/path_macros"
