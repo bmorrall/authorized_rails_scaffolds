@@ -163,6 +163,13 @@ describe <%= t_helper.controller_class_name %> do
             assigns(<%= resource_symbol %>).should eq(<%= resource_test_var %>)
           end
         end
+        describe 'with request for missing <%= resource_human_name %>' do
+          it "raises a ActiveRecord::RecordNotFound when no <%= resource_human_name %> is found" do
+            expect {
+              get :show, {<%= t_helper.build_example_show_params ":id => #{(10..99).to_a.sample}" %>}
+            }.to raise_exception(ActiveRecord::RecordNotFound)
+          end
+        end
       end
     end
   end
