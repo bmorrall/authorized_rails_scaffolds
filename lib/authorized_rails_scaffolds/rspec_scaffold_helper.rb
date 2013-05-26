@@ -24,4 +24,32 @@ class AuthorizedRailsScaffolds::RSpecScaffoldHelper < AuthorizedRailsScaffolds::
     super attribute_name, variable
   end
 
+  def start_nesting_block
+    if parent_model_names.any?
+      "context \"within #{parent_model_names.join('/')} nesting\" do"
+    else
+      'context do # Within default nesting'
+    end
+  end
+
+  def start_shallow_nesting_block
+    if shallow_routes?
+      'context do # Within shallow nesting'
+    else
+      start_nesting_block
+    end
+  end
+
+  def end_nesting_block
+    'end'
+  end
+
+  def describe_nesting_comment
+    if parent_model_names.any?
+      "within #{parent_model_names.join('/')} nesting"
+    else
+      "Within default nesting"
+    end
+  end
+
 end

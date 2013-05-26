@@ -49,7 +49,7 @@ describe "<%= resource_directory %>/new" do
     controller.stub(:current_ability) { @ability }
   end
 
-  context<% if parent_model_names.any? %> "within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+  <%= t_helper.start_nesting_block %>
     before(:each) do
       # Add Properties for view scope
 <%- parent_model_names.each do |parent_model| -%>
@@ -130,5 +130,5 @@ describe "<%= resource_directory %>/new" do
 <% end -%>
     end
 <% end -%>
-  end
+  <%= t_helper.end_nesting_block %>
 end

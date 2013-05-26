@@ -73,7 +73,7 @@ describe <%= t_helper.controller_class_name %> do
 <%- end -%>
 <% unless options[:singleton] -%>
   describe "GET index" do
-    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+    <%= t_helper.start_nesting_block %>
       <%- t_helper.parent_models.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
@@ -116,12 +116,12 @@ describe <%= t_helper.controller_class_name %> do
           end
         end
       end
-    end
+    <%= t_helper.end_nesting_block %>
   end
 
 <% end -%>
   describe "GET show" do
-    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+    <%= t_helper.start_shallow_nesting_block %>
       <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
@@ -171,11 +171,11 @@ describe <%= t_helper.controller_class_name %> do
           end
         end
       end
-    end
+    <%= t_helper.end_nesting_block %>
   end
 
   describe "GET new" do
-    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+    <%= t_helper.start_nesting_block %>
       <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
@@ -215,11 +215,11 @@ describe <%= t_helper.controller_class_name %> do
           end
         end
       end
-    end
+    <%= t_helper.end_nesting_block %>
   end
 
   describe "GET edit" do
-    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+    <%= t_helper.start_shallow_nesting_block %>
       <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
@@ -262,11 +262,11 @@ describe <%= t_helper.controller_class_name %> do
           end
         end
       end
-    end
+    <%= t_helper.end_nesting_block %>
   end
 
   describe "POST create" do
-    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+    <%= t_helper.start_nesting_block %>
       <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
@@ -332,11 +332,11 @@ describe <%= t_helper.controller_class_name %> do
           end
         end
       end
-    end
+    <%= t_helper.end_nesting_block %>
   end
 
   describe "PUT update" do
-    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+    <%= t_helper.start_shallow_nesting_block %>
       <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
@@ -408,11 +408,11 @@ describe <%= t_helper.controller_class_name %> do
           end
         end
       end
-    end
+    <%= t_helper.end_nesting_block %>
   end
 
   describe "DELETE destroy" do
-    context <% if parent_model_names.any? %>"within <%= parent_model_names.join('/') %> nesting"<% end %> do<%- unless parent_model_names.any? -%> # Within default nesting<% end %>
+    <%= t_helper.start_shallow_nesting_block %>
       <%- parent_model_names.each do |parent_model| -%>
       grant_ability :read, <%= parent_model.classify %>
       <%- end -%>
@@ -459,7 +459,7 @@ describe <%= t_helper.controller_class_name %> do
           end
         end
       end
-    end
+    <%= t_helper.end_nesting_block %>
   end
 
 end
