@@ -22,6 +22,11 @@ parent_model_names = t_helper.parent_model_names
 
 -%>
 describe "<%= class_name.pluralize %>" do
+  <%- if parent_model_names.any? -%>
+
+  <%- parent_model_names.each do |parent_model| -%>
+    let(<%= t_helper.references_test_sym(parent_model) %>) { <%= t_helper.create_parent_resource_from_factory parent_model %> }
+  <%- end -%>
 
   # This should return the minimal set of attributes required to create a valid
   # <%= resource_class %>.
@@ -34,11 +39,6 @@ describe "<%= class_name.pluralize %>" do
   def valid_update_attributes
     FactoryGirl.attributes_for(<%= resource_symbol %>)
   end
-
-<%- if parent_model_names.any? -%>
-<%- parent_model_names.each do |parent_model| -%>
-  let(<%= t_helper.references_test_sym(parent_model) %>) { <%= t_helper.create_parent_resource_from_factory parent_model %> }
-<%- end -%>
 
 <%- end -%>
   describe "GET <%= t_helper.example_index_path %>" do
