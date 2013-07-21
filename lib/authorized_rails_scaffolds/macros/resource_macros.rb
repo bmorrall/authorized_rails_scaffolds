@@ -16,6 +16,10 @@ module AuthorizedRailsScaffolds::Macros::ResourceMacros
     @resource_class ||= (modular_class_name.nil? ? nil : modular_class_name.split('::')[-1]) || var_name.classify
   end
 
+  def resource_key
+    @resource_key ||= "#{resource_name}:"
+  end
+
   # Table name of the Resource being tested (i.e. foo_bar)
   def resource_name
     @resource_name ||= (var_name || resource_class.underscore)
@@ -29,6 +33,11 @@ module AuthorizedRailsScaffolds::Macros::ResourceMacros
   # Variable resource is assigned to in a singular context (i.e. @foo_bar)
   def resource_var
     @resource_var ||= "@#{resource_name}"
+  end
+
+  # Name for plural of a resource
+  def resource_array_key
+    @resource_array_key ||= "#{resource_array_name}:"
   end
 
   # Name for plural of a resource

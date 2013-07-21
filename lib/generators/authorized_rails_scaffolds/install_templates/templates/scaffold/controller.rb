@@ -27,9 +27,11 @@ t_helper = AuthorizedRailsScaffolds::RailsScaffoldControllerHelper.new(
 resource_class = t_helper.resource_class # Non-Namespaced class name
 resource_human_name = t_helper.resource_human_name
 resource_symbol = t_helper.resource_symbol
+resource_key = t_helper.resource_key
 resource_name = t_helper.resource_name
 resource_array_name = t_helper.resource_array_name
 resource_var = t_helper.resource_var
+resource_array_key = t_helper.resource_array_key
 resource_array_var = t_helper.resource_array_var # Pluralized non-namespaced variable name
 
 example_index_path = t_helper.example_index_path
@@ -58,7 +60,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render <%= key_value :json, "{ #{key_value(resource_array_name, resource_array_var)} }" %> }
+      format.json { render :json => { <%= resource_array_key %> <%= resource_array_var %> } }
     end
   end
 
@@ -69,7 +71,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render <%= key_value :json, "{ #{key_value(resource_name, resource_var)} }" %> }
+      format.json { render :json => { <%= resource_key %> <%= resource_var %> } }
     end
   end
 
@@ -80,7 +82,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render <%= key_value :json, "{ #{key_value(resource_name, resource_var)} }" %> }
+      format.json { render :json => { <%= resource_key %> <%= resource_var %> } }
     end
   end
 
@@ -96,11 +98,11 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       if @<%= orm_instance.save %>
-        format.html { redirect_to <%= t_helper.controller_show_route(resource_var) %>, <%= key_value :notice, "'#{resource_human_name} was successfully created.'" %> }
-        format.json { render <%= key_value :json, "{ #{key_value(resource_name, resource_var)} }" %>, <%= key_value :status, ':created' %>, <%= key_value :location, t_helper.controller_show_route(resource_var) %> }
+        format.html { redirect_to <%= t_helper.controller_show_route(resource_var) %>,  notice: "<%= resource_human_name %> was successfully created." }
+        format.json { render json: { <%= resource_key %> <%= resource_var %> }, :status => :created, location: <%= t_helper.controller_show_route(resource_var) %> }
       else
-        format.html { render <%= key_value :action, '"new"' %> }
-        format.json { render_json_error :unprocessable_entity, <%= key_value('errors', "@#{orm_instance.errors}") %> }
+        format.html { render action: "new" }
+        format.json { render_json_error :unprocessable_entity, errors: <%= "@#{orm_instance.errors}" %> }
       end
     end
   end
@@ -112,11 +114,11 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
 
     respond_to do |format|
       if @<%= orm_instance.update_attributes("params[#{resource_symbol}]") %>
-        format.html { redirect_to <%= t_helper.controller_show_route resource_var %>, <%= key_value :notice, "'#{resource_human_name} was successfully updated.'" %> }
+        format.html { redirect_to <%= t_helper.controller_show_route resource_var %>, notice: "<%= resource_human_name %> was successfully updated." }
         format.json { head :no_content }
       else
-        format.html { render <%= key_value :action, '"edit"' %> }
-        format.json { render_json_error :unprocessable_entity, <%= key_value('errors', "@#{orm_instance.errors}") %> }
+        format.html { render action: "edit" }
+        format.json { render_json_error :unprocessable_entity, errors: <%= "@#{orm_instance.errors}" %> }
       end
     end
   end
@@ -128,7 +130,7 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
     @<%= orm_instance.destroy %>
 
     respond_to do |format|
-      format.html { redirect_to <%= t_helper.controller_index_route %>, <%= key_value :notice, "'#{resource_human_name} was successfully deleted.'" %> }
+      format.html { redirect_to <%= t_helper.controller_index_route %>, notice: "<%= resource_human_name %> was successfully deleted." }
       format.json { head :no_content }
     end
   end
@@ -163,15 +165,15 @@ class <%= t_helper.controller_class_name %> < <%= t_helper.application_controlle
           redirect_to <%= t_helper.controller_index_route %>, :alert => exception.message
         end
       end
-      format.json { render_json_error :forbidden, <%= key_value('error', 'exception.message') %> }
+      format.json { render_json_error :forbidden, error: exception.message }
     end
   end
 
   def render_json_error(status_code, values = {})
     json_values = {
-      <%= key_value('status', 'Rack::Utils.status_code(status_code)') %>
+      status: Rack::Utils.status_code(status_code)
     }.merge(values)
-    render <%= key_value('status', 'status_code') %>, <%= key_value('json', 'json_values') %>
+    render status: status_code, json: json_values
   end
 
 end
