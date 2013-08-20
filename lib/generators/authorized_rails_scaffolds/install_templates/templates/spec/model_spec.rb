@@ -6,12 +6,12 @@ describe <%= class_name %> do
 
   # <%= attribute.name %>:<%= attribute.type %>
   <%- if attribute.type == :references -%>
+  it { should belong_to(:<%= attribute.name %>) }
+  <%- end -%>
+  <%- if attribute.type == :references -%>
   it { should allow_mass_assignment_of(:<%= attribute.name %>_id)}
   <%- else -%>
   it { should allow_mass_assignment_of(:<%= attribute.name %>)}
-  <%- end -%>
-  <%- if attribute.type == :references -%>
-  it { should belong_to(:<%= attribute.name %>) }
   <%- end -%>
   <%- if attribute_index == 0 -%>
   it { should validate_presence_of(:<%= attributes[0].name %>) }
