@@ -53,6 +53,12 @@ parent_model_names = t_helper.parent_model_names
 -%>
 describe <%= t_helper.controller_class_name %> do
 
+<%- if parent_model_names.any? -%>
+  <%- parent_model_names.each do |parent_model| -%>
+  let(<%= t_helper.references_test_sym(parent_model) %>) { <%= t_helper.create_parent_resource_from_factory parent_model %> }
+  <%- end -%>
+
+<%- end -%>
   # This should return the minimal set of attributes required to create a valid
   # <%= resource_class %>.
   def valid_create_attributes
@@ -65,12 +71,6 @@ describe <%= t_helper.controller_class_name %> do
     FactoryGirl.attributes_for(<%= resource_symbol %>)
   end
 
-<%- if parent_model_names.any? -%>
-<%- parent_model_names.each do |parent_model| -%>
-  let(<%= t_helper.references_test_sym(parent_model) %>) { <%= t_helper.create_parent_resource_from_factory parent_model %> }
-<%- end -%>
-
-<%- end -%>
 <% unless options[:singleton] -%>
   describe "GET index" do
     <%= t_helper.start_nesting_block %>
