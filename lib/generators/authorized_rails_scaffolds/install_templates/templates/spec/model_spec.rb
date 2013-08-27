@@ -25,5 +25,6 @@ describe <%= class_name %> do
   it { should validate_numericality_of(:<%= attribute.name %>).only_integer }
   <%- end -%>
 <%- end -%>
+
 end
 <% end -%>
