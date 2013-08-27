@@ -39,12 +39,12 @@ describe <%= t_helper.controller_class_name %> do
     end
 
 <% end -%>
-    it "routes to #new" do
-      get("<%= example_index_path %>/new").should route_to("<%= resource_directory %>#new"<%= example_index_path_extra_params %>)
-    end
-
     it "routes to #show" do
       get("<%= example_show_path %>").should route_to("<%= resource_directory %>#show"<%= example_show_path_extra_params %>, :id => "1")
+    end
+
+    it "routes to #new" do
+      get("<%= example_index_path %>/new").should route_to("<%= resource_directory %>#new"<%= example_index_path_extra_params %>)
     end
 
     it "routes to #edit" do
